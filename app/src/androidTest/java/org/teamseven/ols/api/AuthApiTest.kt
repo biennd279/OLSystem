@@ -1,6 +1,7 @@
 package org.teamseven.ols.api
 
 import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Test
 import org.junit.Assert.*
@@ -17,7 +18,11 @@ class AuthApiInstrumentTest {
 
     @Before
     fun setup() {
-        instrumentationContext = InstrumentationRegistry.getInstrumentation().context
+        instrumentationContext = ApplicationProvider.getApplicationContext()
+        instrumentationContext.getSharedPreferences(
+            "user_token",
+            Context.MODE_PRIVATE
+        )
     }
 
     @Test
