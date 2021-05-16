@@ -10,9 +10,9 @@ data class User(
     @SerializedName("email")
     var email: String,
     @SerializedName("avatar_url")
-    var avatarUrl: String,
+    var avatarUrl: String?,
     @SerializedName("role")
-    var role: String
+    var role: String?
     ){
 
 }
