@@ -46,5 +46,27 @@ class AuthApiInstrumentTest {
         }
     }
 
-    
+    @Test
+    fun testLoginEnqueue() {
+        val authService = AuthService.create(instrumentationContext);
+        val loginRequest = LoginRequest(
+            email = "koross@gmail.com",
+            password = "password"
+        )
+
+        val call : Call<LoginResponse> = authService.login(loginRequest)
+
+        call.enqueue(object: Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                assertNotNull(response)
+                val authResponse = response.body()
+                assertNotNull(authResponse)
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                throw t
+            }
+
+        })
+    }
 }
