@@ -15,26 +15,28 @@ import java.lang.Exception
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ClassroomApiTest {
 
-    private lateinit var loginResponse: LoginResponse
+    companion object {
 
-    private lateinit var classroomService: ClassroomService
+        lateinit var loginResponse: LoginResponse
+        lateinit var classroomService: ClassroomService
+        lateinit var lastClassroom : Classroom
 
-    private lateinit var lastClassroom : Classroom
+        @BeforeClass
+        @JvmStatic
+        fun setup() {
+            val authService = AuthService.create();
+            val loginRequest = LoginRequest(
+                email = "koross@gmail.com",
+                password = "password"
+            )
 
-    @Before
-    fun setup() {
-        val authService = AuthService.create();
-        val loginRequest = LoginRequest(
-            email = "koross@gmail.com",
-            password = "password"
-        )
+            val call : Call<LoginResponse> = authService.login(loginRequest)
 
-        val call : Call<LoginResponse> = authService.login(loginRequest)
+            val response = call.execute()
+            loginResponse = response.body()!!
 
-        val response = call.execute()
-        loginResponse = response.body()!!
-
-        classroomService = ClassroomService.create(loginResponse.token)
+            classroomService = ClassroomService.create(loginResponse.token)
+        }
     }
 
     @Test
@@ -49,27 +51,6 @@ class ClassroomApiTest {
 
         Assert.assertNotNull(allClassroomsResponse?.listClassOwner)
         Assert.assertNotNull(allClassroomsResponse?.listClassJoined)
-    }
-
-    @Before
-    fun createTempClass() {
-        val testClass = "Test Class"
-        val testSchool = "Test School"
-
-        val classroomInfoRequest = ClassroomInfoRequest(
-            name = testClass,
-            school = testSchool
-        )
-
-        val call = classroomService.createClassroom(classroomInfoRequest)
-
-        val response = call.execute()
-
-        val classroom = response.body()
-
-        if (classroom != null) {
-            lastClassroom = classroom
-        }
     }
 
     @Test
@@ -95,6 +76,10 @@ class ClassroomApiTest {
         Assert.assertNotNull(classroom?.code)
         Assert.assertEquals(testClass, classroom?.name)
         Assert.assertEquals(testSchool, classroom?.school)
+
+        if (classroom != null) {
+            lastClassroom = classroom
+        }
     }
 
 
@@ -143,7 +128,8 @@ class ClassroomApiTest {
         setting?.canMessageWithChildren = 0
 
         val updateSettingCall = classroomService.updateSetting(lastClassroom.id, setting!!)
-        val newSetting = updateSettingCall.execute().body()?.setting
+        val newResponse = updateSettingCall.execute().body()
+        val newSetting = newResponse?.setting
         Assert.assertNotNull("Setting null", newSetting)
         Assert.assertEquals(newSetting?.isRequiredApproval, 1)
         Assert.assertEquals(newSetting?.typeParticipantMessage, "role-based")
