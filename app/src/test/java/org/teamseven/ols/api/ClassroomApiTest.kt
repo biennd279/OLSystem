@@ -12,6 +12,11 @@ import org.teamseven.ols.network.ClassroomService
 import retrofit2.Call
 import java.lang.Exception
 
+/*
+    Only test right behavior input
+    Bad input we test in future, trust me =))
+    I hope that
+*/
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ClassroomApiTest {
 

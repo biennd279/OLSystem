@@ -37,19 +37,21 @@ interface ClassroomService {
     @GET("${Constants.CLASSROOM_URL}/{class_id}/students")
     fun fetchJoinedParticipant() : Call<List<User>>
 
-    //TODO fix api join class
     @POST("${Constants.CLASSROOM_URL}/{class_id}/students/join")
     fun joinClass(
         @Path("class_id") classId: Int
-    )
+    ) : Call<Void>
 
-    //TODO fix api leave class
-    @POST("${Constants.CLASSROOM_URL}/{class_id}/students/join")
+    @POST("${Constants.CLASSROOM_URL}/{class_id}/students/leave")
     fun leaveClass(
         @Path("class_id") classId: Int
-    )
+    ) : Call<Void>
 
-    //TODO fix api delete class
+    @POST("${Constants.CLASSROOM_URL}/join/{classroom_code}")
+    fun joinWithCode(
+        @Path("classroom_code") classroomCode: String
+    ) : Call<Void>
+
     @DELETE("${Constants.CLASSROOM_URL}/{class_id}")
     fun deleteClass(
         @Path("class_id") classId: Int
