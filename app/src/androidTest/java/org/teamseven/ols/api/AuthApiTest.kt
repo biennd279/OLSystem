@@ -10,6 +10,8 @@ import org.teamseven.ols.entities.requests.LoginRequest
 import org.teamseven.ols.entities.responses.LoginResponse
 import org.teamseven.ols.network.AuthService
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.Exception
 
 class AuthApiInstrumentTest {
@@ -43,4 +45,6 @@ class AuthApiInstrumentTest {
             e.printStackTrace()
         }
     }
+
+    
 }
