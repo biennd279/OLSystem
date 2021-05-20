@@ -8,6 +8,4 @@ data class LoginResponse(
     var user: User,
     @SerializedName("token")
     var token: String,
-) {
-
-}
+)

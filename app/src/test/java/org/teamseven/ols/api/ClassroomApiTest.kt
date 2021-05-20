@@ -1,7 +1,12 @@
 package org.teamseven.ols.api
 
-import org.junit.*
-import org.junit.runner.OrderWith
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.junit.Assert
+import org.junit.BeforeClass
+import org.junit.FixMethodOrder
+import org.junit.Test
 import org.junit.runners.MethodSorters
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.requests.ClassroomInfoRequest
@@ -9,8 +14,6 @@ import org.teamseven.ols.entities.requests.LoginRequest
 import org.teamseven.ols.entities.responses.LoginResponse
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.ClassroomService
-import retrofit2.Call
-import java.lang.Exception
 
 /*
     Only test right behavior input
@@ -24,42 +27,36 @@ class ClassroomApiTest {
 
         lateinit var loginResponse: LoginResponse
         lateinit var classroomService: ClassroomService
-        lateinit var lastClassroom : Classroom
+        lateinit var lastClassroom: Classroom
 
         @BeforeClass
         @JvmStatic
-        fun setup() {
-            val authService = AuthService.create();
-            val loginRequest = LoginRequest(
-                email = "koross@gmail.com",
-                password = "password"
-            )
+        fun setup() = runBlocking {
+            withContext(Dispatchers.IO) {
+                val authService = AuthService.create()
+                val loginRequest = LoginRequest(
+                    email = "koross@gmail.com",
+                    password = "password"
+                )
 
-            val call : Call<LoginResponse> = authService.login(loginRequest)
+                loginResponse = authService.login(loginRequest).body()!!
 
-            val response = call.execute()
-            loginResponse = response.body()!!
+                classroomService = ClassroomService.create(loginResponse.token)
+            }
 
-            classroomService = ClassroomService.create(loginResponse.token)
         }
     }
 
     @Test
-    fun secondTestFetchAllClass() {
-        val call = classroomService.fetchAllClassrooms()
+    fun secondTestFetchAllClass() = runBlocking {
+        val allClassroomsResponse = classroomService.fetchAllClassrooms().body()!!
 
-        val response = call.execute()
-        Assert.assertNotNull(response)
-
-        val allClassroomsResponse = response.body()
-        Assert.assertNotNull(allClassroomsResponse)
-
-        Assert.assertNotNull(allClassroomsResponse?.listClassOwner)
-        Assert.assertNotNull(allClassroomsResponse?.listClassJoined)
+        Assert.assertNotNull(allClassroomsResponse.listClassOwner)
+        Assert.assertNotNull(allClassroomsResponse.listClassJoined)
     }
 
     @Test
-    fun firstTestCreateClass() {
+    fun firstTestCreateClass() = runBlocking {
         val testClass = "Test Class"
         val testSchool = "Test School"
 
@@ -68,43 +65,30 @@ class ClassroomApiTest {
             school = testSchool
         )
 
-        val call = classroomService.createClassroom(classroomInfoRequest)
-
-        val response = call.execute()
-
-        Assert.assertNotNull(response)
-
-        val classroom = response.body()
+        val classroom = classroomService.createClassroom(classroomInfoRequest).body()!!
 
         Assert.assertNotNull(classroom)
-        Assert.assertNotNull(classroom?.setting)
-        Assert.assertNotNull(classroom?.code)
-        Assert.assertEquals(testClass, classroom?.name)
-        Assert.assertEquals(testSchool, classroom?.school)
+        Assert.assertNotNull(classroom.setting)
+        Assert.assertNotNull(classroom.code)
+        Assert.assertEquals(testClass, classroom.name)
+        Assert.assertEquals(testSchool, classroom.school)
 
-        if (classroom != null) {
-            lastClassroom = classroom
-        }
+        lastClassroom = classroom
     }
 
 
     @Test
-    fun secondTestFetchClass() {
-        val call = classroomService.fetchClassroom(lastClassroom.id)
-
-        val response = call.execute()
-        Assert.assertNotNull(response)
-
-        val classroom = response.body()
+    fun secondTestFetchClass() = runBlocking {
+        val classroom = classroomService.fetchClassroom(lastClassroom.id).body()!!
 
         Assert.assertNotNull(classroom)
 
-        Assert.assertNotNull(classroom?.setting)
+        Assert.assertNotNull(classroom.setting)
     }
 
 
     @Test
-    fun secondTestUpdateClassroom() {
+    fun secondTestUpdateClassroom() = runBlocking {
         val testClass = "Test Class 1"
         val testSchool = "Test School 1"
 
@@ -113,39 +97,37 @@ class ClassroomApiTest {
             school = testSchool
         )
 
-        val updateCall = classroomService.update(lastClassroom.id, classroomInfoRequest)
+        val newClassroom = classroomService.update(lastClassroom.id, classroomInfoRequest)
+            .body()!!
 
-        val newClassroom = updateCall.execute().body()
-
-        Assert.assertEquals(newClassroom?.name, testClass)
-        Assert.assertEquals(newClassroom?.school, testSchool)
-
+        Assert.assertEquals(newClassroom.name, testClass)
+        Assert.assertEquals(newClassroom.school, testSchool)
     }
 
     @Test
-    fun secondTestUpdateSetting() {
-        val call = classroomService.fetchClassroom(lastClassroom.id)
-        val classroom = call.execute().body()
-        val setting = classroom?.setting
+    fun secondTestUpdateSetting() = runBlocking {
+        val classroom = classroomService.fetchClassroom(lastClassroom.id).body()!!
+        val setting = classroom.setting
 
         setting?.isRequiredApproval = 1
         setting?.typeParticipantMessage = "role-based"
         setting?.canMessageWithChildren = 0
 
-        val updateSettingCall = classroomService.updateSetting(lastClassroom.id, setting!!)
-        val newResponse = updateSettingCall.execute().body()
-        val newSetting = newResponse?.setting
+        val newResponse = classroomService.updateSetting(lastClassroom.id, setting!!)
+            .body()!!
+        val newSetting = newResponse.setting
         Assert.assertNotNull("Setting null", newSetting)
-        Assert.assertEquals(newSetting?.isRequiredApproval, 1)
-        Assert.assertEquals(newSetting?.typeParticipantMessage, "role-based")
-        Assert.assertEquals(newSetting?.canMessageWithChildren, 0)
+        if (newSetting != null) {
+            Assert.assertEquals(newSetting.isRequiredApproval, 1)
+            Assert.assertEquals(newSetting.typeParticipantMessage, "role-based")
+            Assert.assertEquals(newSetting.canMessageWithChildren, 0)
+
+        }
     }
 
     @Test
-    fun thirdTestDeleteClass() {
-        val call = classroomService.deleteClass(lastClassroom.id)
-        val response = call.execute()
-
+    fun thirdTestDeleteClass() = runBlocking {
+        val response = classroomService.deleteClass(lastClassroom.id)
         Assert.assertEquals(202, response.code())
     }
 

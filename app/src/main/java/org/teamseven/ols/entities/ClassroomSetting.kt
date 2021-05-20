@@ -8,11 +8,9 @@ enum class TypeParticipantMessage {
 
 data class ClassroomSetting(
     @SerializedName("require_approval")
-    var isRequiredApproval : Int,
+    var isRequiredApproval: Int,
     @SerializedName("participant_messaging")
     var typeParticipantMessage: String,
     @SerializedName("message_with_children")
     var canMessageWithChildren: Int,
-) {
-
-}
+)

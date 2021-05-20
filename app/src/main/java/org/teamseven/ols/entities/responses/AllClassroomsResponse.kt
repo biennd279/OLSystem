@@ -8,6 +8,4 @@ data class AllClassroomsResponse(
     var listClassOwner: List<Classroom>,
     @SerializedName("joined")
     var listClassJoined: List<Classroom>,
-) {
-
-}
+)
