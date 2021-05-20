@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "458470013031",
+    "project_id": "olsystem",
+    "storage_bucket": "olsystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458470013031:android:a06e3ce855f36264637cc2",
+        "android_client_info": {
+          "package_name": "org.teamseven.ols"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458470013031-l8uo2v4earls7rejsi7fkc6kdka0o6vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvJD_y8PB24a4U0b5BvFBLbOvPmeheBMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458470013031-l8uo2v4earls7rejsi7fkc6kdka0o6vk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
