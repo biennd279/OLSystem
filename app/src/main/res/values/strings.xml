@@ -9,4 +9,24 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">SIGN IN</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="todo">TODO</string>
+    <string name="sign_with_google">Sign with google</string>
+    <string name="remind">remind</string>
+    <string name="reach_students_and_parents_where_they_are">Reach students and parents where they are</string>
+
+    <string name="enter_your_email_or_phone">Enter your email or phone</string>
+    <string name="or">OR</string>
+    <string name="enter_your_email_phone">Enter your email/phone</string>
+    <string name="class_joined">Class Joined</string>
+    <string name="ai">AI</string>
+
 </resources>
