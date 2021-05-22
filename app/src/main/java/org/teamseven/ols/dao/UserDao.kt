@@ -8,8 +8,8 @@ interface UserDao {
     @Query("select * from users")
     suspend fun getAll(): List<User>
 
-    @Query("select * from users where id in (:userIds)")
-    suspend fun findById(userIds: List<Int>): List<User>
+    @Query("select * from users where id = :userId")
+    suspend fun findById(userId: Int): User
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg users: User)

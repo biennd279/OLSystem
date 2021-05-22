@@ -59,7 +59,8 @@ class TestClassroomDatabase {
     @Test
     fun secondTestFindClassroom() = runBlocking {
         classroomDao.insertAll(exampleClassroom)
-        Assert.assertEquals(classroomDao.findByIds(listOf(exampleClassroom.id)).last(), exampleClassroom)
+        Assert.assertEquals(classroomDao.findById(classroomId = exampleClassroom.id),
+            exampleClassroom)
     }
 
     @Test

@@ -49,7 +49,7 @@ class TestUserDatabase {
     @Test
     fun secondTestFindUser() = runBlocking {
         userDao.insertAll(sampleUser)
-        Assert.assertEquals(userDao.findById(listOf(1)).last(), sampleUser)
+        Assert.assertEquals(userDao.findById(1), sampleUser)
     }
 
     @Test

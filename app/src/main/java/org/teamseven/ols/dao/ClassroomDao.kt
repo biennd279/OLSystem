@@ -14,8 +14,8 @@ interface ClassroomDao {
     @Query("select * from classrooms")
     abstract suspend fun getAllClassroom(): List<Classroom>
 
-    @Query("select * from classrooms where id in (:classroomIds)")
-    suspend fun findByIds(classroomIds: List<Int>): List<Classroom>
+    @Query("select * from classrooms where id = :classroomId")
+    suspend fun findById(classroomId: Int): Classroom
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg classroom: Classroom)
