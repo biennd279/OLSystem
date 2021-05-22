@@ -1,12 +1,106 @@
 <resources>
     <string name="app_name">OLSystem</string>
-    <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="class1">Class 1</string>
+    <string name="class2">Class 2</string>
+    <string name="class3">Class 3</string>
+    <string name="class4">Class 4</string>
+
+    //tab
+    <string name="tab_text_1">Messages</string>
+    <string name="tab_text_2">Files</string>
+    <string name="tab_text_3">People</string>
+    <string name="tab_text_4">Settings</string>
+    <string name="menu_create_class">Create a class</string>
+    <string name="menu_join_class">Join a class</string>
+    <string name="new_message">New message</string>
+    <string name="name_of_user">Pham Thi Dan</string>
+    <string name="account_settings">Account settings</string>
+    <string name="logout_option">Logout</string>
+
+    //message
+    <string-array name="avatar">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+    </string-array>
+
+    <string-array name="username">
+        <item>Student 1</item>
+        <item>Student 2</item>
+        <item>Student 3</item>
+        <item>Student 4</item>
+        <item>Student 5</item>
+        <item>Student 6</item>
+        <item>Student 7</item>
+        <item>Student 8</item>
+        <item>Student 9</item>
+        <item>Student 10</item>
+    </string-array>
+
+    <string-array name="status">
+        <item>Alo 1</item>
+        <item>Alo 2</item>
+        <item>Alo 3</item>
+        <item>Alo 4</item>
+        <item>Alo 5</item>
+        <item>Alo 6</item>
+        <item>Alo 7</item>
+        <item>Alo 8</item>
+        <item>Alo 9</item>
+        <item>Alo 10</item>
+    </string-array>
+
+    <string-array name="time">
+        <item>01:12</item>
+        <item>12:12</item>
+        <item>15:12</item>
+        <item>05:12</item>
+        <item>08:13</item>
+        <item>03:19</item>
+        <item>09:17</item>
+        <item>12:15</item>
+        <item>16:13</item>
+        <item>18:11</item>
+    </string-array>
+
+    //Files
+    <string-array name="name_of_file">
+        <item>Doc1</item>
+        <item>Pdf2</item>
+        <item>Img3</item>
+        <item>Text4</item>
+        <item>Doc2</item>
+    </string-array>
+
+    <string-array name="type_of_file">
+        <item>docx</item>
+        <item>pdf</item>
+        <item>png</item>
+        <item>txt</item>
+        <item>docx</item>
+    </string-array>
+
+    <string-array name="upload_date">
+        <item>February 01, 2021</item>
+        <item>Match 01, 2021</item>
+        <item>April 01, 2021</item>
+        <item>May 01, 2021</item>
+        <item>May 02, 2021</item>
+    </string-array>
 </resources>
