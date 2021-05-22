@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group
+        android:checkableBehavior="single">
+        <item android:title="Class Owned">
+            <menu>
+                <item
+                    android:id="@+id/nav_course"
+                    android:icon="@drawable/ic_menu_history"
+                    android:title="@string/class1" />
+                <item
+                    android:id="@+id/nav_course2"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="@string/class2" />
+                <item
+                    android:icon="@drawable/ic_menu_add"
+                    android:title="@string/menu_create_class" />
+            </menu>
+        </item>
+    </group>
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:title="Class Joined">
+            <menu>
+                <item
+                    android:id="@+id/nav_course3"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="@string/class3" />
+                <item
+                    android:id="@+id/nav_course4"
+                    android:icon="@drawable/ic_menu_slideshow"
+                    android:title="@string/class4" />
+                <item
+                    android:icon="@drawable/ic_menu_add"
+                    android:title="@string/menu_join_class" />
+            </menu>
+        </item>
+    </group>
+</menu>
