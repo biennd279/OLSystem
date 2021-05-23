@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName
 )
 data class Classroom(
     @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "classroom_id")
     @SerializedName("id")
     var id: Int,
 
@@ -27,24 +28,4 @@ data class Classroom(
     @Embedded
     @SerializedName("setting")
     var setting: ClassroomSetting?,
-
-    //TODO mapping many type of classroom
-//    @ColumnInfo(name = "type_classroom")
-//    @Expose(deserialize = false, serialize = false)
-//    @TypeConverters(TypeOfClass.Converter::class)
-//    var typeClassroom: TypeOfClass = TypeOfClass.Joined
-
-
-) {
-//    enum class TypeOfClass {
-//        Own, Joined;
-//
-//        object Converter {
-//            @TypeConverter
-//            fun toInt(typeClassroom: TypeOfClass) = typeClassroom.ordinal
-//
-//            @TypeConverter
-//            fun fromInt(int: Int) = values()[int]
-//        }
-//    }
-}
+)

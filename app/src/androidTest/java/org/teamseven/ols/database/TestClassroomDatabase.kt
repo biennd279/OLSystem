@@ -9,8 +9,8 @@ import okio.IOException
 import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
-import org.teamseven.ols.dao.AppDatabase
-import org.teamseven.ols.dao.ClassroomDao
+import org.teamseven.ols.db.AppDatabase
+import org.teamseven.ols.db.ClassroomDao
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.ClassroomSetting
 

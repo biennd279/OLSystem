@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName
 )
 data class User(
     @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "user_id")
     @SerializedName("id")
     var id: Int = 0,
 

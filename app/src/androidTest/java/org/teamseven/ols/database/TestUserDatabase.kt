@@ -9,8 +9,8 @@ import okio.IOException
 import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
-import org.teamseven.ols.dao.AppDatabase
-import org.teamseven.ols.dao.UserDao
+import org.teamseven.ols.db.AppDatabase
+import org.teamseven.ols.db.UserDao
 import org.teamseven.ols.entities.User
 
 @RunWith(AndroidJUnit4ClassRunner::class)
