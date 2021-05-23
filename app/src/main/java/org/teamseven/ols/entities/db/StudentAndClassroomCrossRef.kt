@@ -2,6 +2,8 @@ package org.teamseven.ols.entities.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import org.teamseven.ols.entities.Classroom
+import org.teamseven.ols.entities.User
 
 @Entity(
     primaryKeys = ["user_id", "classroom_id"],
@@ -12,4 +14,6 @@ data class StudentAndClassroomCrossRef(
 
     @ColumnInfo(name = "classroom_id")
     val classroomId: Int
-)
+) {
+    constructor(student: User, classroom: Classroom): this(student.id, classroom.id)
+}
