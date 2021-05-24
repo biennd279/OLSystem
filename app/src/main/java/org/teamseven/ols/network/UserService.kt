@@ -4,12 +4,14 @@ import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.teamseven.ols.entities.User
+import org.teamseven.ols.entities.requests.UpdatePasswordRequest
 import org.teamseven.ols.entities.responses.LoginResponse
 import org.teamseven.ols.utils.Constants
 import org.teamseven.ols.utils.DataConverterFactory
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -18,7 +20,9 @@ interface UserService {
     suspend fun getProfile(): Response<User>
 
     @POST("${Constants.USER_URL}/password")
-    suspend fun updatePassword(): Response<Void>
+    suspend fun updatePassword(
+        @Body updatePasswordRequest: UpdatePasswordRequest
+    ): Response<Void>
 
     @GET("${Constants.USER_URL}/validate")
     suspend fun refreshToken(): Response<LoginResponse>

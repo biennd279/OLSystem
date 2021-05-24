@@ -8,4 +8,6 @@ object Constants {
     const val USER_URL = "user"
     const val LOGIN_URL = "auth/login"
     const val CLASSROOM_URL = "classroom"
+
+    const val TIME_EXPIRE = 86400L
 }
