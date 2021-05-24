@@ -3,8 +3,6 @@ package org.teamseven.ols.network
 import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.ClassroomSetting
 import org.teamseven.ols.entities.User
@@ -13,71 +11,76 @@ import org.teamseven.ols.entities.responses.AllClassroomsResponse
 import org.teamseven.ols.utils.Constants
 import org.teamseven.ols.utils.DataConverterFactory
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface ClassroomService {
     @GET(Constants.CLASSROOM_URL)
-    fun fetchAllClassrooms(): Call<AllClassroomsResponse>
+    suspend fun fetchAllClassrooms(): Response<AllClassroomsResponse>
 
     @POST(Constants.CLASSROOM_URL)
-    fun createClassroom(
+    suspend fun createClassroom(
         @Body classroomInfoRequest: ClassroomInfoRequest
-    ) : Call<Classroom>
+    ): Response<Classroom>
 
     @GET("${Constants.CLASSROOM_URL}/{class_id}")
-    fun fetchClassroom(
+    suspend fun fetchClassroom(
         @Path("class_id") classId: Int
-    ): Call<Classroom>
+    ): Response<Classroom>
 
     @GET("${Constants.CLASSROOM_URL}/{class_id}/owners")
-    fun fetchClassOwner() : Call<List<User>>
+    suspend fun fetchClassOwner(
+        @Path("class_id") classId: Int
+    ): Response<List<User>>
 
     @GET("${Constants.CLASSROOM_URL}/{class_id}/students")
-    fun fetchJoinedParticipant() : Call<List<User>>
+    suspend fun fetchJoinedParticipant(
+        @Path("class_id") classId: Int
+    ): Response<List<User>>
 
     @POST("${Constants.CLASSROOM_URL}/{class_id}/students/join")
-    fun joinClass(
+    suspend fun joinClass(
         @Path("class_id") classId: Int
-    ) : Call<Void>
+    ): Response<Void>
 
     @POST("${Constants.CLASSROOM_URL}/{class_id}/students/leave")
-    fun leaveClass(
+    suspend fun leaveClass(
         @Path("class_id") classId: Int
-    ) : Call<Void>
+    ): Response<Void>
 
     @POST("${Constants.CLASSROOM_URL}/join/{classroom_code}")
-    fun joinWithCode(
+    suspend fun joinWithCode(
         @Path("classroom_code") classroomCode: String
-    ) : Call<Void>
+    ): Response<Void>
 
     @DELETE("${Constants.CLASSROOM_URL}/{class_id}")
-    fun deleteClass(
+    suspend fun deleteClass(
         @Path("class_id") classId: Int
-    ) : Call<Void>
+    ): Response<Void>
 
     @PATCH("${Constants.CLASSROOM_URL}/{class_id}")
-    fun update(
+    suspend fun update(
         @Path("class_id") classId: Int,
         @Body classroomInfoRequest: ClassroomInfoRequest
-    ) : Call<Classroom>
+    ): Response<Classroom>
 
     @PATCH("${Constants.CLASSROOM_URL}/{class_id}/setting")
-    fun updateSetting(
+    suspend fun updateSetting(
         @Path("class_id") classId: Int,
         @Body classroomSetting: ClassroomSetting
-    ) : Call<Classroom>
+    ): Response<Classroom>
 
     companion object {
         fun create(token: String): ClassroomService {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(Interceptor { chain ->
-                    val request: Request =
+                    chain.proceed(
                         chain.request().newBuilder()
                             .addHeader("Authorization", "Bearer $token")
                             .build()
-                    chain.proceed(request)
+                    )
                 })
                 .build()
 
