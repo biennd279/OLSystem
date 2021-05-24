@@ -19,10 +19,10 @@ interface UserWithClassroomDao {
     fun getMemberClassroom(classroomId: Int): Flow<ClassroomWithUser>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOwnerClassroom(ownerAndClassroomCrossRef: OwnerAndClassroomCrossRef)
+    suspend fun insertOwnerClassroom(vararg ownerAndClassroomCrossRef: OwnerAndClassroomCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJoinedClassroom(studentAndClassroomCrossRef: StudentAndClassroomCrossRef)
+    suspend fun insertJoinedClassroom(vararg studentAndClassroomCrossRef: StudentAndClassroomCrossRef)
 
     @Delete
     suspend fun deleteOwner(ownerAndClassroomCrossRef: OwnerAndClassroomCrossRef)

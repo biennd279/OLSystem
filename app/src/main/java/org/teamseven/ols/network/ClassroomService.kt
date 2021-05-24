@@ -31,10 +31,14 @@ interface ClassroomService {
     ): Response<Classroom>
 
     @GET("${Constants.CLASSROOM_URL}/{class_id}/owners")
-    suspend fun fetchClassOwner(): Call<List<User>>
+    suspend fun fetchClassOwner(
+        @Path("class_id") classId: Int
+    ): Response<List<User>>
 
     @GET("${Constants.CLASSROOM_URL}/{class_id}/students")
-    suspend fun fetchJoinedParticipant(): Call<List<User>>
+    suspend fun fetchJoinedParticipant(
+        @Path("class_id") classId: Int
+    ): Response<List<User>>
 
     @POST("${Constants.CLASSROOM_URL}/{class_id}/students/join")
     suspend fun joinClass(
