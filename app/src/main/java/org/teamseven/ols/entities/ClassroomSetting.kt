@@ -16,7 +16,8 @@ data class ClassroomSetting(
     @SerializedName("message_with_children")
     var canMessageWithChildren: Int,
 ) {
+    //TODO fix type participant message
     enum class TypeParticipantMessage {
-        //TODO add enum type message
+        ON, OFF, ROLE_BASE;
     }
 }

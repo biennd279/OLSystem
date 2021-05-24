@@ -27,5 +27,5 @@ data class Classroom(
 
     @Embedded
     @SerializedName("setting")
-    var setting: ClassroomSetting?,
+    var setting: ClassroomSetting? = null,
 )
