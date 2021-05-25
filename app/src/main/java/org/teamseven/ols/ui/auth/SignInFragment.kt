@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -18,6 +17,7 @@ import org.teamseven.ols.entities.requests.LoginRequest
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.utils.SessionManager
 import org.teamseven.ols.viewmodel.SignInViewModel
+import timber.log.Timber
 
 @InternalCoroutinesApi
 class SignInFragment : Fragment() {
@@ -44,12 +44,6 @@ class SignInFragment : Fragment() {
             launchSignInFlow()
         }
 
-        binding.forgotPasswordTextview.setOnClickListener {
-            navController.navigate(
-                SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
-            )
-        }
-
         return binding.root
     }
 
@@ -60,23 +54,26 @@ class SignInFragment : Fragment() {
         )
 
         lifecycleScope.launch {
-            viewModel.signIn(loginRequest)
-                .collect {
-                    when (it.status) {
-                        Resource.Status.LOADING -> {}
-                        Resource.Status.SUCCESS -> {
-                            it.data?.let { it1 ->
-                                {
-                                    sessionManager.saveAuthToken(it1.token)
-                                    sessionManager.saveUserId(it1.user.id)
-                                }
-                            }
+            viewModel.signIn(loginRequest).collect {
+                when (it.status) {
+                    Resource.Status.LOADING -> {
 
-                            navController.navigate(R.id.homeFragment)
+                    }
+                    Resource.Status.SUCCESS -> {
+                        Timber.i("Log in success with ${it.data}")
+                        it.data?.let { data ->
+                            sessionManager.token = data.token
+                            sessionManager.userId = data.user.id
                         }
-                        Resource.Status.ERROR -> {}
+                        navController.navigate(
+                            R.id.homeFragment
+                        )
+                    }
+                    Resource.Status.ERROR -> {
+
                     }
                 }
+            }
         }
     }
 
