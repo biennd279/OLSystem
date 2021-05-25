@@ -14,8 +14,10 @@ import retrofit2.http.POST
 
 interface AuthService {
 
-    @POST(Constants.LOGIN_URL)
+    @POST("${Constants.USER_URL}/${Constants.LOGIN_URL}")
     suspend fun login(@Body login: LoginRequest): Response<LoginResponse>
+
+    //TODO add register request
 
     companion object {
         fun create(context: Context): AuthService {

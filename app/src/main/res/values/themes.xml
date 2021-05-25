@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.OLSystem" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/app_primary_blue</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -22,4 +22,11 @@
     <style name="Theme.OLSystem.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.OLSystem.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ForgotPassword" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/app_primary_blue</item>
+        <item name="colorPrimaryDark">@color/app_primary_dark_blue</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
 </resources>

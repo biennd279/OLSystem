@@ -1,27 +1,28 @@
 package org.teamseven.ols.db
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import org.teamseven.ols.entities.db.*
 
 @Dao
 interface UserWithClassroomDao {
     @Transaction
     @Query("select * from users where user_id = :userId")
-    suspend fun getAllClassroomOwn(userId: Int): OwnerWithClassroom
+    fun getAllClassroomOwn(userId: Int): Flow<OwnerWithClassroom>
 
     @Transaction
     @Query("select * from users where user_id = :userId")
-    suspend fun getAllClassJoined(userId: Int): StudentWithClassroom
+    fun getAllClassJoined(userId: Int): Flow<StudentWithClassroom>
 
     @Transaction
     @Query("select * from classrooms where classroom_id = :classroomId")
-    suspend fun getMemberClassroom(classroomId: Int): ClassroomWithUser
+    fun getMemberClassroom(classroomId: Int): Flow<ClassroomWithUser>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOwnerClassroom(ownerAndClassroomCrossRef: OwnerAndClassroomCrossRef)
+    suspend fun insertOwnerClassroom(vararg ownerAndClassroomCrossRef: OwnerAndClassroomCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJoinedClassroom(studentAndClassroomCrossRef: StudentAndClassroomCrossRef)
+    suspend fun insertJoinedClassroom(vararg studentAndClassroomCrossRef: StudentAndClassroomCrossRef)
 
     @Delete
     suspend fun deleteOwner(ownerAndClassroomCrossRef: OwnerAndClassroomCrossRef)
