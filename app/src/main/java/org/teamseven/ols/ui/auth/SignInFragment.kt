@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -44,12 +43,6 @@ class SignInFragment : Fragment() {
             launchSignInFlow()
         }
 
-        binding.forgotPasswordTextview.setOnClickListener {
-            navController.navigate(
-                SignInFragmentDirections.actionSignInFragmentToForgotPasswordFragment()
-            )
-        }
-
         return binding.root
     }
 
@@ -63,7 +56,8 @@ class SignInFragment : Fragment() {
             viewModel.signIn(loginRequest)
                 .collect {
                     when (it.status) {
-                        Resource.Status.LOADING -> {}
+                        Resource.Status.LOADING -> {
+                        }
                         Resource.Status.SUCCESS -> {
                             it.data?.let { it1 ->
                                 {
@@ -72,9 +66,12 @@ class SignInFragment : Fragment() {
                                 }
                             }
 
-                            navController.navigate(R.id.homeFragment)
+                            navController.navigate(
+                                R.id.homeFragment
+                            )
                         }
-                        Resource.Status.ERROR -> {}
+                        Resource.Status.ERROR -> {
+                        }
                     }
                 }
         }

@@ -10,22 +10,34 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentLoadingBinding
+import org.teamseven.ols.utils.SessionManager
 
 
 class LoadingFragment : Fragment() {
 
     private lateinit var binding: FragmentLoadingBinding
     private lateinit var navController: NavController
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_loading, container, false)
+        binding = FragmentLoadingBinding.inflate(inflater)
+
+        sessionManager = SessionManager(requireContext())
 
         navController = findNavController()
 
-        navController.navigate(LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment())
+        if (sessionManager.fetchAuthToken().isNullOrEmpty()) {
+            navController.navigate(
+                LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
+            )
+        } else {
+            navController.navigate(
+                LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
+            )
+        }
+
         return binding.root
     }
 
