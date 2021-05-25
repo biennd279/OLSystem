@@ -1,5 +1,6 @@
 package org.teamseven.ols.ui.auth
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentLoadingBinding
 import org.teamseven.ols.utils.SessionManager
+import timber.log.Timber
 
 
 class LoadingFragment : Fragment() {
@@ -20,7 +22,7 @@ class LoadingFragment : Fragment() {
     private lateinit var sessionManager: SessionManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = FragmentLoadingBinding.inflate(inflater)
 
@@ -28,7 +30,7 @@ class LoadingFragment : Fragment() {
 
         navController = findNavController()
 
-        if (sessionManager.fetchAuthToken().isNullOrEmpty()) {
+        if (sessionManager.token.isNullOrEmpty()) {
             navController.navigate(
                 LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             )
