@@ -92,7 +92,7 @@ class UserRepository @Inject constructor(
         }.asFlow()
     }
 
-    fun updatePassword(updatePasswordRequest: UpdatePasswordRequest): NetworkBoundResource<Unit, Void> {
+    fun updatePassword(updatePasswordRequest: UpdatePasswordRequest): Flow<Resource<Unit>> {
         return object : NetworkBoundResource<Unit, Void>() {
 
             override fun query(): Flow<Unit> {
@@ -111,6 +111,6 @@ class UserRepository @Inject constructor(
 
             override suspend fun saveCallResult(item: Unit) {}
 
-        }
+        }.asFlow()
     }
 }

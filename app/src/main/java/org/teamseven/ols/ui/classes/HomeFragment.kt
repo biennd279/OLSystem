@@ -15,14 +15,13 @@ import org.teamseven.ols.databinding.FragmentSignInBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentSignInBinding
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater)
 
         navController = findNavController()
 
