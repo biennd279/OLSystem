@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.OLSystem" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#5BADF8</item>
-        <item name="colorPrimaryVariant">#046DCC</item>
+        <item name="colorPrimary">@color/app_primary_blue</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -26,4 +26,5 @@
     <style name="Theme.OLSystem.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.OLSystem.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

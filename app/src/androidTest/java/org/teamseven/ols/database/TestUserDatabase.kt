@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okio.IOException
 import org.junit.*
 import org.junit.runner.RunWith
@@ -15,7 +12,6 @@ import org.junit.runners.MethodSorters
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.db.UserDao
 import org.teamseven.ols.entities.User
-import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -47,20 +43,19 @@ class TestUserDatabase {
     @Test
     fun firstTestAddUser() = runBlocking {
         userDao.insertAll(sampleUser)
-        Assert.assertTrue(listOf(sampleUser) == userDao.getAll().first())
+        Assert.assertTrue(listOf(sampleUser) == userDao.getAll())
     }
 
     @Test
     fun secondTestFindUser() = runBlocking {
         userDao.insertAll(sampleUser)
-        Assert.assertEquals(userDao.findById(1).first(), sampleUser)
+        Assert.assertEquals(userDao.findById(1), sampleUser)
     }
 
     @Test
-    fun secondTestRemoveUser(): Unit = runBlocking {
+    fun secondTestRemoveUser() = runBlocking {
         userDao.insertAll(sampleUser)
         userDao.delete(sampleUser)
-        val users = userDao.getAll().first()
-        Assert.assertEquals(0, users.size)
+        Assert.assertEquals(userDao.getAll().size, 0)
     }
 }

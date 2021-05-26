@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">OLSystem</string>
-    <!-- Strings used for fragments for navigation -->
+    <string name="action_settings">Settings</string>
+
+    <!-- Other Strings -->
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -123,4 +125,6 @@
         <item>May 01, 2021</item>
         <item>May 02, 2021</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

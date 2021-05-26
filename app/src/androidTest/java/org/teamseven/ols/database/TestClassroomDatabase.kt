@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okio.IOException
 import org.junit.*
@@ -54,21 +53,21 @@ class TestClassroomDatabase {
     @Test
     fun firstTestCreateClassroom() = runBlocking {
         classroomDao.insertAll(exampleClassroom)
-        Assert.assertTrue(listOf(exampleClassroom) == classroomDao.getAllClassroom().first())
+        Assert.assertTrue(listOf(exampleClassroom) == classroomDao.getAllClassroom())
     }
 
     @Test
     fun secondTestFindClassroom() = runBlocking {
         classroomDao.insertAll(exampleClassroom)
-        Assert.assertEquals(classroomDao.findById(classroomId = exampleClassroom.id).first(),
+        Assert.assertEquals(classroomDao.findById(classroomId = exampleClassroom.id),
             exampleClassroom)
     }
 
     @Test
     fun secondTestRemoveClasroom() = runBlocking {
         classroomDao.insertAll(exampleClassroom)
-        Assert.assertEquals(classroomDao.getAllClassroom().first().size, 1)
+        Assert.assertEquals(classroomDao.getAllClassroom().size, 1)
         classroomDao.delete(exampleClassroom)
-        Assert.assertEquals(classroomDao.getAllClassroom().first().size, 0)
+        Assert.assertEquals(classroomDao.getAllClassroom().size, 0)
     }
 }
