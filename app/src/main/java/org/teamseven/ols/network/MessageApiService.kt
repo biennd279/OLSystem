@@ -1,34 +1,27 @@
 package org.teamseven.ols.network
 
 import android.content.Context
-import okhttp3.Interceptor
+import androidx.room.Dao
 import okhttp3.OkHttpClient
-import org.teamseven.ols.entities.User
-import org.teamseven.ols.entities.requests.UpdatePasswordRequest
-import org.teamseven.ols.entities.responses.LoginResponse
+import org.teamseven.ols.entities.Conversation
+import org.teamseven.ols.entities.Message
 import org.teamseven.ols.utils.Constants
 import org.teamseven.ols.utils.DataConverterFactory
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 
-interface UserService {
-    @GET("${Constants.USER_URL}/profile")
-    suspend fun getProfile(): Response<User>
+@Dao
+interface MessageApiService {
+    @GET("${Constants.MESSAGE_URL}/{conversation_id}")
+    fun getAllMessage(conversation_id: Int): Response<List<Message>>
 
-    @POST("${Constants.USER_URL}/password")
-    suspend fun updatePassword(
-        @Body updatePasswordRequest: UpdatePasswordRequest
-    ): Response<Void>
-
-    @GET("${Constants.USER_URL}/validate")
-    suspend fun refreshToken(): Response<LoginResponse>
+    @GET("${Constants.USER_URL}/conversations")
+    fun getAllConversation(): Response<List<Conversation>>
 
     companion object {
-        fun create(token: String): UserService? {
+        fun create(token: String): MessageApiService? {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     chain.proceed(chain.request()
@@ -45,10 +38,10 @@ interface UserService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
-                .create(UserService::class.java)
+                .create(MessageApiService::class.java)
         }
 
-        fun create(context: Context): UserService? {
+        fun create(context: Context): MessageApiService? {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(context))
                 .build()
@@ -59,7 +52,7 @@ interface UserService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
-                .create(UserService::class.java)
+                .create(MessageApiService::class.java)
         }
     }
 }
