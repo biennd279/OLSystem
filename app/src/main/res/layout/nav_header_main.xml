@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/name_of_user"
+        android:text="name_of_user"
         android:textSize="24sp" />
 </LinearLayout>

@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import org.teamseven.ols.MainActivity
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentLoadingBinding
 import org.teamseven.ols.utils.SessionManager
@@ -25,22 +25,39 @@ class LoadingFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = FragmentLoadingBinding.inflate(inflater)
-
         sessionManager = SessionManager(requireContext())
-
         navController = findNavController()
 
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        /*
+        navController.navigate(
+            //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
+            LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
+        )
+        */
+
+        // check user signing state through SessionManager
         if (sessionManager.token.isNullOrEmpty()) {
+            // user didn't sign in yet
             navController.navigate(
                 LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             )
         } else {
+            // user signed in, loading data
+            // get user information
+
+
             navController.navigate(
                 LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
             )
         }
 
-        return binding.root
-    }
 
+    }
 }

@@ -14,6 +14,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <!-- Other styles -->
+
     <style name="Theme.OLSystem.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -28,5 +31,17 @@
         <item name="colorPrimaryDark">@color/app_primary_dark_blue</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+
+
+    <!-- Spinner style -->
+
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+
+    </style>
+
 
 </resources>

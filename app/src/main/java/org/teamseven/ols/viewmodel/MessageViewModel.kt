@@ -6,14 +6,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.room.Room
 import kotlinx.coroutines.launch
+import org.teamseven.ols.R
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.db.UserDao
 import org.teamseven.ols.entities.requests.LoginRequest
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.UserService
 import org.teamseven.ols.repositories.UserRepository
+import org.teamseven.ols.ui.classes.tab.MessageItem
+import java.util.*
 
-class SignInViewModel(context: Context) : ViewModel(){
+class MessageViewModel(context: Context) : ViewModel(){
 
     private lateinit var authService: AuthService
     private lateinit var userService: UserService
@@ -35,5 +38,24 @@ class SignInViewModel(context: Context) : ViewModel(){
     }
 
 
-    fun signIn(loginRequest: LoginRequest) = userRepository.login(loginRequest)
+    fun getListOfMessage() {
+        val avatar = Arrays.asList(R.array.avatar)
+        val username = Arrays.asList(R.array.username)
+        val status = Arrays.asList(R.array.status)
+        val time = Arrays.asList(R.array.time)
+
+        /*
+        val messageItems : List<MessageItem> = ListOf()
+
+        for (i in username.indices) {
+            messageItems.add(
+                MessageItem(
+                    username[i],
+                    status[i],
+                    avatar.getResourceId(i, 0),
+                    time[i]
+                )
+            )
+        }*/
+    }
 }

@@ -5,8 +5,9 @@
         android:title="@string/account_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item android:id="@+id/logout"
-        android:title="@string/logout_option"
+    <item
+        android:id="@+id/sign_out"
         android:orderInCategory="100"
+        android:title="@string/sign_out_option"
         app:showAsAction="never" />
 </menu>
