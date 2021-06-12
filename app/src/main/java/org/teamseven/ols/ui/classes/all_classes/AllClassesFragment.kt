@@ -11,8 +11,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentAllClassesBinding
-import org.teamseven.ols.ui.classes.`class`.ClassFragment
-import org.teamseven.ols.ui.classes.tab.MessageFragment
 
 
 class AllClassesFragment : Fragment() {
@@ -37,7 +35,7 @@ class AllClassesFragment : Fragment() {
         binding = FragmentAllClassesBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(requireContext(), childFragmentManager)
+        val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
         val viewPager: ViewPager = binding.allClassesViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.allClassesTabs
@@ -53,10 +51,13 @@ class AllClassesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /*
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navController.popBackStack(R.id.loadingFragment, true)
 
         }
+
+         */
 
     }
 
@@ -64,8 +65,6 @@ class AllClassesFragment : Fragment() {
         val TAG = AllClassesFragment::class.java.simpleName
 
         fun newInstance(classId: Int, className: String): AllClassesFragment {
-            Log.e("check_drawer_all_classes", "newInstance Called")
-
             val allClassesFragment = AllClassesFragment()
             val args = Bundle()
             args.putString("className", className)

@@ -1,22 +1,20 @@
-package org.teamseven.ols.ui.classes.tab
+package org.teamseven.ols.ui.classes.tab.message
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.teamseven.ols.R
-import org.teamseven.ols.databinding.FragmentMessageBinding
+import org.teamseven.ols.databinding.FragmentMessagesBinding
 
 
-class MessageFragment : Fragment() {
+class MessagesFragment : Fragment() {
 
-    private lateinit var binding: FragmentMessageBinding
+    private lateinit var binding: FragmentMessagesBinding
     private var mTab = 0
     private var mClassId = -1
     private var messageItems: MutableList<MessageItem> = mutableListOf()
@@ -32,7 +30,7 @@ class MessageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentMessageBinding.inflate(inflater)
+        binding = FragmentMessagesBinding.inflate(inflater)
 
         //recyclerView
         val recyclerView = binding.messageList
@@ -50,15 +48,15 @@ class MessageFragment : Fragment() {
     }
 
     companion object {
-        val TAG = MessageFragment::class.java.simpleName
+        val TAG = MessagesFragment::class.java.simpleName
 
-        fun newInstance(tab: Int, classId: Int): MessageFragment {
-            val messageFragment = MessageFragment()
+        fun newInstance(tab: Int, classId: Int): MessagesFragment {
+            val messagesFragment = MessagesFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
-            messageFragment.arguments = args
-            return messageFragment
+            messagesFragment.arguments = args
+            return messagesFragment
         }
     }
 

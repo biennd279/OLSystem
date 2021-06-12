@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.classes
+package org.teamseven.ols.ui.classes.tab.file
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.teamseven.ols.R
+import org.teamseven.ols.databinding.FragmentFilesBinding
+import org.teamseven.ols.databinding.FragmentMessagesBinding
+import org.teamseven.ols.ui.classes.tab.message.MessagesFragment
 
 class FilesFragment : Fragment() {
 
+    private lateinit var binding: FragmentFilesBinding
     private var filesItems: MutableList<FileItem> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +27,11 @@ class FilesFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_files, container, false)
-        var list = root.findViewById<RecyclerView>(R.id.file_list)
-        iniData()
+        binding = FragmentFilesBinding.inflate(inflater)
+
+        //recyclerView
+        val list = binding.fileList
+        getFileList()
 
         list.layoutManager = LinearLayoutManager(activity)
         list.adapter = activity?.let {
@@ -35,29 +40,31 @@ class FilesFragment : Fragment() {
                 toast.show()
             }
         }
-        return root
+        return binding.root
     }
 
     companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
+        val TAG = FilesFragment::class.java.simpleName
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): FilesFragment {
-            return FilesFragment()
+        fun newInstance(tab: Int, classId: Int): FilesFragment {
+            val filesFragment = FilesFragment()
+            val args = Bundle()
+            args.putInt("tab", tab)
+            args.putInt("classId", classId)
+            filesFragment.arguments = args
+            return filesFragment
         }
     }
 
-    private fun iniData(){
+    private fun getFileList(){
         val name_of_file = resources.getStringArray(R.array.name_of_file)
-        val type_of_file = resources.getStringArray(R.array.type_of_file)
+        //val type_of_file = resources.getStringArray(R.array.type_of_file)
+        val type_of_file = resources.obtainTypedArray(R.array.avatar)
         val upload_date = resources.getStringArray(R.array.upload_date)
 
         filesItems.clear()
@@ -65,7 +72,7 @@ class FilesFragment : Fragment() {
             filesItems.add(
                     FileItem(
                             name_of_file[i],
-                            type_of_file[i],
+                            type_of_file.getResourceId(i, 0),
                             upload_date[i]
                     )
             )

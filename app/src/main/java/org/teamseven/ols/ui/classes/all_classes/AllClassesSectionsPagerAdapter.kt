@@ -5,7 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.teamseven.ols.R
-import org.teamseven.ols.ui.classes.tab.MessageFragment
+import org.teamseven.ols.ui.classes.tab.file.FilesFragment
+import org.teamseven.ols.ui.classes.tab.message.MessagesFragment
 
 
 private val TAB_TITLES = arrayOf(
@@ -18,14 +19,20 @@ private val TAB_TITLES = arrayOf(
  * one of the sections/tabs/pages.
  */
 @Suppress("DEPRECATION")
-class AllClassesSectionsPagerAdapter(private val context: Context, fm: FragmentManager)
+class AllClassesSectionsPagerAdapter(private val context: Context, fm: FragmentManager, classId : Int)
     : FragmentPagerAdapter(fm) {
+
+    private var mClassId : Int = classId
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
 
-        return MessageFragment.newInstance(position + 1, -1)
+        return when(position) {
+            0 -> MessagesFragment.newInstance(position + 1, mClassId)
+            1 -> FilesFragment.newInstance(position + 1, mClassId)
+            else -> MessagesFragment.newInstance(position + 1, mClassId)
+        }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -33,7 +40,7 @@ class AllClassesSectionsPagerAdapter(private val context: Context, fm: FragmentM
     }
 
     override fun getCount(): Int {
-        // Show 4 total pages.
+        // Show 2 total pages.
         return 2
     }
 }

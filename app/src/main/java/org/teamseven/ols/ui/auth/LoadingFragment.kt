@@ -35,13 +35,13 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
+
         navController.navigate(
             //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
         )
-        */
 
+/*
         // check user signing state through SessionManager
         if (sessionManager.token.isNullOrEmpty()) {
             // user didn't sign in yet
@@ -58,6 +58,7 @@ class LoadingFragment : Fragment() {
             )
         }
 
-
+ */
     }
+
 }

@@ -37,9 +37,11 @@ class SignOptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.loadingFragment, true)
+            navController.popBackStack(R.id.loadingFragment, false)
         }
+        */
 
     }
 }

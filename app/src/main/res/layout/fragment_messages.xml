@@ -5,11 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.classes.PlaceholderFragment" >
+    tools:context=".ui.classes.tab.message.MessagesFragment" >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:contentDescription="@string/new_message"
+        android:src="@drawable/ic_new_message"
+        app:tint="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="32dp"
+        app:backgroundTint="@color/app_primary_dark_blue" />
 
 </RelativeLayout>

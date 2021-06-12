@@ -2,18 +2,13 @@ package org.teamseven.ols.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.room.Room
-import kotlinx.coroutines.launch
 import org.teamseven.ols.R
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.db.UserDao
-import org.teamseven.ols.entities.requests.LoginRequest
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.UserService
 import org.teamseven.ols.repositories.UserRepository
-import org.teamseven.ols.ui.classes.tab.MessageItem
 import java.util.*
 
 class MessageViewModel(context: Context) : ViewModel(){

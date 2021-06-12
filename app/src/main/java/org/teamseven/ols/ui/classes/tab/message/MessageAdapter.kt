@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.classes.tab
+package org.teamseven.ols.ui.classes.tab.message
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import org.teamseven.ols.R
 
 class MessageAdapter(
     private val context: Context,
-    private  val messageItems: List<MessageItem>,
+    private val messageItems: List<MessageItem>,
     private val listener: (MessageItem) -> Unit
 ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 

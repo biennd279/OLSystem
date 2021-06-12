@@ -10,7 +10,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentClassBinding
-import org.teamseven.ols.ui.classes.tab.MessageFragment
 
 
 class ClassFragment : Fragment() {
@@ -32,7 +31,7 @@ class ClassFragment : Fragment() {
         binding = FragmentClassBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = ClassSectionsPagerAdapter(requireContext(), childFragmentManager)
+        val sectionsPagerAdapter = ClassSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
         val viewPager: ViewPager = binding.classViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.classTabs
@@ -49,10 +48,12 @@ class ClassFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navController.popBackStack(R.id.loadingFragment, true)
 
         }
+        */
 
     }
 

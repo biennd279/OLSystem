@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,10 +51,10 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         navView = binding.navView
 
         setUpDrawerMenu()
+        //onNavigationItemSelected(navView.menu.getItem(0))
 
         navView.setupWithNavController(navController)
         navView.setNavigationItemSelectedListener(this)
-        //navView.setupWithNavController(navController)
 
 
         // Passing each menu ID as a set of Ids because each
@@ -70,27 +69,20 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         setupActionBarWithNavController(navController, appBarConfiguration)
 
 
-        /*
+
+
         //custom toolbar for destination
+
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.loadingFragment || destination.id == R.id.signOptionFragment
                 || destination.id == R.id.signInFragment || destination.id == R.id.signUpFragment
             ) {
                 supportActionBar?.hide()
-                //tabs.visibility = View.GONE
-
-            } /*else {
-                if (destination.id == R.id.homeFragment) {
-                    //tabs.removeTabAt(3)
-                    //tabs.removeTabAt(2)
-                } else {
-                    //toolbar.visibility = View.VISIBLE
-                    //drawerLayout.visibility = View.VISIBLE
-                }
-            }*/
-        }*/
-
-
+            } else {
+                supportActionBar?.show()
+            }
+        }
 
     }
 
@@ -156,23 +148,27 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val transaction = supportFragmentManager.beginTransaction()
+        val fragmentManagerTransaction = supportFragmentManager.beginTransaction()
 
         when(item.itemId) {
             R.id.item_all_classes -> {
-                transaction.replace(
+                fragmentManagerTransaction.replace(
                     R.id.home_frame_layout,
                     getClassFragment(-1, item.toString())
                 )
-                transaction.commit()
+                //transaction.setReorderingAllowed(true)
+                fragmentManagerTransaction.addToBackStack(null)
+                fragmentManagerTransaction.commit()
                 setAppBarTitle(item.toString())
             }
             else -> {
-                transaction.replace(
+                fragmentManagerTransaction.replace(
                     R.id.home_frame_layout,
                     getClassFragment(item.itemId, item.toString())
                 )
-                transaction.commit()
+                //transaction.setReorderingAllowed(true)
+                fragmentManagerTransaction.addToBackStack(null)
+                fragmentManagerTransaction.commit()
                 setAppBarTitle(item.toString())
             }
         }
@@ -185,16 +181,16 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
 
-    fun getClassFragment(classId : Int, className : String) : Fragment{
-        val classfragment: Fragment
+    private fun getClassFragment(classId : Int, className : String) : Fragment{
+        val classFragment: Fragment
 
         if (classId == -1) {
-            classfragment= AllClassesFragment.newInstance(classId, className)
+            classFragment= AllClassesFragment.newInstance(classId, className)
         } else {
-            classfragment = ClassFragment.newInstance(classId, className)
+            classFragment = ClassFragment.newInstance(classId, className)
         }
 
-        return classfragment
+        return classFragment
     }
 /*
     private fun replaceFragment(fragment: Fragment) {
@@ -204,7 +200,14 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 */
 
-    fun setAppBarTitle(title: String) {
+    private fun setAppBarTitle(title: String) {
         supportActionBar?.title = title
+    }
+
+    fun setUpDefault() {
+        //val navigationView : NavigationView = findViewById(R.id.nav_view)
+        val navigationView : NavigationView = binding.navView
+        onNavigationItemSelected(navigationView.menu.getItem(0))
+
     }
 }
