@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.classes.tab.file
+package org.teamseven.ols.ui.classes.tabs.file
 
 import android.content.Context
 import android.view.LayoutInflater

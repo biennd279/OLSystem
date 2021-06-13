@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.classes.tab.file
+package org.teamseven.ols.ui.classes.tabs.file
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentFilesBinding
-import org.teamseven.ols.databinding.FragmentMessagesBinding
-import org.teamseven.ols.ui.classes.tab.message.MessagesFragment
 
 class FilesFragment : Fragment() {
 

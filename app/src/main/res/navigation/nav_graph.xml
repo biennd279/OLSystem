@@ -45,12 +45,22 @@
         tools:layout="@layout/fragment_sign_in" />
 
 
-    <!-- test -->
+    <!-- in home fragment -->
 
     <fragment
         android:id="@+id/accountSettingFragment"
         android:name="org.teamseven.ols.ui.classes.AccountSettingFragment"
         android:label="@string/account_settings"
         tools:layout="@layout/fragment_account_setting" />
+    <fragment
+        android:id="@+id/createAClassFragment"
+        android:name="org.teamseven.ols.ui.classes.CreateAClassFragment"
+        android:label="Create a class"
+        tools:layout="@layout/fragment_create_a_class" />
+    <fragment
+        android:id="@+id/joinAClassFragment"
+        android:name="org.teamseven.ols.ui.classes.JoinAClassFragment"
+        android:label="Join a class"
+        tools:layout="@layout/fragment_join_a_class" />
 
 </navigation>

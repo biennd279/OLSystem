@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.teamseven.ols.R
-import org.teamseven.ols.ui.classes.tab.file.FilesFragment
-import org.teamseven.ols.ui.classes.tab.message.MessagesFragment
+import org.teamseven.ols.ui.classes.tabs.class_setting.ClassSettingFragment
+import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
+import org.teamseven.ols.ui.classes.tabs.message.MessagesFragment
 
 
 private val TAB_TITLES = arrayOf(
@@ -34,7 +35,7 @@ class ClassSectionsPagerAdapter(private val context: Context, fm: FragmentManage
             0 -> MessagesFragment.newInstance(position + 1, mClassId)
             1 -> FilesFragment.newInstance(position + 1, mClassId)
             2 -> FilesFragment.newInstance(position + 1, mClassId)
-            3 -> FilesFragment.newInstance(position + 1, mClassId)
+            3 -> ClassSettingFragment.newInstance(position + 1, mClassId)
             else -> MessagesFragment.newInstance(position + 1, mClassId)
         }
     }

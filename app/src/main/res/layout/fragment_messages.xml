@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.classes.tab.message.MessagesFragment" >
+    tools:context=".ui.classes.tabs.message.MessagesFragment" >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_list"

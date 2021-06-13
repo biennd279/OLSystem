@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.classes.tab.message
+package org.teamseven.ols.ui.classes.tabs.message
 
 import android.annotation.SuppressLint
 import android.os.Bundle

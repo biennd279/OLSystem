@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.teamseven.ols.R
-import org.teamseven.ols.ui.classes.tab.file.FilesFragment
-import org.teamseven.ols.ui.classes.tab.message.MessagesFragment
+import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
+import org.teamseven.ols.ui.classes.tabs.message.MessagesFragment
 
 
 private val TAB_TITLES = arrayOf(
