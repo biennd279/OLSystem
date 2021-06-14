@@ -16,21 +16,19 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter your class code" />
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_textfield_join_class_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="true">
+            android:hint="Class code"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_join_class_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Class code"
-                android:inputType="text" />
+                android:inputType="text"
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
