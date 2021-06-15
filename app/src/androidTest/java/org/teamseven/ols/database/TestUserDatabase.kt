@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okio.IOException
 import org.junit.*
@@ -56,6 +57,6 @@ class TestUserDatabase {
     fun secondTestRemoveUser() = runBlocking {
         userDao.insertAll(sampleUser)
         userDao.delete(sampleUser)
-        Assert.assertEquals(userDao.getAll().size, 0)
+        Assert.assertEquals(userDao.getAll().first().size, 0)
     }
 }

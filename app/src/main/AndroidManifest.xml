@@ -11,21 +11,9 @@
         android:roundIcon="@mipmap/logo_remind"
         android:supportsRtl="true"
         android:theme="@style/Theme.OLSystem">
-        <activity
-            android:name=".ui.login.ForgotPasswordActivity"
-            android:theme="@style/ForgotPassword">
 
-<!--            <meta-data-->
-<!--                android:name="android.support.PARENT_ACTIVITY"-->
-<!--                android:value=".ui.login.LoginActivity" />-->
-        </activity>
         <activity
-            android:name=".ui.login.GoToLoginActivity"
-            android:theme="@style/Theme.OLSystem.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.OLSystem.NoActionBar">
             <intent-filter>

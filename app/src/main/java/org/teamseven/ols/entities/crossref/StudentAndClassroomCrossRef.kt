@@ -1,4 +1,4 @@
-package org.teamseven.ols.entities.db
+package org.teamseven.ols.entities.crossref
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

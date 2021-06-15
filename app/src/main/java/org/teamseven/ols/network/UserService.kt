@@ -30,13 +30,13 @@ interface UserService {
     companion object {
         fun create(token: String): UserService? {
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(Interceptor { chain ->
-                    chain.proceed(
-                        chain.request().newBuilder()
-                            .addHeader("Authorization", "Bearer $token")
-                            .build()
+                .addInterceptor { chain ->
+                    chain.proceed(chain.request()
+                        .newBuilder()
+                        .addHeader("Authorization", "Bearer $token")
+                        .build()
                     )
-                })
+                }
                 .build()
 
             return Retrofit.Builder()

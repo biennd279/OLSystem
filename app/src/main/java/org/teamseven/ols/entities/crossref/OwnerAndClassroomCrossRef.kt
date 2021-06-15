@@ -1,9 +1,7 @@
-package org.teamseven.ols.entities.db
+package org.teamseven.ols.entities.crossref
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
 
