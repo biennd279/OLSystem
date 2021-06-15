@@ -16,8 +16,8 @@ data class Message(
     @SerializedName("id")
     val id: Int,
 
-    @SerializedName("user_id")
-    @ColumnInfo(name = "sender_id")
+    @SerializedName("sender_id")
+    @ColumnInfo(name = "user_id")
     val senderId: Int,
 
     val message: String?,

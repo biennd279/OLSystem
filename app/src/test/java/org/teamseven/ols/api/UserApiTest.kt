@@ -7,6 +7,5 @@ class UserApiTest {
 
     @Before
     fun setup() = runBlocking {
-        //TODO
     }
 }

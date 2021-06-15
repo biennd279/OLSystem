@@ -16,8 +16,8 @@ import org.teamseven.ols.db.UserWithClassroomDao
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.ClassroomSetting
 import org.teamseven.ols.entities.User
-import org.teamseven.ols.entities.db.OwnerAndClassroomCrossRef
-import org.teamseven.ols.entities.db.StudentAndClassroomCrossRef
+import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
+import org.teamseven.ols.entities.crossref.StudentAndClassroomCrossRef
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

@@ -5,6 +5,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
+import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
 
 data class OwnerWithClassroom(
     @Embedded

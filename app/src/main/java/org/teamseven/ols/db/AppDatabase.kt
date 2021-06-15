@@ -10,7 +10,7 @@ import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.Conversation
 import org.teamseven.ols.entities.Message
 import org.teamseven.ols.entities.User
-import org.teamseven.ols.entities.db.*
+import org.teamseven.ols.entities.crossref.*
 
 @Database(
     entities = [
@@ -18,13 +18,16 @@ import org.teamseven.ols.entities.db.*
         Classroom::class,
         Message::class,
         Conversation::class,
-        OwnerAndClassroomCrossRef::class,
-        StudentAndClassroomCrossRef::class,
-        CreatorAndConversationCrossRef::class,
         ClassroomAndConversationCrossRef::class,
-        SenderAndMessageCrossRef::class
+        ConversationAndMemberCrossRef::class,
+        ConversationAndMessageCrossRef::class,
+        CreatorAndConversationCrossRef::class,
+        OwnerAndClassroomCrossRef::class,
+        SenderAndMessageCrossRef::class,
+        StudentAndClassroomCrossRef::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(
     DateConverter::class
@@ -33,4 +36,12 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun classroomDao(): ClassroomDao
     abstract fun userWithClassroomDao(): UserWithClassroomDao
+    abstract fun messageDao(): MessageDao
+    abstract fun conversationDao(): ConversationDao
+
+    companion object {
+        fun create(context: Context): AppDatabase {
+            return Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+        }
+    }
 }

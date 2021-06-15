@@ -2,7 +2,11 @@ package org.teamseven.ols.db
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import org.teamseven.ols.entities.db.*
+import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
+import org.teamseven.ols.entities.crossref.StudentAndClassroomCrossRef
+import org.teamseven.ols.entities.db.ClassroomWithUser
+import org.teamseven.ols.entities.db.OwnerWithClassroom
+import org.teamseven.ols.entities.db.StudentWithClassroom
 
 @Dao
 interface UserWithClassroomDao {

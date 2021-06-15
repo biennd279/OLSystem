@@ -5,6 +5,8 @@ import androidx.room.Junction
 import androidx.room.Relation
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
+import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
+import org.teamseven.ols.entities.crossref.StudentAndClassroomCrossRef
 
 
 data class ClassroomWithUser(

@@ -6,8 +6,8 @@ import org.teamseven.ols.db.UserDao
 import org.teamseven.ols.db.UserWithClassroomDao
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
-import org.teamseven.ols.entities.db.OwnerAndClassroomCrossRef
-import org.teamseven.ols.entities.db.StudentAndClassroomCrossRef
+import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
+import org.teamseven.ols.entities.crossref.StudentAndClassroomCrossRef
 import org.teamseven.ols.entities.responses.AllClassroomsResponse
 import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.utils.Resource

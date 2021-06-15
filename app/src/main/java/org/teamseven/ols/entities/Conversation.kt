@@ -17,7 +17,7 @@ data class Conversation(
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
-    val name: String,
+    val name: String?,
 
     @ColumnInfo(name = "user_id")
     @SerializedName("creator_id")
