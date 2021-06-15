@@ -44,13 +44,13 @@ class TestUserDatabase {
     @Test
     fun firstTestAddUser() = runBlocking {
         userDao.insertAll(sampleUser)
-        Assert.assertTrue(listOf(sampleUser) == userDao.getAll().first())
+        Assert.assertTrue(listOf(sampleUser) == userDao.getAll())
     }
 
     @Test
     fun secondTestFindUser() = runBlocking {
         userDao.insertAll(sampleUser)
-        Assert.assertEquals(userDao.findById(1).first(), sampleUser)
+        Assert.assertEquals(userDao.findById(1), sampleUser)
     }
 
     @Test

@@ -34,9 +34,6 @@ class SignInViewModel(context: Context) : ViewModel(){
         )
     }
 
-    enum class AuthenticationState {
-        AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
-    }
 
     fun signIn(loginRequest: LoginRequest) = userRepository.login(loginRequest)
 }

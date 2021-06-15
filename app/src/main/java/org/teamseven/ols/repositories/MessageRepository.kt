@@ -251,12 +251,13 @@ class MessageRepository @Inject constructor(
                             firstMessage.id
                         )
                     )
-
                     return@map Resource.success(newConversation)
                 } else {
                     return@map Resource.error(null, "New conversation null")
                 }
-
+            }
+            .onStart {
+                emit(Resource.loading(null))
             }
     }
 

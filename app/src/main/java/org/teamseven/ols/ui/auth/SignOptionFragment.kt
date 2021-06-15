@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import org.teamseven.ols.R
@@ -15,17 +14,21 @@ import org.teamseven.ols.databinding.FragmentSignOptionBinding
 
 class SignOptionFragment : Fragment() {
     private lateinit var navController: NavController
+    private lateinit var binding: FragmentSignOptionBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentSignOptionBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_sign_option, container, false)
+        binding = FragmentSignOptionBinding.inflate(inflater)
 
         navController = findNavController()
 
-        binding.enterEmailGoToLogin.setOnClickListener {
+        binding.signInOption.setOnClickListener {
             navController.navigate(SignOptionFragmentDirections.actionSignOptionFragmentToSignInFragment())
+        }
+
+        binding.signUpOption.setOnClickListener {
+            navController.navigate(SignOptionFragmentDirections.actionSignOptionFragmentToSignUpFragment())
         }
 
         return binding.root
@@ -34,9 +37,11 @@ class SignOptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navController.popBackStack(R.id.loadingFragment, false)
         }
+        */
 
     }
 }
