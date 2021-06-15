@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.OLSystem" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.OLSystem" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/app_primary_blue</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -22,16 +22,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.OLSystem.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.OLSystem.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
     <style name="ForgotPassword" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/app_primary_blue</item>
-        <item name="colorPrimaryDark">@color/app_primary_dark_blue</item>
+        <item name="colorPrimary">#5BADF8</item>
+        <item name="colorPrimaryDark">#046DCC</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
 
+    <style name="Theme.OLSystem.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.OLSystem.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Spinner style -->
 

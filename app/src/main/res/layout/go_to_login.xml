@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_img_login"
+    >
+
+    <ImageView
+        android:id="@+id/view_go_to_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/back_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/logo_app_go_to_login"
+        android:layout_width="66dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="104dp"
+        android:src="@mipmap/logo_remind"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/todo" />
+
+    <TextView
+        android:id="@+id/remind"
+        android:layout_width="139dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="114dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/cambriaz"
+        android:text="@string/remind"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toEndOf="@+id/logo_app_go_to_login"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/edittext_go_to_login"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/cambria"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:text="@string/reach_students_and_parents_where_they_are"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remind" />
+
+    <TextView
+        android:id="@+id/enterEmail_go_to_login"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_textview"
+        android:paddingStart="20dp"
+
+        android:paddingTop="12dp"
+        android:text="@string/enter_your_email_or_phone"
+        android:textColor="#9A9797"
+        android:textSize="22sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/edittext_go_to_login"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/edittext_go_to_login"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_go_to_login" />
+
+    <TextView
+        android:id="@+id/google_login_go_to_login"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_textview"
+        android:paddingStart="70dp"
+        android:paddingTop="12dp"
+        android:text="@string/sign_with_google"
+        android:textColor="#9A9797"
+        android:textSize="22sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/or_textview_go_to_login"
+        app:layout_constraintStart_toStartOf="@+id/or_textview_go_to_login"
+        app:layout_constraintTop_toBottomOf="@+id/or_textview_go_to_login" />
+
+    <TextView
+        android:id="@+id/or_textview_go_to_login"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/or"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/enterEmail_go_to_login"
+        app:layout_constraintStart_toStartOf="@+id/enterEmail_go_to_login"
+        app:layout_constraintTop_toBottomOf="@+id/enterEmail_go_to_login" />
+
+    <ImageView
+        android:id="@+id/logo_google_go_to_login"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@mipmap/logo_google"
+        app:layout_constraintBottom_toBottomOf="@+id/google_login_go_to_login"
+        app:layout_constraintStart_toStartOf="@+id/google_login_go_to_login"
+        android:contentDescription="@string/todo" />
+</androidx.constraintlayout.widget.ConstraintLayout>
