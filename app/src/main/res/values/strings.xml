@@ -42,6 +42,7 @@
     <string name="new_message">New message</string>
     <string name="account_settings">Account settings</string>
     <string name="logout_option">Logout</string>
+    <string name="new_file">New file</string>
 
     <string name="create_new_account">Create New Account</string>
     <string name="sign_in">SIGN IN</string>
@@ -167,5 +168,6 @@
     <string name="classes_joined">Classes Joined</string>
     <string name="home">Home</string>
     <string name="all_classes">All Classes</string>
+    <string name="new_member">New menber</string>
 
 </resources>
