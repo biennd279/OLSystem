@@ -27,10 +27,8 @@ class SignInFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var sessionManager: SessionManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = FragmentSignInBinding.inflate(inflater)
 
@@ -40,7 +38,7 @@ class SignInFragment : Fragment() {
 
         sessionManager = SessionManager(requireContext())
 
-        binding.buttonLogin.setOnClickListener {
+        binding.buttonSignin.setOnClickListener {
             launchSignInFlow()
         }
 
@@ -49,7 +47,7 @@ class SignInFragment : Fragment() {
 
     private fun launchSignInFlow() {
         val loginRequest = LoginRequest(
-            binding.username.text.toString(),
+            binding.email.text.toString(),
             binding.password.text.toString()
         )
 

@@ -14,17 +14,33 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <!-- Other styles -->
+
     <style name="Theme.OLSystem.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="ForgotPassword" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">#5BADF8</item>
         <item name="colorPrimaryDark">#046DCC</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+
     <style name="Theme.OLSystem.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.OLSystem.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Spinner style -->
+
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+
+    </style>
+
 
 </resources>

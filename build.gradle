@@ -14,6 +14,7 @@ buildscript {
         lifecycle_version = "2.3.1"
         jwtdecode_version = "2.0.0"
         dagger_version = "2.33"
+        recyclerview_version = "1.2.1"
     }
     repositories {
         google()

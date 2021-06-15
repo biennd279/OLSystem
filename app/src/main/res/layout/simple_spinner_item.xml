@@ -1,0 +1,12 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="@style/spinnerItemStyle"
+    android:maxLines="1"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:ellipsize="marquee"
+    android:textSize="22sp"
+    android:paddingStart="20dp"
+    android:paddingEnd="0dp"
+    android:paddingTop="12dp"
+    android:singleLine="true"/>
