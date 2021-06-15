@@ -66,11 +66,4 @@
         android:layout_marginTop="@dimen/fab_margin"
         android:text="Save" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/red"
-        android:text="Archive class" />
-
 </LinearLayout>
