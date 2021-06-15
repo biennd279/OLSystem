@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/fab_margin"
     android:layout_marginHorizontal="@dimen/fab_margin"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.classes.tabs.class_setting.ClassSettingFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,21 +14,19 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Class name" />
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_textfield_setting_class_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="true">
+            android:hint="@string/class_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_setting_class_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Class name"
-                android:inputType="text" />
+                android:inputType="text"
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -36,32 +35,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Class code" />
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_textfield_setting_class_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="true">
+            android:hint="@string/class_code"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_setting_class_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Class code"
-                android:inputType="text" />
+                android:inputType="text"
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_setting_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/fab_margin"
-        android:text="Save"/>
+        android:text="@string/save"/>
 
     <Button
+        android:id="@+id/btn_setting_archive_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

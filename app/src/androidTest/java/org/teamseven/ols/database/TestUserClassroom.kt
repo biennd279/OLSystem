@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.junit.runner.RunWith
@@ -84,7 +83,7 @@ class TestUserClassroom {
             )
         )
 
-        val studentWithClassroom = userWithClassroomDao.getAllClassJoined(sampleStudent.id).first()
+        val studentWithClassroom = userWithClassroomDao.getAllClassJoined(sampleStudent.id)
         val student = studentWithClassroom.student
         val classrooms = studentWithClassroom.classrooms
 
@@ -104,7 +103,7 @@ class TestUserClassroom {
             )
         )
 
-        val ownerWithClassroom = userWithClassroomDao.getAllClassroomOwn(sampleUser.id).first()
+        val ownerWithClassroom = userWithClassroomDao.getAllClassroomOwn(sampleUser.id)
         val classrooms = ownerWithClassroom.classrooms
         val owner = ownerWithClassroom.owner
 
@@ -132,7 +131,7 @@ class TestUserClassroom {
             )
         )
 
-        val classroomWithUser = userWithClassroomDao.getMemberClassroom(sampleClassroom.id).first()
+        val classroomWithUser = userWithClassroomDao.getMemberClassroom(sampleClassroom.id)
         val classroom = classroomWithUser.classroom
         val students = classroomWithUser.students
         val owner = classroomWithUser.owner

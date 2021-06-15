@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.course_content.PlaceholderFragment" >
+    tools:context=".ui.classes.tabs.message.MessagesFragment" >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_list"
@@ -21,8 +21,9 @@
         android:src="@drawable/ic_new_message"
         app:tint="@color/white"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="32dp"
-        app:backgroundTint="@color/design_default_color_primary" />
+        app:backgroundTint="@color/app_primary_dark_blue" />
+
 </RelativeLayout>

@@ -126,13 +126,6 @@ class ClassroomApiTest {
     }
 
     @Test
-    fun secondTestStudents() = runBlocking {
-        val response = classroomService.fetchJoinedParticipant(1)
-        Assert.assertNotNull(response)
-        Assert.assertNotEquals(0, response.body()!!.size)
-    }
-
-    @Test
     fun thirdTestDeleteClass() = runBlocking {
         val response = classroomService.deleteClass(lastClassroom.id)
         Assert.assertEquals(202, response.code())

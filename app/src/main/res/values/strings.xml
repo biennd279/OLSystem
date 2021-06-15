@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
     <string name="app_name">OLSystem</string>
-    <!-- Strings used for fragments for navigation -->
+    <string name="action_settings">Settings</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Other Strings -->
+
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -29,10 +31,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="class1">Class 1</string>
-    <string name="class2">Class 2</string>
-    <string name="class3">Class 3</string>
-    <string name="class4">Class 4</string>
 
     //tab
     <string name="tab_text_1">Messages</string>
@@ -42,9 +40,35 @@
     <string name="menu_create_class">Create a class</string>
     <string name="menu_join_class">Join a class</string>
     <string name="new_message">New message</string>
-    <string name="name_of_user">Pham Thi Dan</string>
     <string name="account_settings">Account settings</string>
     <string name="logout_option">Logout</string>
+
+    <string name="create_new_account">Create New Account</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="app_logo">OLSystem\'s Logo</string>
+    <string name="background_transform">background transformation</string>
+    <string name="name">Name</string>
+    <string name="role">Role</string>
+    <string name="action_sign_up_short">Sign up</string>
+    <string name="sign_out_option">Sign out</string>
+
+
+    <!-- String array -->
+    <string-array name="list_of_role">
+        <item>Teacher</item>
+        <item>Parent</item>
+        <item>Student</item>
+    </string-array>
+
+
+    <!-- Test data -->
+
+    <string name="class1">Class 1</string>
+    <string name="class2">Class 2</string>
+    <string name="class3">Class 3</string>
+    <string name="class4">Class 4</string>
 
     //message
     <string-array name="avatar">
@@ -123,4 +147,33 @@
         <item>May 01, 2021</item>
         <item>May 02, 2021</item>
     </string-array>
+
+
+    <string-array name="classes_owned">
+        <item>justAClass</item>
+        <item>anotherClass</item>
+    </string-array>
+
+    <string-array name="classes_joined">
+        <item>funnyClass</item>
+        <item>checkClass</item>
+        <item>Space Class</item>
+    </string-array>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="classes_owned">Classes Owned</string>
+    <string name="classes_joined">Classes Joined</string>
+    <string name="home">Home</string>
+    <string name="all_classes">All Classes</string>
+    <string name="save">Save</string>
+    <string name="share_this_code">Share this code</string>
+    <string name="share_code_information">This is your class code, so anyone who has it can join your class instantly.</string>
+    <string name="copy">Copy</string>
+    <string name="new_file">New file</string>
+    <string name="new_member">New member</string>
+    <string name="class_name">Class name</string>
+    <string name="class_code">Class code</string>
+
 </resources>
