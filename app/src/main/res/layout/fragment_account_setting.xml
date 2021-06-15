@@ -15,21 +15,19 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="First name" />
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_textfield_setting_first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="true">
+            android:hint="First name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_setting_first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First name"
-                android:inputType="text" />
+                android:inputType="text"
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -38,21 +36,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last name" />
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlined_textfield_setting_last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="true">
+            android:hint="Last name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_setting_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Last name"
-                android:inputType="text" />
+                android:inputType="text"
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -69,12 +65,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/fab_margin"
         android:text="Save" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/red"
-        android:text="Archive class" />
 
 </LinearLayout>
