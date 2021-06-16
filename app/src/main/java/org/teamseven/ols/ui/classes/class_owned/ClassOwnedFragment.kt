@@ -29,7 +29,11 @@ class ClassOwnedFragment : Fragment() {
         binding = FragmentClassBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = ClassOwnedSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
+        val sectionsPagerAdapter = ClassOwnedSectionsPagerAdapter(
+            requireContext(),
+            childFragmentManager,
+            mClassId
+        )
         val viewPager: ViewPager = binding.classViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.classTabs
@@ -56,8 +60,6 @@ class ClassOwnedFragment : Fragment() {
     }
 
     companion object {
-        val TAG = ClassOwnedFragment::class.java.simpleName
-
         fun newInstance(classId: Int, className: String): ClassOwnedFragment {
             val classFragment = ClassOwnedFragment()
             val args = Bundle()

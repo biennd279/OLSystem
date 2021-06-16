@@ -23,7 +23,7 @@ class ClassroomRepository @Inject constructor(
     fun getClassOwner(userId: Int): Flow<Resource<List<Classroom>>> {
         return object: NetworkBoundResource<List<Classroom>, AllClassroomsResponse>() {
             override fun shouldFetch(data: List<Classroom>?): Boolean {
-                return data == null || data.isEmpty()
+                return data.isNullOrEmpty()
             }
 
             override fun query(): Flow<List<Classroom>> {
@@ -58,7 +58,7 @@ class ClassroomRepository @Inject constructor(
     fun getClassJoined(userId: Int): Flow<Resource<List<Classroom>>> {
         return object: NetworkBoundResource<List<Classroom>, AllClassroomsResponse>() {
             override fun shouldFetch(data: List<Classroom>?): Boolean {
-                return data == null || data.isEmpty()
+                return data.isNullOrEmpty()
             }
 
             override fun query(): Flow<List<Classroom>> {

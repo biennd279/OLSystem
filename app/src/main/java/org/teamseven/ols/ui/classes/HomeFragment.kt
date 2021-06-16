@@ -43,8 +43,6 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        Log.e("check_drawer_setup", "onStart called")
-
         //I just setup the current class fragment, the current tab is not
 
         val mainActivity : MainActivity = activity as MainActivity

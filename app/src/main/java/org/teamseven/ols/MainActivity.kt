@@ -18,9 +18,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import org.teamseven.ols.databinding.ActivityMainBinding
+import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
 import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
 import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
+import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.viewmodel.ClassroomViewModel
 import timber.log.Timber
 
 
@@ -33,10 +36,11 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
 
-    //this is for now, remove latter
-    //create a classData to store data or sth you prefer
-    private lateinit var classesOwned: List<String>
-    private lateinit var classesJoined: List<String>
+    private lateinit var viewModel: ClassroomViewModel
+
+    private var _classOwned: List<Classroom> = listOf()
+
+    private var _classJoined: List<Classroom> = listOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,8 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = ClassroomViewModel(applicationContext)
 
         navController = findNavController(R.id.nav_host_fragment_content_main)
 
@@ -85,40 +91,19 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
     private fun setUpDrawerMenu() {
-        val classesOwnedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_owned)
-        val classesOwnedSubMenu: SubMenu = classesOwnedGroupItem.subMenu
 
-        classesOwned = resources.getStringArray(R.array.classes_owned).toList()
-
-
-        //get all owned classes -> array -> for
-        //use class_id (id) for item_id (Menu.NONE for present)
-        for (i in classesOwned.indices) {
-            classesOwnedSubMenu.add(R.id.classes_owned, i + 1, 0, classesOwned[i]).setIcon(R.drawable.ic_action_class)
-        }
-
-        val classesJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
-        val classesJoinedSubMenu: SubMenu = classesJoinedGroupItem.subMenu
-
-        classesJoined = resources.getStringArray(R.array.classes_joined).toList()
-
-        //get all joined classes -> array -> for
-        for (i in classesJoined.indices) {
-            classesJoinedSubMenu.add(R.id.classes_joined, i + 1, 0, classesJoined[i]).setIcon(R.drawable.ic_action_class)
-        }
-
+        showClassroomJoinedList()
+        showClassroomOwnerList()
 
         drawerLayout.closeDrawers()
 
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.overflow_home_menu, menu)
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
@@ -141,11 +126,9 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         }
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -155,7 +138,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             super.onBackPressed()
         }
     }
-
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
@@ -195,26 +177,22 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         return true
     }
 
+    private fun getClassFragment(classId: Int, className: String): Fragment {
 
-    private fun getClassFragment(classId : Int, className : String) : Fragment{
-        val classFragment: Fragment
-
-        when (classId) {
+        return when (classId) {
             -1 -> {
-                classFragment = AllClassesFragment.newInstance(classId, className)
+                AllClassesFragment.newInstance(classId, className)
             }
             else -> {
-                if (className in classesOwned) {
-                    classFragment = ClassOwnedFragment.newInstance(classId, className)
-                }
-                else {
-                    classFragment = ClassJoinedFragment.newInstance(classId, className)
+                Timber.i(_classJoined.toString())
+                if (className in _classJoined.map { it.name }) {
+                    ClassOwnedFragment.newInstance(classId, className)
+                } else {
+                    ClassJoinedFragment.newInstance(classId, className)
                 }
 
             }
         }
-
-        return classFragment
     }
 
     private fun replaceClassFragment(classFragment: Fragment) {
@@ -235,16 +213,84 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     //for default all classes at first time and other class when navigation
     fun setUpCurrentClass() {
         val navigationView: NavigationView = binding.navView
-        val itemClass: MenuItem
 
-        if (currentClassId == -1) {
-            itemClass = navigationView.menu.findItem(R.id.item_all_classes)
+        val itemClass: MenuItem = if (currentClassId == -1) {
+            navigationView.menu.findItem(R.id.item_all_classes)
         } else {
-            itemClass = navigationView.menu.findItem(currentClassId)
+            navigationView.menu.findItem(currentClassId)
         }
 
         replaceClassFragment(getClassFragment(currentClassId, itemClass.toString()))
         setAppBarTitle(itemClass.toString())
 
+    }
+
+    private fun showClassroomOwnerList() {
+        val classesOwnedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_owned)
+        val classesOwnedSubMenu: SubMenu = classesOwnedGroupItem.subMenu
+
+
+        viewModel.classOwner.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS, Resource.Status.LOADING -> {
+
+                    if (it.data.isNullOrEmpty()) {
+                        return@observe
+                    }
+
+                    _classOwned = it.data
+
+                    _classOwned.map { classroom -> classroom.name }
+                        .withIndex()
+                        .forEach { (index, value) ->
+                            classesOwnedSubMenu.add(
+                                R.id.classes_owned,
+                                index + 1,
+                                0,
+                                value
+                            )
+                                .setIcon(R.drawable.ic_action_class)
+                        }
+
+                }
+
+                Resource.Status.ERROR -> {
+                    Timber.i("Load error")
+                }
+            }
+        }
+    }
+
+    private fun showClassroomJoinedList() {
+        val classesJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
+        val classesJoinedSubMenu: SubMenu = classesJoinedGroupItem.subMenu
+
+        viewModel.classJoined.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS, Resource.Status.LOADING -> {
+                    if (it.data.isNullOrEmpty()) {
+                        return@observe
+                    }
+
+                    _classJoined = it.data
+
+                    _classJoined.map { classroom -> classroom.name }
+                        .withIndex()
+                        .forEach { (index, value) ->
+                            classesJoinedSubMenu.add(
+                                R.id.classes_owned,
+                                index + 1,
+                                0,
+                                value
+                            )
+                                .setIcon(R.drawable.ic_action_class)
+                        }
+                }
+
+                Resource.Status.ERROR -> {
+                    Timber.i("Load error ${it.message}")
+                }
+            }
+        }
     }
 }
