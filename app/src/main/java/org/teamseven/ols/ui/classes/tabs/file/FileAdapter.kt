@@ -19,15 +19,15 @@ class FileAdapter(
 
     //ViewHolder
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val name_of_file = view.findViewById<TextView>(R.id.name_of_file)
-        val type_of_file = view.findViewById<ImageView>(R.id.type_of_file)
-        val upload_date = view.findViewById<TextView>(R.id.upload_date)
+        val file_type_icon = view.findViewById<ImageView>(R.id.img_file_type_icon)
+        val file_name = view.findViewById<TextView>(R.id.text_file_name)
+        val file_upload_date = view.findViewById<TextView>(R.id.text_file_upload_date)
 
         fun bindItem(items: FileItem, listener: (FileItem) -> Unit) {
-            name_of_file.text = items.name_of_file
-            upload_date.text = items.upload_date
+            file_name.text = items.file_name
+            file_upload_date.text = items.upload_date
 
-            Glide.with(itemView.context).load(items.type_of_file).into(type_of_file)
+            Glide.with(itemView.context).load(items.file_type_icon).into(file_type_icon)
 
             itemView.setOnClickListener{
                 listener(items)
@@ -44,7 +44,7 @@ class FileAdapter(
     }
 
 
-    override fun getItemCount(): Int =filesItems.size
+    override fun getItemCount(): Int = filesItems.size
 
 
 }

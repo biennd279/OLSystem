@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import org.teamseven.ols.databinding.FragmentClassSettingBinding
+import org.teamseven.ols.databinding.FragmentClassOwnedSettingBinding
 
 
-class ClassSettingFragment : Fragment() {
+class ClassOwnedSettingFragment : Fragment() {
 
-    private lateinit var binding: FragmentClassSettingBinding
+    private lateinit var binding: FragmentClassOwnedSettingBinding
     private lateinit var mClassName: TextView
     private lateinit var mClassCode: TextView
+    private lateinit var mClassSchool: TextView
     private var mtab: Int? = null
     private var mClassId: Int? = null
 
@@ -30,27 +31,38 @@ class ClassSettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentClassSettingBinding.inflate(inflater)
+        binding = FragmentClassOwnedSettingBinding.inflate(inflater)
 
-        //get and edit with the right class name and class code
+        //get and edit with the right class code, class name and class school
         //through call func in ViewModel with classId
-        mClassName = binding.edittextSettingClassName
-        mClassCode = binding.edittextSettingClassCode
+        setUpClassInformation()
 
 
         return binding.root
     }
 
+    private fun setUpClassInformation() {
+        mClassCode = binding.edittextSettingClassOwnedCode
+        mClassName = binding.edittextSettingClassOwnedName
+        mClassSchool = binding.edittextSettingClassOwnedSchool
+
+        //call func in ViewModel to get the infomation
+        mClassCode.text = "123"
+        mClassName.text = "justAClass"
+        mClassSchool.text = "a some shool i dont know"
+
+    }
+
     companion object {
-        val TAG = ClassSettingFragment::class.java.simpleName
+        val TAG = ClassOwnedSettingFragment::class.java.simpleName
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int): ClassSettingFragment {
-            val classSettingFragment = ClassSettingFragment()
+        fun newInstance(tab: Int, classId: Int): ClassOwnedSettingFragment {
+            val classSettingFragment = ClassOwnedSettingFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)

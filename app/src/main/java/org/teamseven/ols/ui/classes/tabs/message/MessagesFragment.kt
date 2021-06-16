@@ -33,7 +33,7 @@ class MessagesFragment : Fragment() {
         binding = FragmentMessagesBinding.inflate(inflater)
 
         //recyclerView
-        val recyclerView = binding.messageList
+        val recyclerView = binding.recyclerMessageList
         getMessageList()
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = activity?.let {

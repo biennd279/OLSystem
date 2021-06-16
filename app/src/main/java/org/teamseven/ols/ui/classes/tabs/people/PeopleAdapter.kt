@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.classes.tabs.message
+package org.teamseven.ols.ui.classes.tabs.people
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,24 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.teamseven.ols.R
 
-class MessageAdapter(
+class PeopleAdapter(
     private val context: Context,
-    private val messageItems: List<MessageItem>,
-    private val listener: (MessageItem) -> Unit
-) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+    private val peopleItems: List<PeopleItem>,
+    private val listener: (PeopleItem) -> Unit
+) : RecyclerView.Adapter<PeopleAdapter.ViewHolder>() {
 
 
     //ViewHolder
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val username = view.findViewById<TextView>(R.id.img_message_username)
-        val status = view.findViewById<TextView>(R.id.text_message_status)
-        val avatar = view.findViewById<ImageView>(R.id.img_message_avatar)
-        val time = view.findViewById<TextView>(R.id.text_message_time)
+        val username = view.findViewById<TextView>(R.id.text_member_name)
+        val avatar = view.findViewById<ImageView>(R.id.img_member_avatar)
 
-        fun bindItem(items: MessageItem, listener: (MessageItem) -> Unit) {
+        fun bindItem(items: PeopleItem, listener: (PeopleItem) -> Unit) {
             username.text = items.username
-            status.text = items.status
-            time.text = items.time
 
             Glide.with(itemView.context).load(items.avatar).into(avatar)
             itemView.setOnClickListener{
@@ -39,17 +35,17 @@ class MessageAdapter(
 
     // Create new views (invoked by the layout manager
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_message_view, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_member_view, parent, false)
         return ViewHolder(view)
     }
 
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bindItem(messageItems[position], listener)
+        viewHolder.bindItem(peopleItems[position], listener)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = messageItems.size
+    override fun getItemCount() = peopleItems.size
 
 }

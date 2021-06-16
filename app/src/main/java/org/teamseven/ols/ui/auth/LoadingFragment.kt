@@ -35,7 +35,11 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setUpController()
+    }
 
+    private fun setUpController() {
+        //it is the test, remove it latter
         navController.navigate(
             //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
@@ -44,14 +48,18 @@ class LoadingFragment : Fragment() {
 /*
         // check user signing state through SessionManager
         if (sessionManager.token.isNullOrEmpty()) {
-            // user didn't sign in yet
+            // user didn't sign in yet (the first time or user sign out)
+            // check the data in Room database. if it existed, delete it all
+            // call function from LoadingViewModel
+            // then navigate it into SignOptionFragment
             navController.navigate(
                 LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             )
         } else {
-            // user signed in, loading data
-            // get user information
-
+            // user have just signed in from SignInFragment / SignUpFragment
+            // or signed before - the data is already in Room
+            // check it and fetch it => call function from LoadingViewModel
+            // then navigate it into HomeFragment
 
             navController.navigate(
                 LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()

@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import org.teamseven.ols.MainActivity
+import org.teamseven.ols.databinding.FragmentAddMemberBinding
 import org.teamseven.ols.databinding.FragmentHomeBinding
 
-class HomeFragment : Fragment() {
+class AddMemberFragment : Fragment() {
 
-    private lateinit var binding : FragmentHomeBinding
+    private lateinit var binding : FragmentAddMemberBinding
     private lateinit var navController : NavController
 
 
@@ -22,30 +23,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentAddMemberBinding.inflate(inflater)
         navController = findNavController()
 
+        
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.loadingFragment, true)
-        }
-
-         */
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        Log.e("check_drawer_setup", "onStart called")
-        val mainActivity : MainActivity = activity as MainActivity
-        mainActivity.setUpCurrentClass()
-
-    }
 }

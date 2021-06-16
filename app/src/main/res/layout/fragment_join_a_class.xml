@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/fab_margin"
-    android:layout_marginTop="@dimen/fab_margin"
     android:orientation="vertical"
     tools:context=".ui.classes.JoinAClassFragment">
 
@@ -20,7 +18,9 @@
             android:id="@+id/outlined_textfield_join_class_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Class code"
+            android:layout_marginHorizontal="@dimen/fab_margin"
+            android:layout_marginTop="20dp"
+            android:hint="@string/class_code"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -36,5 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Join" />
+        android:layout_marginTop="30dp"
+        android:text="@string/join" />
 </LinearLayout>

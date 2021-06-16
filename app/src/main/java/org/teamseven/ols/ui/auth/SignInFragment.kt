@@ -63,12 +63,16 @@ class SignInFragment : Fragment() {
                             sessionManager.token = data.token
                             sessionManager.userId = data.user.id
                         }
+
+                        // the right direction is to the Loading to prepare the data
+                        //navController.navigate(SignInFragmentDirections.actionSignInFragmentToLoadingFragment())
+
                         navController.navigate(
                             R.id.homeFragment
                         )
                     }
                     Resource.Status.ERROR -> {
-
+                        // make a Toast or something to the Activity Context, to show error message
                     }
                 }
             }

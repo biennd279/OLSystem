@@ -5,56 +5,87 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.teamseven.ols.R
+import org.teamseven.ols.databinding.FragmentPeopleBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PeopleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PeopleFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentPeopleBinding
+    private lateinit var navController: NavController
+    private var peopleItems: MutableList<PeopleItem> = mutableListOf()
+    private var totalMembers: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_people, container, false)
+
+        binding = FragmentPeopleBinding.inflate(inflater)
+        navController = findNavController()
+
+        //recyclerView
+        val recyclerView = binding.recyclerMemberList
+        getPeopleList()
+
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = activity?.let {
+            PeopleAdapter(it, peopleItems) {
+                val toast = Toast.makeText(activity, it.username, Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }
+
+        binding.textPeopleTotalMembers.text = totalMembers.toString()
+
+        //button add member listener
+        binding.btnAddMember.setOnClickListener{
+            navController.navigate(R.id.addMemberFragment)
+        }
+
+        return binding.root
     }
 
     companion object {
+        val TAG = PeopleFragment::class.java.simpleName
+
         /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PeopleFragment.
+         * Returns a new instance of this fragment for the given section
+         * number.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PeopleFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(tab: Int, classId: Int): PeopleFragment {
+            val peopleFragment = PeopleFragment()
+            val args = Bundle()
+            args.putInt("tab", tab)
+            args.putInt("classId", classId)
+            peopleFragment.arguments = args
+            return peopleFragment
+        }
+    }
+
+    private fun getPeopleList(){
+        val username = resources.getStringArray(R.array.username)
+        val avatar = resources.obtainTypedArray(R.array.avatar)
+        totalMembers = username.size
+
+        peopleItems.clear()
+        for (i in username.indices) {
+            peopleItems.add(
+                PeopleItem(
+                    username[i],
+                    avatar.getResourceId(i, 0),
+                )
+            )
+        }
     }
 }

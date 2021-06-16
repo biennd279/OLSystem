@@ -88,12 +88,16 @@ class SignUpFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             sessionManager.token = data.token
                             sessionManager.userId = data.user.id
                         }
+
+                        // the right direction is to the Loading to prepare the data
+                        //navController.navigate(SignUpFragmentDirections.actionSignUpFragmentToLoadingFragment())
+
                         navController.navigate(
                             R.id.homeFragment
                         )
                     }
                     Resource.Status.ERROR -> {
-
+                        // make a Toast or something to the Activity Context, to show error message
                     }
                 }
             }

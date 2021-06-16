@@ -167,13 +167,23 @@
     <string name="classes_joined">Classes Joined</string>
     <string name="home">Home</string>
     <string name="all_classes">All Classes</string>
-    <string name="save">Save</string>
     <string name="share_this_code">Share this code</string>
     <string name="share_code_information">This is your class code, so anyone who has it can join your class instantly.</string>
     <string name="copy">Copy</string>
     <string name="new_file">New file</string>
     <string name="new_member">New member</string>
-    <string name="class_name">Class name</string>
     <string name="class_code">Class code</string>
+    <string name="avatar">Avatar</string>
+    <string name="members">Members</string>
+    <string name="class_name">Class name</string>
+    <string name="join">Join</string>
+    <string name="create">Create</string>
+    <string name="agree_message">I agree to only message people who are 13 or older.</string>
+    <string name="school">School</string>
+    <string name="delete_class">Delete class</string>
+    <string name="leave_class">Leave class</string>
+    <string name="email">Email</string>
+    <string name="change_password">Change password</string>
+    <string name="save">Save</string>
 
 </resources>
