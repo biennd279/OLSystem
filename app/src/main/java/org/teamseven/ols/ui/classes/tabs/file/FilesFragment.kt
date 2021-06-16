@@ -28,6 +28,10 @@ class FilesFragment : Fragment() {
 
         //recyclerView
         val recyclerView = binding.recyclerFileList
+
+        //call func from FileViewModel to get all the file information
+        //this is a test, remove it latter
+        //but i dont know, what happen when click the file item
         getFileList()
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -37,6 +41,11 @@ class FilesFragment : Fragment() {
                 toast.show()
             }
         }
+
+        binding.btnNewFile.setOnClickListener {
+            //i dont know about this stuff
+        }
+
         return binding.root
     }
 

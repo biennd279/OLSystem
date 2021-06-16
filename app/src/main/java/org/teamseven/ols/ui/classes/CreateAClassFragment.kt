@@ -20,7 +20,17 @@ class CreateAClassFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCreateAClassBinding.inflate(inflater)
 
+        binding.btnCreateClass.setOnClickListener {
+            // get className and classSchool
+            //binding.edittextCreateClassName.text
+            //binding.edittextCreateClassSchool.text
 
+            //call the func from CreateAClassViewModel
+            //create the class with className and classScholl (with the classId)
+            //success -> add new className in classesOwned List in MainActivity
+            //load the new class
+
+        }
         return binding.root
     }
 

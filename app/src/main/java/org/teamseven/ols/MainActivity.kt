@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import org.teamseven.ols.databinding.ActivityMainBinding
 import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
+import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
 import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
 import timber.log.Timber
 
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
+
+    //this is for now, remove latter
+    //create a classData to store data or sth you prefer
     private lateinit var classesOwned: List<String>
     private lateinit var classesJoined: List<String>
 
@@ -155,8 +159,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        //val fragmentManagerTransaction = supportFragmentManager.beginTransaction()
-        //Log.e("check_drawer_setup", "onNav Called " + currentClassId.toString())
 
         when(item.itemId) {
             R.id.item_create_a_class -> {
@@ -203,7 +205,12 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
                 classFragment = AllClassesFragment.newInstance(classId, className)
             }
             else -> {
-                classFragment = ClassOwnedFragment.newInstance(classId, className)
+                if (className in classesOwned) {
+                    classFragment = ClassOwnedFragment.newInstance(classId, className)
+                }
+                else {
+                    classFragment = ClassJoinedFragment.newInstance(classId, className)
+                }
 
             }
         }
@@ -228,7 +235,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
     //for default all classes at first time and other class when navigation
     fun setUpCurrentClass() {
-        //val navigationView : NavigationView = findViewById(R.id.nav_view)
         val navigationView: NavigationView = binding.navView
         val itemClass: MenuItem
 
@@ -241,7 +247,5 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         replaceClassFragment(getClassFragment(currentClassId, itemClass.toString()))
         setAppBarTitle(itemClass.toString())
 
-        //onNavigationItemSelected(itemClass)
-        //Log.e("check_drawer_setup", currentClassId.toString())
     }
 }

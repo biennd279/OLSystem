@@ -18,6 +18,15 @@ class AccountSettingFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentAccountSettingBinding.inflate(inflater)
+
+        //change the password
+        binding.textAccountSettingChangePassword.setOnClickListener {
+            //no layout was created
+        }
+
+        binding.btnAccountSettingSave.setOnClickListener {
+            //No Api ????
+        }
         return binding.root
     }
 

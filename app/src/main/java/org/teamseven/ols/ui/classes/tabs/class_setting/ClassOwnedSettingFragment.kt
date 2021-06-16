@@ -35,7 +35,26 @@ class ClassOwnedSettingFragment : Fragment() {
 
         //get and edit with the right class code, class name and class school
         //through call func in ViewModel with classId
+        //this just for now, remove it later
         setUpClassInformation()
+
+        // Change and Update class info (name, shool, the code is unchangeable)
+        binding.btnSettingClassOwnedSave.setOnClickListener {
+            // call function in ClassOwnedSettingViewModel (ClassSettingViewModel)
+            // update in server and database
+            // update in classesOwned <List> from MainActivity (write a  function and call it)
+            // reload the classFragment by call setUpCurrentClass func
+        }
+
+        // delete the class
+        binding.btnSettingClassOwnedDelete.setOnClickListener {
+            // call function in ClassOwnedSettingViewModel (ClassSettingViewModel)
+            // delete in server and database
+            // delete in classesOwned <List> from MainActivity (write a  function and call it)
+            // change the classFragment to AllClassesFragment
+            // by call onNavigationItemSelected(navigationView.menu.findItem(R.id.item_all_classes)) (write a func)
+            // or change the currentClassId = -1 and reload by setUpCurrentClass func
+        }
 
 
         return binding.root

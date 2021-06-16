@@ -34,7 +34,12 @@ class MessagesFragment : Fragment() {
 
         //recyclerView
         val recyclerView = binding.recyclerMessageList
+
+        //call func from MessageViewModel to get all the file information (the MessageBox for chatting, this is for show all messages-people-group)
+        //this is a test, remove it latter
+        //when click the item, open in message box. (i've not do anything with message box yet)
         getMessageList()
+
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = activity?.let {
             MessageAdapter(it, messageItems) {
@@ -43,6 +48,11 @@ class MessagesFragment : Fragment() {
             }
         }
 
+
+        binding.btnNewMessage.setOnClickListener {
+            //navigate the new message fragment
+            //have not created
+        }
 
         return binding.root
     }

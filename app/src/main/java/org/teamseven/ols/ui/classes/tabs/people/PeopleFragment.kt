@@ -35,6 +35,10 @@ class PeopleFragment : Fragment() {
 
         //recyclerView
         val recyclerView = binding.recyclerMemberList
+
+        //call func from PeopleViewModel to get all the file information
+        //this is a test, remove it latter
+        //but i dont know, what happen when click the people item - member
         getPeopleList()
 
         recyclerView.layoutManager = LinearLayoutManager(activity)

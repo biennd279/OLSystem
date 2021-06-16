@@ -35,8 +35,18 @@ class ClassJoinedSettingFragment : Fragment() {
 
         //get and edit with the right class code, class name and class school
         //through call func in ViewModel with classId
+        //this just for now, remove it later
         setUpClassInformation()
 
+        // leave the class
+        binding.btnSettingClassJoinedLeave.setOnClickListener {
+            // call function in ClassOwnedSettingViewModel (ClassSettingViewModel)
+            // delete in server and database
+            // delete in classesJoined <List> from MainActivity (write a  function and call it)
+            // change the classFragment to AllClassesFragment
+            // by call onNavigationItemSelected(navigationView.menu.findItem(R.id.item_all_classes)) (write a func)
+            // or change the currentClassId = -1 and reload by setUpCurrentClass func
+        }
 
         return binding.root
     }
