@@ -35,6 +35,9 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //remove all from backstack (navigate from "sign_out" - overflow_menu only)
+        //or create a direction and use the popbackstack - inclusive -> read about it latter
+
         setUpController()
     }
 

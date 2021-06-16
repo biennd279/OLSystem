@@ -93,9 +93,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
         //get all owned classes -> array -> for
         //use class_id (id) for item_id (Menu.NONE for present)
-        //classesOwnedSubMenu.add(R.id.classes_owned, 1, 0, "class_test").setIcon(R.drawable.ic_action_class)
-        //classesOwnedSubMenu.add(R.id.classes_owned, Menu.NONE, 0, "class_funny").setIcon(R.drawable.ic_action_class)
-
         for (i in classesOwned.indices) {
             classesOwnedSubMenu.add(R.id.classes_owned, i + 1, 0, classesOwned[i]).setIcon(R.drawable.ic_action_class)
         }
@@ -106,9 +103,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         classesJoined = resources.getStringArray(R.array.classes_joined).toList()
 
         //get all joined classes -> array -> for
-        //classesJoinedSubMenu.add(R.id.classes_joined, Menu.NONE, 0, "class_enjoined").setIcon(R.drawable.ic_action_class)
-        //classesJoinedSubMenu.add(R.id.classes_joined, Menu.NONE, 0, "class_interested").setIcon(R.drawable.ic_action_class)
-
         for (i in classesJoined.indices) {
             classesJoinedSubMenu.add(R.id.classes_joined, i + 1, 0, classesJoined[i]).setIcon(R.drawable.ic_action_class)
         }
@@ -135,6 +129,11 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             }
             R.id.sign_out -> {
                 Toast.makeText(applicationContext, "signOutClicked", Toast.LENGTH_SHORT)
+
+                //this is for now, remove later
+                //delete session in SessionManager
+                //navigate to loadingFragment, right there, delete the database.
+                //navController.navigate(R.id.loadingFragment)
                 navController.navigate(R.id.signOptionFragment)
                 true
             }
