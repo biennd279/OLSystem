@@ -82,5 +82,10 @@
         android:id="@+id/addMemberFragment"
         android:name="org.teamseven.ols.ui.classes.AddMemberFragment"
         android:label="Share code" />
+    <fragment
+        android:id="@+id/newMessageFragment"
+        android:name="org.teamseven.ols.ui.message_box.NewMessageFragment"
+        android:label="New message"
+        tools:layout="@layout/fragment_new_message" />
 
 </navigation>

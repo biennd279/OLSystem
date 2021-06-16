@@ -43,12 +43,14 @@ class LoadingFragment : Fragment() {
 
     private fun setUpController() {
         //it is the test, remove it latter
+        /*
         navController.navigate(
             //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
         )
+       */
 
-/*
+
         // check user signing state through SessionManager
         if (sessionManager.token.isNullOrEmpty()) {
             // user didn't sign in yet (the first time or user sign out)
@@ -69,7 +71,7 @@ class LoadingFragment : Fragment() {
             )
         }
 
- */
+
     }
 
 }

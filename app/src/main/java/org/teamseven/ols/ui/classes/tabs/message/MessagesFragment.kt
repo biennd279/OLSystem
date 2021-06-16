@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentMessagesBinding
@@ -15,6 +17,7 @@ import org.teamseven.ols.databinding.FragmentMessagesBinding
 class MessagesFragment : Fragment() {
 
     private lateinit var binding: FragmentMessagesBinding
+    private lateinit var navController: NavController
     private var mTab = 0
     private var mClassId = -1
     private var messageItems: MutableList<MessageItem> = mutableListOf()
@@ -31,6 +34,7 @@ class MessagesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentMessagesBinding.inflate(inflater)
+        navController = findNavController()
 
         //recyclerView
         val recyclerView = binding.recyclerMessageList
@@ -52,6 +56,7 @@ class MessagesFragment : Fragment() {
         binding.btnNewMessage.setOnClickListener {
             //navigate the new message fragment
             //have not created
+            navController.navigate(R.id.newMessageFragment)
         }
 
         return binding.root
