@@ -27,16 +27,25 @@ class FilesFragment : Fragment() {
         binding = FragmentFilesBinding.inflate(inflater)
 
         //recyclerView
-        val list = binding.fileList
+        val recyclerView = binding.recyclerFileList
+
+        //call func from FileViewModel to get all the file information
+        //this is a test, remove it latter
+        //but i dont know, what happen when click the file item
         getFileList()
 
-        list.layoutManager = LinearLayoutManager(activity)
-        list.adapter = activity?.let {
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = activity?.let {
             FileAdapter(it, filesItems) {
-                val toast = Toast.makeText(activity, it.name_of_file, Toast.LENGTH_LONG)
+                val toast = Toast.makeText(activity, it.file_name, Toast.LENGTH_LONG)
                 toast.show()
             }
         }
+
+        binding.btnNewFile.setOnClickListener {
+            //i dont know about this stuff
+        }
+
         return binding.root
     }
 
@@ -59,18 +68,17 @@ class FilesFragment : Fragment() {
     }
 
     private fun getFileList(){
-        val name_of_file = resources.getStringArray(R.array.name_of_file)
-        //val type_of_file = resources.getStringArray(R.array.type_of_file)
-        val type_of_file = resources.obtainTypedArray(R.array.avatar)
-        val upload_date = resources.getStringArray(R.array.upload_date)
+        val file_name = resources.getStringArray(R.array.name_of_file)
+        val file_type_icon = resources.obtainTypedArray(R.array.avatar)
+        val file_upload_date = resources.getStringArray(R.array.upload_date)
 
         filesItems.clear()
-        for (i in name_of_file.indices) {
+        for (i in file_name.indices) {
             filesItems.add(
                     FileItem(
-                            name_of_file[i],
-                            type_of_file.getResourceId(i, 0),
-                            upload_date[i]
+                        file_name[i],
+                        file_type_icon.getResourceId(i, 0),
+                        file_upload_date[i]
                     )
             )
         }

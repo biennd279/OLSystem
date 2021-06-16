@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.classes.class.ClassFragment">
+    tools:context=".ui.classes.class_owned.ClassOwnedFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_height="wrap_content"
@@ -23,6 +23,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.viewpager.widget.ViewPager

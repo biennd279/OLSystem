@@ -7,12 +7,12 @@
     tools:context=".ui.classes.tabs.file.FilesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/file_list"
+        android:id="@+id/recycler_file_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/new_file"
+        android:id="@+id/btn_new_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

@@ -6,13 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import org.teamseven.ols.MainActivity
-import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentHomeBinding
-import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
 
 class HomeFragment : Fragment() {
 
@@ -47,6 +44,9 @@ class HomeFragment : Fragment() {
         super.onStart()
 
         Log.e("check_drawer_setup", "onStart called")
+
+        //I just setup the current class fragment, the current tab is not
+
         val mainActivity : MainActivity = activity as MainActivity
         mainActivity.setUpCurrentClass()
 

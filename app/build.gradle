@@ -33,17 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    // Enables data binding.
-    buildFeatures {
-        dataBinding true
-    }
-
     testOptions {
         unitTests.includeAndroidResources = true
     }
 
     buildFeatures {
-        dataBinding true
         viewBinding true
     }
 }

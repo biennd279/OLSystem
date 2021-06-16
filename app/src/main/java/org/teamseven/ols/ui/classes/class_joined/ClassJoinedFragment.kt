@@ -1,18 +1,16 @@
-package org.teamseven.ols.ui.classes.`class`
+package org.teamseven.ols.ui.classes.class_joined
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentClassBinding
 
 
-class ClassFragment : Fragment() {
+class ClassJoinedFragment : Fragment() {
 
     private lateinit var binding: FragmentClassBinding
     private lateinit var navController: NavController
@@ -31,7 +29,7 @@ class ClassFragment : Fragment() {
         binding = FragmentClassBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = ClassSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
+        val sectionsPagerAdapter = ClassJoinedSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
         val viewPager: ViewPager = binding.classViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.classTabs
@@ -58,10 +56,10 @@ class ClassFragment : Fragment() {
     }
 
     companion object {
-        val TAG = ClassFragment::class.java.simpleName
+        val TAG = ClassJoinedFragment::class.java.simpleName
 
-        fun newInstance(classId: Int, className: String): ClassFragment {
-            val classFragment = ClassFragment()
+        fun newInstance(classId: Int, className: String): ClassJoinedFragment {
+            val classFragment = ClassJoinedFragment()
             val args = Bundle()
             args.putString("className", className)
             args.putInt("classId", classId)

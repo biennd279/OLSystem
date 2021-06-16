@@ -19,6 +19,15 @@ class JoinAClassFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentJoinAClassBinding.inflate(inflater)
 
+        binding.btnJoinClass.setOnClickListener {
+            // get classCode
+            //binding.edittextJoinClassCode.text
+
+            //call the func from JoinAClassViewModel
+            //join the class with classCode
+            //success -> add new className in classesJoined List in MainActivity (with the classId)
+            //load the new class
+        }
 
         return binding.root
     }

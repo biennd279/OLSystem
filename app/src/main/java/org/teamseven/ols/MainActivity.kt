@@ -1,11 +1,10 @@
 package org.teamseven.ols
+
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SubMenu
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -19,8 +18,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import org.teamseven.ols.databinding.ActivityMainBinding
-import org.teamseven.ols.ui.classes.`class`.ClassFragment
 import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
+import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
+import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
 import timber.log.Timber
 
 
@@ -32,6 +32,12 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
+
+    //this is for now, remove latter
+    //create a classData to store data or sth you prefer
+    private lateinit var classesOwned: List<String>
+    private lateinit var classesJoined: List<String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,21 +85,28 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
     private fun setUpDrawerMenu() {
-        val classedOwnedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_owned)
-        val classedOwnedSubMenu: SubMenu = classedOwnedGroupItem.subMenu
+        val classesOwnedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_owned)
+        val classesOwnedSubMenu: SubMenu = classesOwnedGroupItem.subMenu
+
+        classesOwned = resources.getStringArray(R.array.classes_owned).toList()
+
 
         //get all owned classes -> array -> for
         //use class_id (id) for item_id (Menu.NONE for present)
-        //classedOwnedSubMenu.add(R.id.classes_owned, Menu.NONE, 0, "class_test").setIcon(R.drawable.ic_action_class)
-        classedOwnedSubMenu.add(R.id.classes_owned, 1, 0, "class_test").setIcon(R.drawable.ic_action_class)
-        classedOwnedSubMenu.add(R.id.classes_owned, Menu.NONE, 0, "class_funny").setIcon(R.drawable.ic_action_class)
+        for (i in classesOwned.indices) {
+            classesOwnedSubMenu.add(R.id.classes_owned, i + 1, 0, classesOwned[i]).setIcon(R.drawable.ic_action_class)
+        }
 
-        val classedJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
-        val classedJoinedSubMenu: SubMenu = classedJoinedGroupItem.subMenu
+        val classesJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
+        val classesJoinedSubMenu: SubMenu = classesJoinedGroupItem.subMenu
+
+        classesJoined = resources.getStringArray(R.array.classes_joined).toList()
 
         //get all joined classes -> array -> for
-        classedJoinedSubMenu.add(R.id.classes_joined, Menu.NONE, 0, "class_enjoined").setIcon(R.drawable.ic_action_class)
-        classedJoinedSubMenu.add(R.id.classes_joined, Menu.NONE, 0, "class_interested").setIcon(R.drawable.ic_action_class)
+        for (i in classesJoined.indices) {
+            classesJoinedSubMenu.add(R.id.classes_joined, i + 1, 0, classesJoined[i]).setIcon(R.drawable.ic_action_class)
+        }
+
 
         drawerLayout.closeDrawers()
 
@@ -116,6 +129,11 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             }
             R.id.sign_out -> {
                 Toast.makeText(applicationContext, "signOutClicked", Toast.LENGTH_SHORT)
+
+                //this is for now, remove later
+                //delete session in SessionManager
+                //navigate to loadingFragment, right there, delete the database.
+                //navController.navigate(R.id.loadingFragment)
                 navController.navigate(R.id.signOptionFragment)
                 true
             }
@@ -133,13 +151,13 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
-        setContentView(R.layout.activity_main)
+        else {
+            super.onBackPressed()
+        }
     }
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        //val fragmentManagerTransaction = supportFragmentManager.beginTransaction()
-        //Log.e("check_drawer_setup", "onNav Called " + currentClassId.toString())
 
         when(item.itemId) {
             R.id.item_create_a_class -> {
@@ -186,7 +204,12 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
                 classFragment = AllClassesFragment.newInstance(classId, className)
             }
             else -> {
-                classFragment = ClassFragment.newInstance(classId, className)
+                if (className in classesOwned) {
+                    classFragment = ClassOwnedFragment.newInstance(classId, className)
+                }
+                else {
+                    classFragment = ClassJoinedFragment.newInstance(classId, className)
+                }
 
             }
         }
@@ -201,7 +224,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             classFragment
         )
         //transaction.setReorderingAllowed(true)
-        fragmentManagerTransaction.addToBackStack(null)
+        //fragmentManagerTransaction.addToBackStack(null)
         fragmentManagerTransaction.commit()
     }
 
@@ -211,7 +234,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
     //for default all classes at first time and other class when navigation
     fun setUpCurrentClass() {
-        //val navigationView : NavigationView = findViewById(R.id.nav_view)
         val navigationView: NavigationView = binding.navView
         val itemClass: MenuItem
 
@@ -224,7 +246,5 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         replaceClassFragment(getClassFragment(currentClassId, itemClass.toString()))
         setAppBarTitle(itemClass.toString())
 
-        //onNavigationItemSelected(itemClass)
-        //Log.e("check_drawer_setup", currentClassId.toString())
     }
 }
