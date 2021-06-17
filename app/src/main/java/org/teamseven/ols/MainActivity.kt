@@ -1,6 +1,5 @@
 package org.teamseven.ols
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,7 +20,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import org.teamseven.ols.databinding.ActivityMainBinding
 import org.teamseven.ols.databinding.NavHeaderMainBinding
 import org.teamseven.ols.db.AppDatabase
@@ -33,6 +35,7 @@ import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
 import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
 import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
 import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.utils.SessionManager
 import org.teamseven.ols.viewmodel.ClassroomViewModel
 import org.teamseven.ols.viewmodel.ClassroomViewModelFactory
 import org.teamseven.ols.viewmodel.UserViewModel
@@ -40,7 +43,7 @@ import org.teamseven.ols.viewmodel.UserViewModelFactory
 import timber.log.Timber
 
 
-class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener  {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -57,7 +60,9 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
     private val appDatabase by lazy { AppDatabase.create(application) }
 
-    private val classroomViewModel : ClassroomViewModel by viewModels {
+    private val sessionManager by lazy { SessionManager(application) }
+
+    private val classroomViewModel: ClassroomViewModel by viewModels {
         ClassroomViewModelFactory(
             classroomService,
             appDatabase,
@@ -65,7 +70,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         )
     }
 
-    private val userViewModel : UserViewModel by viewModels {
+    private val userViewModel: UserViewModel by viewModels {
         UserViewModelFactory(
             authService,
             userService,
@@ -80,6 +85,8 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private var _classJoined: List<Classroom> = listOf()
 
 
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -116,7 +123,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
         //custom toolbar for destination
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.loadingFragment || destination.id == R.id.signOptionFragment
+            if (destination.id == R.id.loadingFragment || destination.id == R.id.signOptionFragment
                 || destination.id == R.id.signInFragment || destination.id == R.id.signUpFragment
             ) {
                 supportActionBar?.hide()
@@ -127,10 +134,21 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
     }
 
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
     private fun setUpDrawerMenu() {
-        loadProfile()
-        showClassroomJoinedList()
-        showClassroomOwnerList()
+        lifecycleScope.launchWhenStarted {
+            sessionManager.flow.collect {
+                if (it.isNullOrEmpty()) {
+                    navController.navigate(R.id.signInFragment)
+                } else {
+                    loadProfile()
+                    showClassroomJoinedList()
+                    showClassroomOwnerList()
+                }
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -147,12 +165,13 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
                 true
             }
             R.id.sign_out -> {
-                Toast.makeText(applicationContext, "signOutClicked", Toast.LENGTH_SHORT)
+//                Toast.makeText(applicationContext, "signOutClicked", Toast.LENGTH_SHORT)
 
                 //this is for now, remove later
                 //delete session in SessionManager
                 //navigate to loadingFragment, right there, delete the database.
                 //navController.navigate(R.id.loadingFragment)
+                sessionManager.token = null
                 navController.navigate(R.id.signOptionFragment)
                 true
             }
@@ -167,15 +186,14 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.item_create_a_class -> {
                 navController.navigate(R.id.createAClassFragment)
             }

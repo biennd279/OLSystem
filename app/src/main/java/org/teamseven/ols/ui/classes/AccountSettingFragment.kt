@@ -61,7 +61,7 @@ class AccountSettingFragment() : Fragment() {
         getAccountSetting()
     }
 
-    fun getAccountSetting() {
+    private fun getAccountSetting() {
         userViewModel.currentUser.observe(viewLifecycleOwner) {
             when (it.status) {
                 Resource.Status.SUCCESS, Resource.Status.LOADING -> {

@@ -1,8 +1,14 @@
 package org.teamseven.ols.utils
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.*
 import org.teamseven.ols.R
+import timber.log.Timber
 
 class SessionManager constructor(context: Context) {
     private val prefs: SharedPreferences by lazy {
@@ -25,4 +31,17 @@ class SessionManager constructor(context: Context) {
         get() = prefs.getInt(USER_ID, 0)
         set(value) = prefs.edit().putInt(USER_ID, value).apply()
 
+    @ExperimentalCoroutinesApi
+    val flow : Flow<String?> = callbackFlow {
+       val onTokenChange = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+           offer(sharedPreferences.getString(key, null))
+       }
+
+        prefs.registerOnSharedPreferenceChangeListener(onTokenChange)
+
+        awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(onTokenChange) }
+    }
+        .onStart { emit(this@SessionManager.token) }
+        .catch { Timber.i(it) }
+        .flowOn(Dispatchers.Default)
 }
