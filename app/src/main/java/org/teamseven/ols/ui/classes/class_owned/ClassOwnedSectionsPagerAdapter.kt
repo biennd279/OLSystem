@@ -9,6 +9,7 @@ import org.teamseven.ols.ui.classes.tabs.class_setting.ClassOwnedSettingFragment
 import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
 import org.teamseven.ols.ui.classes.tabs.message.MessagesFragment
 import org.teamseven.ols.ui.classes.tabs.people.PeopleFragment
+import org.teamseven.ols.viewmodel.ClassroomViewModel
 
 
 private val TAB_TITLES = arrayOf(
@@ -23,8 +24,12 @@ private val TAB_TITLES = arrayOf(
  * one of the sections/tabs/pages.
  */
 @Suppress("DEPRECATION")
-class ClassOwnedSectionsPagerAdapter(private val context: Context, fm: FragmentManager, classId : Int)
-    : FragmentPagerAdapter(fm) {
+class ClassOwnedSectionsPagerAdapter(
+    private val context: Context,
+    fm: FragmentManager,
+    classId : Int,
+    val classroomViewModel: ClassroomViewModel
+) : FragmentPagerAdapter(fm) {
 
     private var mClassId : Int = classId
 
@@ -35,8 +40,15 @@ class ClassOwnedSectionsPagerAdapter(private val context: Context, fm: FragmentM
         return when(position) {
             0 -> MessagesFragment.newInstance(position + 1, mClassId)
             1 -> FilesFragment.newInstance(position + 1, mClassId)
-            2 -> PeopleFragment.newInstance(position + 1, mClassId)
-            3 -> ClassOwnedSettingFragment.newInstance(position + 1, mClassId)
+            2 -> PeopleFragment.newInstance(
+                position + 1, mClassId,
+                classroomViewModel
+            )
+            3 -> ClassOwnedSettingFragment.newInstance(
+                position + 1,
+                mClassId,
+                classroomViewModel
+            )
             else -> MessagesFragment.newInstance(position + 1, mClassId)
         }
     }

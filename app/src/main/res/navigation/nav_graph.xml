@@ -24,7 +24,11 @@
         android:id="@+id/homeFragment"
         android:name="org.teamseven.ols.ui.classes.HomeFragment"
         android:label="@string/all_classes"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_accountSettingFragment"
+            app:destination="@id/accountSettingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="org.teamseven.ols.ui.auth.SignUpFragment"
