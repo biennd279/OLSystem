@@ -59,6 +59,8 @@ class LoadingFragment : Fragment() {
 //            //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
 //            LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
 //        )
+//
+
 
         // check user signing state through SessionManager
         if (sessionManager.token.isNullOrEmpty()) {
