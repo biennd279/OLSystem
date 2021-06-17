@@ -60,7 +60,6 @@ class MessagesFragment : Fragment() {
             //navigate the new message fragment
             //have not created
             navController.navigate(R.id.newMessageFragment)
-        }
 
         return binding.root
     }
@@ -72,7 +71,6 @@ class MessagesFragment : Fragment() {
     companion object {
         val TAG = MessagesFragment::class.java.simpleName
 
-        @JvmStatic
         fun newInstance(tab: Int, classId: Int): MessagesFragment {
             val messagesFragment = MessagesFragment()
             val args = Bundle()
