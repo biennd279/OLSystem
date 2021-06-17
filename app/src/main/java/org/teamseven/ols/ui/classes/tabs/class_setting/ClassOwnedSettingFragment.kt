@@ -7,10 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.teamseven.ols.databinding.FragmentClassOwnedSettingBinding
-import org.teamseven.ols.utils.Resource
-import org.teamseven.ols.viewmodel.ClassroomViewModel
-import timber.log.Timber
-import kotlin.properties.Delegates
 
 
 class ClassOwnedSettingFragment : Fragment() {
@@ -19,9 +15,8 @@ class ClassOwnedSettingFragment : Fragment() {
     private lateinit var mClassName: TextView
     private lateinit var mClassCode: TextView
     private lateinit var mClassSchool: TextView
-    private var mtab by Delegates.notNull<Int>()
-    private var mClassId by Delegates.notNull<Int>()
-    private lateinit var classroomViewModel: ClassroomViewModel
+    private var mtab: Int? = null
+    private var mClassId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,26 +35,7 @@ class ClassOwnedSettingFragment : Fragment() {
 
         //get and edit with the right class code, class name and class school
         //through call func in ViewModel with classId
-        //this just for now, remove it later
         setUpClassInformation()
-
-        // Change and Update class info (name, shool, the code is unchangeable)
-        binding.btnSettingClassOwnedSave.setOnClickListener {
-            // call function in ClassOwnedSettingViewModel (ClassSettingViewModel)
-            // update in server and database
-            // update in classesOwned <List> from MainActivity (write a  function and call it)
-            // reload the classFragment by call setUpCurrentClass func
-        }
-
-        // delete the class
-        binding.btnSettingClassOwnedDelete.setOnClickListener {
-            // call function in ClassOwnedSettingViewModel (ClassSettingViewModel)
-            // delete in server and database
-            // delete in classesOwned <List> from MainActivity (write a  function and call it)
-            // change the classFragment to AllClassesFragment
-            // by call onNavigationItemSelected(navigationView.menu.findItem(R.id.item_all_classes)) (write a func)
-            // or change the currentClassId = -1 and reload by setUpCurrentClass func
-        }
 
 
         return binding.root
@@ -70,23 +46,10 @@ class ClassOwnedSettingFragment : Fragment() {
         mClassName = binding.edittextSettingClassOwnedName
         mClassSchool = binding.edittextSettingClassOwnedSchool
 
-        classroomViewModel.classroomInfo(mClassId)
-            .observe(viewLifecycleOwner) {
-                when (it.status) {
-                    Resource.Status.SUCCESS, Resource.Status.LOADING -> {
-                        if (it.data == null) {
-                            Timber.i(it.message)
-                            return@observe
-                        }
-
-                        mClassCode.text = it.data.code
-                        mClassName.text = it.data.name
-                        mClassSchool.text = it.data.school
-                    }
-
-                    Resource.Status.ERROR -> Timber.i(it.message)
-                }
-            }
+        //call func in ViewModel to get the infomation
+        mClassCode.text = "123"
+        mClassName.text = "justAClass"
+        mClassSchool.text = "a some shool i dont know"
 
     }
 
@@ -98,13 +61,12 @@ class ClassOwnedSettingFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): ClassOwnedSettingFragment {
+        fun newInstance(tab: Int, classId: Int): ClassOwnedSettingFragment {
             val classSettingFragment = ClassOwnedSettingFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             classSettingFragment.arguments = args
-            classSettingFragment.classroomViewModel = classroomViewModel
             return classSettingFragment
         }
 
