@@ -7,6 +7,7 @@ import org.teamseven.ols.entities.User
 
 @Entity(
     primaryKeys = ["user_id", "classroom_id"],
+    tableName = "student_and_classroom_cross_ref"
 )
 data class StudentAndClassroomCrossRef(
     @ColumnInfo(name = "user_id")
