@@ -13,6 +13,7 @@ import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.db.ClassroomDao
 import org.teamseven.ols.db.UserDao
 import org.teamseven.ols.entities.Classroom
+import org.teamseven.ols.entities.User
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.network.UserService
@@ -22,18 +23,14 @@ import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.utils.SessionManager
 import timber.log.Timber
 
-class ClassroomViewModel(context: Context): ViewModel() {
+class ClassroomViewModel(
+    private val classroomService: ClassroomService,
+    private val appDatabase: AppDatabase,
+    context: Context
+): ViewModel() {
 
-    private var authService: AuthService = AuthService.create(context)
-    private var userService: UserService = UserService.create(context)
-    private var classroomService: ClassroomService = ClassroomService.create(context)
-    private var appDatabase: AppDatabase = AppDatabase.create(context)
     private var sessionManager: SessionManager = SessionManager(context)
-    private var userRepository: UserRepository = UserRepository(
-        userService,
-        authService,
-        appDatabase.userDao()
-    )
+
     private var classroomRepository: ClassroomRepository = ClassroomRepository(
         classroomService,
         appDatabase.classroomDao(),
@@ -52,4 +49,9 @@ class ClassroomViewModel(context: Context): ViewModel() {
             .flowOn(Dispatchers.IO)
             .catch { Timber.i(it) }
             .asLiveData(viewModelScope.coroutineContext)
+
+    fun students(classroomId: Int) = classroomRepository.getClassroomStudents(classroomId)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
 }

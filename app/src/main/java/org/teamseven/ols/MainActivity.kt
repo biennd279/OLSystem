@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.SubMenu
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -18,12 +19,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import org.teamseven.ols.databinding.ActivityMainBinding
+import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.entities.Classroom
+import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
 import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
 import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.ClassroomViewModel
+import org.teamseven.ols.viewmodel.ClassroomViewModelFactory
 import timber.log.Timber
 
 
@@ -36,7 +40,21 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
 
-    private lateinit var viewModel: ClassroomViewModel
+    private val classroomService by lazy {
+        ClassroomService.create(application)
+    }
+
+    private val appDatabase by lazy {
+        AppDatabase.create(application)
+    }
+
+    private val classroomViewModel : ClassroomViewModel by viewModels {
+        ClassroomViewModelFactory(
+            classroomService,
+            appDatabase,
+            application
+        )
+    }
 
     private var _classOwned: List<Classroom> = listOf()
 
@@ -50,8 +68,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ClassroomViewModel(applicationContext)
 
         navController = findNavController(R.id.nav_host_fragment_content_main)
 
@@ -186,9 +202,9 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             else -> {
                 Timber.i(_classJoined.toString())
                 if (className in _classJoined.map { it.name }) {
-                    ClassOwnedFragment.newInstance(classId, className)
+                    ClassOwnedFragment.newInstance(classId, className, classroomViewModel)
                 } else {
-                    ClassJoinedFragment.newInstance(classId, className)
+                    ClassJoinedFragment.newInstance(classId, className, classroomViewModel)
                 }
 
             }
@@ -230,7 +246,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         val classesOwnedSubMenu: SubMenu = classesOwnedGroupItem.subMenu
 
 
-        viewModel.classOwner.observe(this) {
+        classroomViewModel.classOwner.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS, Resource.Status.LOADING -> {
 
@@ -265,7 +281,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         val classesJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
         val classesJoinedSubMenu: SubMenu = classesJoinedGroupItem.subMenu
 
-        viewModel.classJoined.observe(this) {
+        classroomViewModel.classJoined.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS, Resource.Status.LOADING -> {
                     if (it.data.isNullOrEmpty()) {
