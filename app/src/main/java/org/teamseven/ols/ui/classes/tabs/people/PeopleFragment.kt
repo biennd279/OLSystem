@@ -25,7 +25,6 @@ class PeopleFragment: Fragment() {
 
     private lateinit var binding: FragmentPeopleBinding
     private lateinit var navController: NavController
-    private var peopleItems: List<PeopleItem> = mutableListOf()
     private lateinit var classroomViewModel: ClassroomViewModel
     private var mClassId by Delegates.notNull<Int>()
 
@@ -68,7 +67,6 @@ class PeopleFragment: Fragment() {
     @SuppressLint("Recycle")
     private fun getPeopleList(){
         val recyclerView = binding.recyclerMemberList
-
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
        classroomViewModel.students(mClassId).observe(viewLifecycleOwner) {
@@ -78,18 +76,8 @@ class PeopleFragment: Fragment() {
                        return@observe
                    }
 
-                   peopleItems = it.data.map {
-                       PeopleItem(
-                           it.name,
-                           avatar = resources.obtainTypedArray(R.array.avatar).getResourceId(0, 0)
-                       )
-                   }
+                   recyclerView.adapter = PeopleAdapter(activity?.applicationContext!!, it.data) {
 
-                   recyclerView.adapter = activity?.let {
-                       PeopleAdapter(it, peopleItems) {
-                           val toast = Toast.makeText(activity, it.username, Toast.LENGTH_LONG)
-                           toast.show()
-                       }
                    }
 
                    binding.textPeopleTotalMembers.text = it.data.size.toString()

@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.ItemMemberViewBinding
+import org.teamseven.ols.entities.User
 
 class PeopleAdapter(
     private val context: Context,
-    private var peopleItems: List<PeopleItem>,
-    private val listener: (PeopleItem) -> Unit
-) : ListAdapter<PeopleItem, RecyclerView.ViewHolder>(PeopleCallBack()) {
+    private var peopleItems: List<User>,
+    private val listener: (User) -> Unit
+) : ListAdapter<User, RecyclerView.ViewHolder>(PeopleCallBack()) {
 
 
     //ViewHolder
@@ -25,10 +26,15 @@ class PeopleAdapter(
         private val username = binding.textMemberName
         private val avatar = binding.imgMemberAvatar
 
-        fun bind(item: PeopleItem, listener: (PeopleItem) -> Unit) {
-            username.text = item.username
+        fun bind(item: User, listener: (User) -> Unit) {
+            username.text = item.name
 
-            Glide.with(itemView.context).load(item.avatar).into(avatar)
+            if (item.avatarUrl != null) {
+                Glide.with(itemView.context).load(item.avatarUrl).into(avatar)
+            } else {
+                Glide.with(itemView.context).load(R.drawable.ic_person_outline).into(avatar)
+            }
+
             itemView.setOnClickListener{
                 listener(item)
             }
@@ -67,12 +73,12 @@ class PeopleAdapter(
     override fun getItemCount() = peopleItems.size
 }
 
-class PeopleCallBack(): DiffUtil.ItemCallback<PeopleItem>() {
-    override fun areItemsTheSame(oldItem: PeopleItem, newItem: PeopleItem): Boolean {
-        return oldItem.username == newItem.username
+class PeopleCallBack(): DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: PeopleItem, newItem: PeopleItem): Boolean {
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
         return oldItem == newItem
     }
 
