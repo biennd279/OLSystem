@@ -42,7 +42,7 @@ class ClassOwnedSectionsPagerAdapter(
             1 -> FilesFragment.newInstance(position + 1, mClassId)
             2 -> PeopleFragment.newInstance(
                 position + 1, mClassId,
-                classroomViewModel.students(mClassId)
+                classroomViewModel
             )
             3 -> ClassOwnedSettingFragment.newInstance(position + 1, mClassId)
             else -> MessagesFragment.newInstance(position + 1, mClassId)

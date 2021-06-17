@@ -46,9 +46,13 @@ class ClassJoinedSectionsPagerAdapter(
             2 -> PeopleFragment.newInstance(
                 position + 1,
                 mClassId,
-                classroomViewModel.students(mClassId)
+                classroomViewModel
             )
-            3 -> ClassJoinedSettingFragment.newInstance(position + 1, mClassId)
+            3 -> ClassJoinedSettingFragment.newInstance(
+                position + 1,
+                mClassId,
+                classroomViewModel
+            )
             else -> MessagesFragment.newInstance(position + 1, mClassId)
         }
     }

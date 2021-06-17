@@ -16,16 +16,18 @@ import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentPeopleBinding
 import org.teamseven.ols.entities.User
 import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.viewmodel.ClassroomViewModel
 import timber.log.Timber
+import kotlin.properties.Delegates
 
 
-class PeopleFragment private constructor(
-    private val members: LiveData<Resource<List<User>>>
-    ): Fragment() {
+class PeopleFragment: Fragment() {
 
     private lateinit var binding: FragmentPeopleBinding
     private lateinit var navController: NavController
     private var peopleItems: List<PeopleItem> = mutableListOf()
+    private lateinit var classroomViewModel: ClassroomViewModel
+    private var mClassId by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,12 +53,14 @@ class PeopleFragment private constructor(
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int, members: LiveData<Resource<List<User>>>): PeopleFragment {
-            val peopleFragment = PeopleFragment(members)
+        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): PeopleFragment {
+            val peopleFragment = PeopleFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             peopleFragment.arguments = args
+            peopleFragment.classroomViewModel = classroomViewModel
+            peopleFragment.mClassId = classId
             return peopleFragment
         }
     }
@@ -67,7 +71,7 @@ class PeopleFragment private constructor(
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-       members.observe(viewLifecycleOwner) {
+       classroomViewModel.students(mClassId).observe(viewLifecycleOwner) {
            when (it.status) {
                Resource.Status.SUCCESS, Resource.Status.LOADING -> {
                    if (it.data.isNullOrEmpty()) {
