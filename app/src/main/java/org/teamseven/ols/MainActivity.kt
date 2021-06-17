@@ -1,5 +1,6 @@
 package org.teamseven.ols
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,9 +18,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import org.teamseven.ols.databinding.ActivityMainBinding
+import org.teamseven.ols.databinding.NavHeaderMainBinding
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.network.AuthService
@@ -95,6 +98,8 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
         //Dynamic Drawer Setup
         setUpDrawerMenu()
+        drawerLayout.closeDrawers()
+
         navView.setupWithNavController(navController)
         navView.setNavigationItemSelectedListener(this)
 
@@ -123,10 +128,9 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
     private fun setUpDrawerMenu() {
+        loadProfile()
         showClassroomJoinedList()
         showClassroomOwnerList()
-        drawerLayout.closeDrawers()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -318,6 +322,33 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
                 Resource.Status.ERROR -> {
                     Timber.i("Load error ${it.message}")
                 }
+            }
+        }
+    }
+
+    private fun loadProfile() {
+        val navHeader = binding.navView.getHeaderView(0)
+        val headerBinding = NavHeaderMainBinding.bind(navHeader)
+
+        userViewModel.currentUser.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS, Resource.Status.LOADING -> {
+                    if (it.data == null) {
+                        return@observe
+                    }
+
+                    headerBinding.userName.text = it.data.name
+
+                    if (it.data.avatarUrl != null) {
+                        Glide.with(this).load(it.data.avatarUrl).into(headerBinding.avatar)
+                    } else {
+                        Glide.with(this).load(R.drawable.ic_person_outline)
+                            .into(headerBinding.avatar)
+
+                    }
+                }
+
+                Resource.Status.ERROR -> Timber.i(it.message)
             }
         }
     }

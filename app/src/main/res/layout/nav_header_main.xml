@@ -19,9 +19,10 @@
         android:layout_gravity="center"
         app:srcCompat="@mipmap/ic_launcher_round"
         android:contentDescription="@string/nav_header_desc"
-        android:id="@+id/imageView" />
+        android:id="@+id/avatar" />
 
     <TextView
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
