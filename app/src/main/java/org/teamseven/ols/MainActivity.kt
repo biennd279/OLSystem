@@ -200,7 +200,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
                 AllClassesFragment.newInstance(classId, className)
             }
             else -> {
-                Timber.i(_classJoined.toString())
                 if (className in _classJoined.map { it.name }) {
                     ClassOwnedFragment.newInstance(classId, className, classroomViewModel)
                 } else {
