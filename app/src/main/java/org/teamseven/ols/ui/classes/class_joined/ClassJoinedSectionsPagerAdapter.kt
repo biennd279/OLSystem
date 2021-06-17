@@ -4,18 +4,22 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.LiveData
 import org.teamseven.ols.R
+import org.teamseven.ols.entities.User
 import org.teamseven.ols.ui.classes.tabs.class_setting.ClassJoinedSettingFragment
 import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
 import org.teamseven.ols.ui.classes.tabs.message.MessagesFragment
 import org.teamseven.ols.ui.classes.tabs.people.PeopleFragment
+import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.viewmodel.ClassroomViewModel
 
 
 private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2,
-    R.string.tab_text_3,
-    R.string.tab_text_4
+        R.string.tab_text_1,
+        R.string.tab_text_2,
+        R.string.tab_text_3,
+        R.string.tab_text_4
 )
 
 /**
@@ -23,8 +27,12 @@ private val TAB_TITLES = arrayOf(
  * one of the sections/tabs/pages.
  */
 @Suppress("DEPRECATION")
-class ClassJoinedSectionsPagerAdapter(private val context: Context, fm: FragmentManager, classId : Int)
-    : FragmentPagerAdapter(fm) {
+class ClassJoinedSectionsPagerAdapter(
+    private val context: Context,
+    fm: FragmentManager,
+    classId : Int,
+    val classroomViewModel: ClassroomViewModel
+) : FragmentPagerAdapter(fm) {
 
     private var mClassId : Int = classId
 
@@ -35,13 +43,21 @@ class ClassJoinedSectionsPagerAdapter(private val context: Context, fm: Fragment
         return when(position) {
             0 -> MessagesFragment.newInstance(position + 1, mClassId)
             1 -> FilesFragment.newInstance(position + 1, mClassId)
-            2 -> PeopleFragment.newInstance(position + 1, mClassId)
-            3 -> ClassJoinedSettingFragment.newInstance(position + 1, mClassId)
+            2 -> PeopleFragment.newInstance(
+                position + 1,
+                mClassId,
+                classroomViewModel
+            )
+            3 -> ClassJoinedSettingFragment.newInstance(
+                position + 1,
+                mClassId,
+                classroomViewModel
+            )
             else -> MessagesFragment.newInstance(position + 1, mClassId)
         }
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return context.resources.getString(TAB_TITLES[position])
     }
 
