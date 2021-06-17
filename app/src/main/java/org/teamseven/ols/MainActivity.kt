@@ -18,16 +18,22 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import org.teamseven.ols.databinding.ActivityMainBinding
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.entities.Classroom
+import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.ClassroomService
+import org.teamseven.ols.network.UserService
+import org.teamseven.ols.ui.classes.HomeFragmentDirections
 import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
 import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
 import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.ClassroomViewModel
 import org.teamseven.ols.viewmodel.ClassroomViewModelFactory
+import org.teamseven.ols.viewmodel.UserViewModel
+import org.teamseven.ols.viewmodel.UserViewModelFactory
 import timber.log.Timber
 
 
@@ -40,13 +46,13 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
 
-    private val classroomService by lazy {
-        ClassroomService.create(application)
-    }
+    private val userService by lazy { UserService.create(application) }
 
-    private val appDatabase by lazy {
-        AppDatabase.create(application)
-    }
+    private val authService by lazy { AuthService.create(application) }
+
+    private val classroomService by lazy { ClassroomService.create(application) }
+
+    private val appDatabase by lazy { AppDatabase.create(application) }
 
     private val classroomViewModel : ClassroomViewModel by viewModels {
         ClassroomViewModelFactory(
@@ -55,6 +61,16 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
             application
         )
     }
+
+    private val userViewModel : UserViewModel by viewModels {
+        UserViewModelFactory(
+            authService,
+            userService,
+            appDatabase,
+            application
+        )
+    }
+
 
     private var _classOwned: List<Classroom> = listOf()
 
@@ -107,10 +123,8 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
     }
 
     private fun setUpDrawerMenu() {
-
         showClassroomJoinedList()
         showClassroomOwnerList()
-
         drawerLayout.closeDrawers()
 
     }
@@ -125,7 +139,7 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
         // Handle item selection
         return when (item.itemId) {
             R.id.account_settings -> {
-                navController.navigate(R.id.accountSettingFragment)
+                navController.navigate(HomeFragmentDirections.actionHomeFragmentToAccountSettingFragment())
                 true
             }
             R.id.sign_out -> {
@@ -237,7 +251,6 @@ class MainActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelect
 
         replaceClassFragment(getClassFragment(currentClassId, itemClass.toString()))
         setAppBarTitle(itemClass.toString())
-
     }
 
     private fun showClassroomOwnerList() {
