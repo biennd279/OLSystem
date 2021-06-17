@@ -185,5 +185,7 @@
     <string name="email">Email</string>
     <string name="change_password">Change password</string>
     <string name="save">Save</string>
+    <string name="to">To:</string>
+
 
 </resources>
