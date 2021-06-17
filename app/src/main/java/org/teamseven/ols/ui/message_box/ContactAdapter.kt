@@ -17,12 +17,17 @@ import kotlin.collections.ArrayList
 class ContactAdapter(
     private val context: Context,
     private var ContactItems: List<ContactItem>,
+    private var selectedContactItems: List<ContactItem>,
     private val listener: (ContactItem) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.ViewHolder>(), Filterable {
 
     var ContactItemsFiltered: List<ContactItem>
     init {
-        ContactItemsFiltered = ContactItems
+        ContactItemsFiltered = ContactItems - selectedContactItems
+    }
+
+    fun setContactItemsFiltered() {
+        ContactItemsFiltered = ContactItems - selectedContactItems
     }
 
     //ViewHolder
@@ -62,14 +67,15 @@ class ContactAdapter(
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
                 if (charString.isEmpty()) {
-                    ContactItemsFiltered = ContactItems
+                    ContactItemsFiltered = ContactItems - selectedContactItems
                 } else {
                     val filteredList: MutableList<ContactItem> = ArrayList()
-                    for (row in ContactItems) {
+                    val tempList = ContactItems - selectedContactItems
+                    for (row in tempList) {
                         if (row.contact_name.toLowerCase(Locale.ROOT)
                                 .contains(charString.toLowerCase(Locale.ROOT))
                         ) {
-                            filteredList.add(row)
+                                filteredList.add(row)
                         }
                     }
                     ContactItemsFiltered = filteredList

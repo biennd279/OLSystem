@@ -7,11 +7,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentNewMessageBinding
 
@@ -21,7 +25,17 @@ class NewMessageFragment : Fragment() {
     private lateinit var binding: FragmentNewMessageBinding
     private lateinit var navController: NavController
     private var contactItems: MutableList<ContactItem> = mutableListOf()
-    private var mAdapter: ContactAdapter? = null
+    private var selectedContactItems: MutableList<ContactItem> = mutableListOf()
+
+    private lateinit var recyclerViewContacts: RecyclerView
+    private var mAdapterContacts: ContactAdapter? = null
+
+    private lateinit var recyclerViewSelectedContacts: RecyclerView
+    private var mAdapterSelectedContacts: SelectedContactAdapter? = null
+
+    private lateinit var btn_clear: ImageButton
+    private lateinit var eText_contact_search: EditText
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,27 +45,86 @@ class NewMessageFragment : Fragment() {
         binding = FragmentNewMessageBinding.inflate(inflater)
         navController = findNavController()
 
-        //recyclerView
-        val recyclerView = binding.recyclerContactList
+        btn_clear = binding.imgbtnNewMessageClear
+        eText_contact_search = binding.edittextContactSearch
+
+
+        // selected contacts recyclerView
+        setRecylerViewSelectedContacts()
+
+        // contacts recyclerView
+        setRecylerViewContacts()
+
+
+        //set event listenver for clear button and eddittex search
+        setEventListenerForSearch()
+
+        return binding.root
+    }
+
+    private fun setRecylerViewSelectedContacts() {
+        recyclerViewSelectedContacts = binding.recyclerSelectedContactList
 
         //call func from PeopleViewModel to get all the file information
         //this is a test, remove it latter
         //but i dont know, what happen when click the people item - member
-        getContactList()
 
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        mAdapter = activity?.let {
-            ContactAdapter(it, contactItems) {
+
+        recyclerViewSelectedContacts.layoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
+        mAdapterSelectedContacts = activity?.let {
+            SelectedContactAdapter(it, selectedContactItems) {
                 val toast = Toast.makeText(activity, it.contact_name, Toast.LENGTH_LONG)
                 toast.show()
 
                 Log.e("check_recycler_item_listener", "clicked")
+
+                setSelectedContactItemsListener(it)
             }
         }
-        recyclerView.adapter = mAdapter
+        recyclerViewSelectedContacts.adapter = mAdapterSelectedContacts
+        getSelectedContactList()
+        mAdapterSelectedContacts?.notifyDataSetChanged()
+    }
+
+    private fun getSelectedContactList() {
+        val avatar = resources.obtainTypedArray(R.array.avatar)
+        val classname = resources.getStringArray(R.array.classes_joined)
+
+        selectedContactItems.clear()
+        /*
+        for (i in classname.indices) {
+            selectedContactItems.add(
+                ContactItem(
+                    0,
+                    classname[i],
+                    0,
+                    avatar.getResourceId(i, 0),
+                )
+            )
+        }*/
+    }
+
+    private fun setSelectedContactItemsListener(contactItem : ContactItem) {
+        //remove from selectedContactItems
+        //add back contactItems
+
+        selectedContactItems.remove(contactItem)
+        mAdapterSelectedContacts?.notifyDataSetChanged()
+
+        mAdapterContacts?.setContactItemsFiltered()
+        mAdapterContacts?.notifyDataSetChanged()
+
+    }
+
+    private fun setEventListenerForSearch() {
+
+        //clear button
+        btn_clear.setOnClickListener{
+            eText_contact_search.text.clear()
+        }
 
 
-        binding.edittextContactSearch.addTextChangedListener(object : TextWatcher {
+        eText_contact_search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -61,12 +134,48 @@ class NewMessageFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                mAdapter?.filter?.filter(s)
+                mAdapterContacts?.filter?.filter(s)
+                if (s.isEmpty()) {
+                    btn_clear.visibility = View.INVISIBLE
+                } else {
+                    btn_clear.visibility = View.VISIBLE
+                }
             }
-
-
         })
-        return binding.root
+    }
+
+    private fun setRecylerViewContacts() {
+        recyclerViewContacts = binding.recyclerContactList
+
+        //call func from PeopleViewModel to get all the file information
+        //this is a test, remove it latter
+        //but i dont know, what happen when click the people item - member
+        getContactList()
+
+        recyclerViewContacts.layoutManager = LinearLayoutManager(activity)
+        mAdapterContacts = activity?.let {
+            ContactAdapter(it, contactItems, selectedContactItems) {
+                val toast = Toast.makeText(activity, it.contact_name, Toast.LENGTH_LONG)
+                toast.show()
+
+                Log.e("check_recycler_item_listener", "clicked")
+
+                setContactItemsListener(it)
+            }
+        }
+        recyclerViewContacts.adapter = mAdapterContacts
+
+    }
+
+    private fun setContactItemsListener(contactItem: ContactItem) {
+        //when click remove from the contact list
+        //add to the selected contact
+
+        selectedContactItems.add(contactItem)
+        mAdapterSelectedContacts?.notifyDataSetChanged()
+
+        mAdapterContacts?.setContactItemsFiltered()
+        mAdapterContacts?.notifyDataSetChanged()
     }
 
     private fun getContactList(){
@@ -74,6 +183,7 @@ class NewMessageFragment : Fragment() {
         val avatar = resources.obtainTypedArray(R.array.avatar)
         val classname = resources.getStringArray(R.array.classes_joined)
 
+        //People + group chat (class group chat + other (> 2, = 1 -> people))
         contactItems.clear()
         for (i in username.indices) {
             contactItems.add(
