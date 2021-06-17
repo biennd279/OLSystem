@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.teamseven.ols.databinding.FragmentClassOwnedSettingBinding
+import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.viewmodel.ClassroomViewModel
+import timber.log.Timber
+import kotlin.properties.Delegates
 
 
 class ClassOwnedSettingFragment : Fragment() {
@@ -15,8 +19,9 @@ class ClassOwnedSettingFragment : Fragment() {
     private lateinit var mClassName: TextView
     private lateinit var mClassCode: TextView
     private lateinit var mClassSchool: TextView
-    private var mtab: Int? = null
-    private var mClassId: Int? = null
+    private var mtab by Delegates.notNull<Int>()
+    private var mClassId by Delegates.notNull<Int>()
+    private lateinit var classroomViewModel: ClassroomViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +70,23 @@ class ClassOwnedSettingFragment : Fragment() {
         mClassName = binding.edittextSettingClassOwnedName
         mClassSchool = binding.edittextSettingClassOwnedSchool
 
-        //call func in ViewModel to get the infomation
-        mClassCode.text = "123"
-        mClassName.text = "justAClass"
-        mClassSchool.text = "a some shool i dont know"
+        classroomViewModel.classroomInfo(mClassId)
+            .observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Resource.Status.SUCCESS, Resource.Status.LOADING -> {
+                        if (it.data == null) {
+                            Timber.i(it.message)
+                            return@observe
+                        }
+
+                        mClassCode.text = it.data.code
+                        mClassName.text = it.data.name
+                        mClassSchool.text = it.data.school
+                    }
+
+                    Resource.Status.ERROR -> Timber.i(it.message)
+                }
+            }
 
     }
 
@@ -80,12 +98,13 @@ class ClassOwnedSettingFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int): ClassOwnedSettingFragment {
+        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): ClassOwnedSettingFragment {
             val classSettingFragment = ClassOwnedSettingFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             classSettingFragment.arguments = args
+            classSettingFragment.classroomViewModel = classroomViewModel
             return classSettingFragment
         }
 

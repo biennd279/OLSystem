@@ -44,7 +44,11 @@ class ClassOwnedSectionsPagerAdapter(
                 position + 1, mClassId,
                 classroomViewModel
             )
-            3 -> ClassOwnedSettingFragment.newInstance(position + 1, mClassId)
+            3 -> ClassOwnedSettingFragment.newInstance(
+                position + 1,
+                mClassId,
+                classroomViewModel
+            )
             else -> MessagesFragment.newInstance(position + 1, mClassId)
         }
     }
