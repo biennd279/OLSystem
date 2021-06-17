@@ -43,7 +43,6 @@ class LoadingFragment : Fragment() {
 
     private fun setUpController() {
         //it is the test, remove it latter
-        /*
         navController.navigate(
             //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
             LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()

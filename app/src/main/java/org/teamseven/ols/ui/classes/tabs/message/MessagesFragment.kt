@@ -57,7 +57,6 @@ class MessagesFragment : Fragment() {
             //navigate the new message fragment
             //have not created
             navController.navigate(R.id.newMessageFragment)
-        }
 
         return binding.root
     }
