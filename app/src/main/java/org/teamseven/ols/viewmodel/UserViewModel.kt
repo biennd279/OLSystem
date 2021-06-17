@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.first
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.UserService
@@ -26,4 +27,6 @@ class UserViewModel(
 
     val currentUser = userRepository.getCurrentUser(sessionManager.userId)
         .asLiveData(viewModelScope.coroutineContext)
+
+    val validateToken = userRepository.validateAndRefreshToken(sessionManager.token)
 }

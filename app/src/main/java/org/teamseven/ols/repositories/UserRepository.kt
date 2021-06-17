@@ -60,36 +60,18 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun validateAndRefreshToken(token: String?): Flow<Resource<String?>> {
-        return object : NetworkBoundResource<String?, LoginResponse>() {
+    fun validateAndRefreshToken(token: String?): Flow<Resource<LoginResponse?>> {
+        return flow {
+            val response = userService.refreshToken()
 
-            override fun isSuccessful(response: Response<LoginResponse>): Boolean {
-                return response.code() == 200
+            if (response.code() == 401) {
+                emit(Resource.error(null, "Invalid credentials"))
+            } else if (response.code() != 200) {
+                emit(Resource.error(null, "something when wrong"))
+            } else {
+                emit(Resource.success(response.body()))
             }
-
-            override fun query(): Flow<String?> {
-                return flow {
-                    emit(token)
-                }
-            }
-
-            override fun shouldFetch(data: String?): Boolean {
-                return token == null || JWT(token).isExpired(Constants.TIME_EXPIRE)
-            }
-
-            override suspend fun fetch(): Response<LoginResponse> {
-                return userService.refreshToken()
-            }
-
-            override fun processResponse(response: Response<LoginResponse>): String {
-                return response.body()!!.token
-            }
-
-            override suspend fun saveCallResult(item: String?) {
-                // Save in session manager over viewmodel/fragment, not here
-            }
-
-        }.asFlow()
+        }.flowOn(Dispatchers.Main)
     }
 
     fun updatePassword(updatePasswordRequest: UpdatePasswordRequest): Flow<Resource<Unit>> {

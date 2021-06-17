@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import org.teamseven.ols.databinding.ActivityMainBinding
 import org.teamseven.ols.databinding.NavHeaderMainBinding
 import org.teamseven.ols.db.AppDatabase
@@ -142,9 +143,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (it.isNullOrEmpty()) {
                     navController.navigate(R.id.signInFragment)
                 } else {
-                    loadProfile()
-                    showClassroomJoinedList()
-                    showClassroomOwnerList()
+                    val newToken = userViewModel.validateToken.first()
+                    if (newToken.status != Resource.Status.SUCCESS) {
+                        sessionManager.token = null
+                        navController.navigate(R.id.signInFragment)
+                    } else {
+                        sessionManager.token = newToken.data?.token!!
+                        loadProfile()
+                        showClassroomJoinedList()
+                        showClassroomOwnerList()
+                    }
                 }
             }
         }
@@ -201,9 +209,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.item_join_a_class -> {
                 navController.navigate(R.id.joinAClassFragment)
             }
+
             R.id.item_classes_joined, R.id.item_classes_owned, R.id.classes_joined, R.id.classes_owned -> {
                 Toast.makeText(applicationContext, "Chose a class", Toast.LENGTH_SHORT).show()
             }
+
             R.id.item_all_classes -> {
                 if (currentClassId != -1) {
                     currentClassId = -1
@@ -290,6 +300,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     _classOwned = it.data
 
+                    classesOwnedSubMenu.clear()
+
                     _classOwned.map { classroom -> classroom.name }
                         .withIndex()
                         .forEach { (index, value) ->
@@ -323,6 +335,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
 
                     _classJoined = it.data
+
+                    Timber.i(_classJoined.toString())
+
+                    classesJoinedSubMenu.clear()
 
                     _classJoined.map { classroom -> classroom.name }
                         .withIndex()
