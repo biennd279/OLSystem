@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import org.teamseven.ols.databinding.FragmentClassOwnedSettingBinding
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.ClassroomViewModel
@@ -21,7 +22,7 @@ class ClassOwnedSettingFragment : Fragment() {
     private lateinit var mClassSchool: TextView
     private var mtab by Delegates.notNull<Int>()
     private var mClassId by Delegates.notNull<Int>()
-    private lateinit var classroomViewModel: ClassroomViewModel
+    private val classroomViewModel: ClassroomViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,13 +99,12 @@ class ClassOwnedSettingFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): ClassOwnedSettingFragment {
+        fun newInstance(tab: Int, classId: Int): ClassOwnedSettingFragment {
             val classSettingFragment = ClassOwnedSettingFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             classSettingFragment.arguments = args
-            classSettingFragment.classroomViewModel = classroomViewModel
             return classSettingFragment
         }
 
