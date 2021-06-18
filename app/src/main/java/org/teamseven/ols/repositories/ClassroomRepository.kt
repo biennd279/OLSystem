@@ -183,4 +183,28 @@ class ClassroomRepository @Inject constructor(
 
         }.asFlow()
     }
+
+    fun updateSetting() {
+
+    }
+
+    fun leaveClassroom(classroomId: Int) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.leaveClass(classId = classroomId)
+
+        if (response.code() == 202) {
+            emit(Resource.loading(classroomId))
+            val classroom = classroomDao.findById(classroomId).first()
+            classroomDao.delete(classroom)
+            classroomUserDao.removeClassroomCrossRef(classroomId)
+            emit(Resource.success(classroomId))
+        } else {
+            emit(Resource.error(null, response.body().toString()))
+        }
+    }
+
+    fun joinClassroom(code: String) {
+
+    }
 }

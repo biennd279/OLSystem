@@ -34,7 +34,11 @@ class SessionManager constructor(context: Context) {
     @ExperimentalCoroutinesApi
     val flow : Flow<String?> = callbackFlow {
        val onTokenChange = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-           offer(sharedPreferences.getString(key, null))
+           when(key) {
+               USER_TOKEN -> offer(sharedPreferences.getString(key, null))
+               USER_ID -> {}
+               else -> {}
+           }
        }
 
         prefs.registerOnSharedPreferenceChangeListener(onTokenChange)

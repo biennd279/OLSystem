@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import org.teamseven.ols.MainActivity
 import org.teamseven.ols.databinding.FragmentClassJoinedSettingBinding
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.ClassroomViewModel
@@ -22,6 +24,7 @@ class ClassJoinedSettingFragment : Fragment() {
     private var mtab by Delegates.notNull<Int>()
     private var mClassId by Delegates.notNull<Int>()
     private lateinit var classroomViewModel: ClassroomViewModel
+    private lateinit var onLeaveClass: () -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +54,28 @@ class ClassJoinedSettingFragment : Fragment() {
             // change the classFragment to AllClassesFragment
             // by call onNavigationItemSelected(navigationView.menu.findItem(R.id.item_all_classes)) (write a func)
             // or change the currentClassId = -1 and reload by setUpCurrentClass func
+
+            classroomViewModel.leaveClass(mClassId)
+                .observe(viewLifecycleOwner) {
+                    when (it.status) {
+                        Resource.Status.LOADING -> {
+
+                        }
+
+                        Resource.Status.SUCCESS -> {
+                            (activity as MainActivity).onLeaveClassroom()
+                        }
+
+                        Resource.Status.ERROR -> {
+                            Timber.i(it.message)
+                            Toast.makeText(
+                                context,
+                                "Some thing when wrong",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
         }
 
         return binding.root
@@ -87,7 +112,11 @@ class ClassJoinedSettingFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): ClassJoinedSettingFragment {
+        fun newInstance(
+            tab: Int,
+            classId: Int,
+            classroomViewModel: ClassroomViewModel,
+        ): ClassJoinedSettingFragment {
             val classSettingFragment = ClassJoinedSettingFragment()
             val args = Bundle()
             args.putInt("tab", tab)

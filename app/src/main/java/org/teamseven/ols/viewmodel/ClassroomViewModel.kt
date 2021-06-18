@@ -59,4 +59,9 @@ class ClassroomViewModel(
         .flowOn(Dispatchers.IO)
         .catch { Timber.i(it) }
         .asLiveData(viewModelScope.coroutineContext)
+
+    fun leaveClass(classroomId: Int) = classroomRepository.leaveClassroom(classroomId)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
 }

@@ -14,13 +14,14 @@
             android:id="@+id/item_classes_owned"
             android:title="@string/classes_owned">
             <menu>
-                <item
-                    android:orderInCategory="1"
-                    android:id="@+id/item_create_a_class"
-                    android:icon="@drawable/ic_menu_add"
-                    android:title="@string/menu_create_class" />
+
             </menu>
         </item>
+        <item
+            android:orderInCategory="1"
+            android:id="@+id/item_create_a_class"
+            android:icon="@drawable/ic_menu_add"
+            android:title="@string/menu_create_class" />
     </group>
 
     <group android:id="@+id/classes_joined"
@@ -29,12 +30,13 @@
             android:id="@+id/item_classes_joined"
             android:title="@string/classes_joined">
             <menu>
-                <item
-                    android:orderInCategory="1"
-                    android:id="@+id/item_join_a_class"
-                    android:icon="@drawable/ic_menu_add"
-                    android:title="@string/menu_join_class" />
+
             </menu>
         </item>
+        <item
+            android:orderInCategory="1"
+            android:id="@+id/item_join_a_class"
+            android:icon="@drawable/ic_menu_add"
+            android:title="@string/menu_join_class" />
     </group>
 </menu>

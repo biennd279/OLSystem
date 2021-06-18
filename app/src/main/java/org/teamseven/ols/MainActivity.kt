@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SubMenu
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -28,6 +30,7 @@ import org.teamseven.ols.databinding.ActivityMainBinding
 import org.teamseven.ols.databinding.NavHeaderMainBinding
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.entities.Classroom
+import org.teamseven.ols.entities.User
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.network.UserService
@@ -52,6 +55,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
+
+    private lateinit var navHeader: View
+    private lateinit var headerBinding: NavHeaderMainBinding
+
 
     private val userService by lazy { UserService.create(application) }
 
@@ -80,10 +87,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
     }
 
+    init {
+        lifecycleScope.launchWhenResumed {
+            refreshProfile()
+            refreshClassroomJoined()
+            refreshClassroomOwner()
+        }
+    }
 
-    private var _classOwned: List<Classroom> = listOf()
 
-    private var _classJoined: List<Classroom> = listOf()
+    private var _classOwned: MutableLiveData<List<Classroom>> = MutableLiveData()
+
+    private var _classJoined: MutableLiveData<List<Classroom>> = MutableLiveData()
+
+    private var _currentPerson: MutableLiveData<User> = MutableLiveData()
 
 
     @ExperimentalCoroutinesApi
@@ -104,8 +121,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout = binding.drawerLayout
         navView = binding.navView
 
+        navHeader =  binding.navView.getHeaderView(0)
+        headerBinding  = NavHeaderMainBinding.bind(navHeader)
+
         //Dynamic Drawer Setup
         setUpDrawerMenu()
+        setUpUi()
         drawerLayout.closeDrawers()
 
         navView.setupWithNavController(navController)
@@ -135,6 +156,58 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    private fun setUpUi() {
+        val classesOwnedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_owned)
+        val classesOwnedSubMenu: SubMenu = classesOwnedGroupItem.subMenu
+        val classesJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
+        val classesJoinedSubMenu: SubMenu = classesJoinedGroupItem.subMenu
+
+        _classOwned.observe(this) {
+            classesOwnedSubMenu.clear()
+
+            it.map { classroom -> classroom.name }
+                .withIndex()
+                .forEach { (index, value) ->
+                    classesOwnedSubMenu.add(
+                        R.id.classes_owned,
+                        index + 1,
+                        0,
+                        value
+                    )
+                        .setIcon(R.drawable.ic_action_class)
+                }
+        }
+
+        _classJoined.observe(this) {
+            classesJoinedSubMenu.clear()
+
+            it.map { classroom -> classroom.name }
+                .withIndex()
+                .forEach { (index, value) ->
+                    classesJoinedSubMenu.add(
+                        R.id.classes_owned,
+                        index + 1,
+                        0,
+                        value
+                    )
+                        .setIcon(R.drawable.ic_action_class)
+                }
+        }
+
+        _currentPerson.observe(this) {
+            headerBinding.userName.text = it.name
+
+            if (it.avatarUrl != null) {
+                Glide.with(this).load(it.avatarUrl).into(headerBinding.avatar)
+            } else {
+                Glide.with(this).load(R.drawable.ic_person_outline)
+                    .into(headerBinding.avatar)
+
+            }
+        }
+
+    }
+
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     private fun setUpDrawerMenu() {
@@ -149,9 +222,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         navController.navigate(R.id.signInFragment)
                     } else {
                         sessionManager.token = newToken.data?.token!!
-                        loadProfile()
-                        showClassroomJoinedList()
-                        showClassroomOwnerList()
+                        refreshProfile()
+                        refreshClassroomJoined()
+                        refreshClassroomOwner()
                     }
                 }
             }
@@ -173,12 +246,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 true
             }
             R.id.sign_out -> {
-//                Toast.makeText(applicationContext, "signOutClicked", Toast.LENGTH_SHORT)
+                Toast.makeText(applicationContext, "signOutClicked", Toast.LENGTH_SHORT)
 
-                //this is for now, remove later
-                //delete session in SessionManager
-                //navigate to loadingFragment, right there, delete the database.
-                //navController.navigate(R.id.loadingFragment)
                 sessionManager.token = null
                 navController.navigate(R.id.signOptionFragment)
                 true
@@ -246,7 +315,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 AllClassesFragment.newInstance(classId, className)
             }
             else -> {
-                if (className in _classJoined.map { it.name }) {
+                if (className in _classOwned.value?.map { it.name } ?: listOf()) {
                     ClassOwnedFragment.newInstance(classId, className, classroomViewModel)
                 } else {
                     ClassJoinedFragment.newInstance(classId, className, classroomViewModel)
@@ -285,47 +354,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setAppBarTitle(itemClass.toString())
     }
 
-    private fun showClassroomOwnerList() {
-        val classesOwnedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_owned)
-        val classesOwnedSubMenu: SubMenu = classesOwnedGroupItem.subMenu
-
-
+    private fun refreshClassroomOwner() {
         classroomViewModel.classOwner.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS, Resource.Status.LOADING -> {
-
                     if (it.data.isNullOrEmpty()) {
                         return@observe
                     }
 
-                    _classOwned = it.data
-
-                    classesOwnedSubMenu.clear()
-
-                    _classOwned.map { classroom -> classroom.name }
-                        .withIndex()
-                        .forEach { (index, value) ->
-                            classesOwnedSubMenu.add(
-                                R.id.classes_owned,
-                                index + 1,
-                                0,
-                                value
-                            )
-                                .setIcon(R.drawable.ic_action_class)
-                        }
-
+                    _classOwned.value = it.data
                 }
 
-                Resource.Status.ERROR -> {
-                    Timber.i("Load error")
-                }
+                Resource.Status.ERROR -> Timber.i("Load owned classroom error ${it.message}")
+
             }
         }
     }
 
-    private fun showClassroomJoinedList() {
-        val classesJoinedGroupItem: MenuItem = navView.menu.findItem(R.id.item_classes_joined)
-        val classesJoinedSubMenu: SubMenu = classesJoinedGroupItem.subMenu
+    private fun refreshClassroomJoined() {
+
 
         classroomViewModel.classJoined.observe(this) {
             when (it.status) {
@@ -334,36 +381,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         return@observe
                     }
 
-                    _classJoined = it.data
+                    _classJoined.value = it.data
 
-                    Timber.i(_classJoined.toString())
-
-                    classesJoinedSubMenu.clear()
-
-                    _classJoined.map { classroom -> classroom.name }
-                        .withIndex()
-                        .forEach { (index, value) ->
-                            classesJoinedSubMenu.add(
-                                R.id.classes_owned,
-                                index + 1,
-                                0,
-                                value
-                            )
-                                .setIcon(R.drawable.ic_action_class)
-                        }
                 }
 
-                Resource.Status.ERROR -> {
-                    Timber.i("Load error ${it.message}")
-                }
+                Resource.Status.ERROR -> Timber.i("Load joined classroom error ${it.message}")
             }
         }
     }
 
-    private fun loadProfile() {
-        val navHeader = binding.navView.getHeaderView(0)
-        val headerBinding = NavHeaderMainBinding.bind(navHeader)
-
+    private fun refreshProfile() {
         userViewModel.currentUser.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS, Resource.Status.LOADING -> {
@@ -371,19 +398,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         return@observe
                     }
 
-                    headerBinding.userName.text = it.data.name
-
-                    if (it.data.avatarUrl != null) {
-                        Glide.with(this).load(it.data.avatarUrl).into(headerBinding.avatar)
-                    } else {
-                        Glide.with(this).load(R.drawable.ic_person_outline)
-                            .into(headerBinding.avatar)
-
-                    }
+                    _currentPerson.value = it.data
                 }
 
-                Resource.Status.ERROR -> Timber.i(it.message)
+                Resource.Status.ERROR -> Timber.i("Load profile error ${it.message}")
             }
         }
+    }
+
+    fun onLeaveClassroom() {
+        refreshClassroomJoined()
+        onNavigationItemSelected(navView.menu.findItem(R.id.item_all_classes))
     }
 }
