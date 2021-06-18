@@ -28,6 +28,15 @@
         <action
             android:id="@+id/action_homeFragment_to_accountSettingFragment"
             app:destination="@id/accountSettingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addMemberFragment"
+            app:destination="@id/addMemberFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_newMessageFragment"
+            app:destination="@id/newMessageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_messageBoxFragment"
+            app:destination="@id/messageBoxFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -88,8 +97,18 @@
         android:label="Share code" />
     <fragment
         android:id="@+id/newMessageFragment"
-        android:name="org.teamseven.ols.ui.message_box.NewMessageFragment"
+        android:name="org.teamseven.ols.ui.conversation.new_message.NewMessageFragment"
         android:label="New message"
-        tools:layout="@layout/fragment_new_message" />
+        tools:layout="@layout/fragment_new_message" >
+        <action
+            android:id="@+id/action_newMessageFragment_to_messageBoxFragment"
+            app:destination="@id/messageBoxFragment"
+            app:popUpTo="@id/newMessageFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageBoxFragment"
+        android:name="org.teamseven.ols.ui.conversation.message_box.MessageBoxFragment"
+        android:label="MessageBoxFragment" />
 
 </navigation>
