@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.message_box.new_message
+package org.teamseven.ols.ui.conversation.new_message
 
 import android.content.Context
 import android.view.LayoutInflater
