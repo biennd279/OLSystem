@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import org.teamseven.ols.R
 import org.teamseven.ols.ui.classes.tabs.class_setting.ClassOwnedSettingFragment
 import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
-import org.teamseven.ols.ui.classes.tabs.message.MessagesFragment
+import org.teamseven.ols.ui.classes.tabs.messages.ConversationFragment
 import org.teamseven.ols.ui.classes.tabs.people.PeopleFragment
 import org.teamseven.ols.viewmodel.ClassroomViewModel
 
@@ -38,7 +38,7 @@ class ClassOwnedSectionsPagerAdapter(
         // Return a PlaceholderFragment (defined as a static inner class below).
 
         return when(position) {
-            0 -> MessagesFragment.newInstance(position + 1, mClassId)
+            0 -> ConversationFragment.newInstance(position + 1, mClassId)
             1 -> FilesFragment.newInstance(position + 1, mClassId)
             2 -> PeopleFragment.newInstance(
                 position + 1, mClassId,
@@ -49,7 +49,7 @@ class ClassOwnedSectionsPagerAdapter(
                 mClassId,
                 classroomViewModel
             )
-            else -> MessagesFragment.newInstance(position + 1, mClassId)
+            else -> ConversationFragment.newInstance(position + 1, mClassId)
         }
     }
 

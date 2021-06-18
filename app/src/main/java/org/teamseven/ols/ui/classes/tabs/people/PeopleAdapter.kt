@@ -12,7 +12,6 @@ import org.teamseven.ols.databinding.ItemMemberViewBinding
 import org.teamseven.ols.entities.User
 
 class PeopleAdapter(
-    private val context: Context,
     private var peopleItems: List<User>,
     private val listener: (User) -> Unit
 ) : ListAdapter<User, RecyclerView.ViewHolder>(PeopleCallBack()) {

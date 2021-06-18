@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.teamseven.ols.R
 import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
-import org.teamseven.ols.ui.classes.tabs.message.MessagesFragment
+import org.teamseven.ols.ui.classes.tabs.messages.ConversationFragment
 
 
 private val TAB_TITLES = arrayOf(
@@ -29,9 +29,9 @@ class AllClassesSectionsPagerAdapter(private val context: Context, fm: FragmentM
         // Return a PlaceholderFragment (defined as a static inner class below).
 
         return when(position) {
-            0 -> MessagesFragment.newInstance(position + 1, mClassId)
+            0 -> ConversationFragment.newInstance(position + 1, mClassId)
             1 -> FilesFragment.newInstance(position + 1, mClassId)
-            else -> MessagesFragment.newInstance(position + 1, mClassId)
+            else -> ConversationFragment.newInstance(position + 1, mClassId)
         }
     }
 

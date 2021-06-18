@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         0,
                         value
                     )
-                        .setIcon(R.drawable.ic_action_class)
+                        .setIcon(R.drawable.ic_class_icon)
                 }
         }
 
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         0,
                         value
                     )
-                        .setIcon(R.drawable.ic_action_class)
+                        .setIcon(R.drawable.ic_class_icon)
                 }
         }
 

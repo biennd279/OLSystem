@@ -76,8 +76,8 @@ class PeopleFragment: Fragment() {
                        return@observe
                    }
 
-                   recyclerView.adapter = PeopleAdapter(activity?.applicationContext!!, it.data) {
-
+                   recyclerView.adapter = PeopleAdapter(it.data) {
+                       //Some thing to trigger when click
                    }
 
                    binding.textPeopleTotalMembers.text = it.data.size.toString()
