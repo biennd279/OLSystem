@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -26,7 +25,7 @@ class PeopleFragment: Fragment() {
 
     private lateinit var binding: FragmentPeopleBinding
     private lateinit var navController: NavController
-    private val classroomViewModel: ClassroomViewModel by activityViewModels()
+    private lateinit var classroomViewModel: ClassroomViewModel
     private var mClassId by Delegates.notNull<Int>()
 
     override fun onCreateView(
@@ -53,12 +52,13 @@ class PeopleFragment: Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int): PeopleFragment {
+        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): PeopleFragment {
             val peopleFragment = PeopleFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             peopleFragment.arguments = args
+            peopleFragment.classroomViewModel = classroomViewModel
             peopleFragment.mClassId = classId
             return peopleFragment
         }

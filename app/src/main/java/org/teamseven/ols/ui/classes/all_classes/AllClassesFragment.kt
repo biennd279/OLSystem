@@ -22,6 +22,8 @@ class AllClassesFragment : Fragment() {
     private var mClassName: String = ""
     private var mClassId: Int = -1
 
+    private lateinit var messageViewModel: MessageViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +41,15 @@ class AllClassesFragment : Fragment() {
         val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(
             requireContext(),
             childFragmentManager,
-            mClassId
+            mClassId,
+            messageViewModel
         )
         val viewPager: ViewPager = binding.allClassesViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.allClassesTabs
         tabs.setupWithViewPager(viewPager)
+
+
 
         //menu
         //setHasOptionsMenu(true)
@@ -52,17 +57,31 @@ class AllClassesFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        /*
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            navController.popBackStack(R.id.loadingFragment, true)
+
+        }
+
+         */
+
+    }
+
     companion object {
 
         fun newInstance(
             classId: Int,
             className: String,
+            messageViewModel: MessageViewModel
         ): AllClassesFragment {
             val allClassesFragment = AllClassesFragment()
             val args = Bundle()
             args.putString("className", className)
             args.putInt("classId", classId)
             allClassesFragment.arguments = args
+            allClassesFragment.messageViewModel = messageViewModel
             return allClassesFragment
         }
     }

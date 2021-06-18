@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +30,7 @@ class ConversationFragment : Fragment() {
     private var mTab = 0
     private var mClassId = -1
     private var _conversations: MutableLiveData<MutableList<Conversation>> = MutableLiveData()
-    private val messageViewModel: MessageViewModel by activityViewModels()
+    private lateinit var messageViewModel: MessageViewModel
 
     init {
         lifecycleScope.launchWhenResumed {
@@ -74,12 +73,14 @@ class ConversationFragment : Fragment() {
         fun newInstance(
             tab: Int,
             classId: Int,
+            messageViewModel: MessageViewModel
         ): ConversationFragment {
             val messagesFragment = ConversationFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             messagesFragment.arguments = args
+            messagesFragment.messageViewModel = messageViewModel
             return messagesFragment
         }
     }

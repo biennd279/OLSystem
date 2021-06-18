@@ -30,7 +30,9 @@ private val TAB_TITLES = arrayOf(
 class ClassJoinedSectionsPagerAdapter(
     private val context: Context,
     fm: FragmentManager,
-    classId : Int
+    classId : Int,
+    val classroomViewModel: ClassroomViewModel,
+    private var messageViewModel: MessageViewModel
 ) : FragmentPagerAdapter(fm) {
 
     private var mClassId : Int = classId
@@ -42,20 +44,24 @@ class ClassJoinedSectionsPagerAdapter(
         return when(position) {
             0 -> ConversationFragment.newInstance(
                 position + 1,
-                mClassId
+                mClassId,
+                messageViewModel
             )
             1 -> FilesFragment.newInstance(position + 1, mClassId)
             2 -> PeopleFragment.newInstance(
                 position + 1,
-                mClassId
+                mClassId,
+                classroomViewModel
             )
             3 -> ClassJoinedSettingFragment.newInstance(
                 position + 1,
-                mClassId
+                mClassId,
+                classroomViewModel
             )
             else -> ConversationFragment.newInstance(
                 position + 1,
-                mClassId
+                mClassId,
+                messageViewModel
             )
         }
     }

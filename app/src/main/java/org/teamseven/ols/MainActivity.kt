@@ -324,19 +324,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             -1 -> {
                 AllClassesFragment.newInstance(
                     classId,
-                    className
+                    className,
+                    messageViewModel
                 )
             }
             else -> {
                 if (className in _classOwned.value?.map { it.name } ?: listOf()) {
                     ClassOwnedFragment.newInstance(
                         classId,
-                        className
+                        className,
+                        classroomViewModel,
+                        messageViewModel
                     )
                 } else {
                     ClassJoinedFragment.newInstance(
                         classId,
-                        className
+                        className,
+                        classroomViewModel,
+                        messageViewModel
                     )
                 }
 
