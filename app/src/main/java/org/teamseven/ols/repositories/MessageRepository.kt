@@ -154,7 +154,6 @@ class MessageRepository @Inject constructor(
             }
 
             override fun processResponse(response: Response<List<User>>): List<User> {
-                Timber.i(response.body().toString())
                 return response.body()!!
             }
 
@@ -189,7 +188,6 @@ class MessageRepository @Inject constructor(
             }
 
             override fun processResponse(response: Response<List<Message>>): List<MessageWithSender> {
-                Timber.i(response.body().toString())
                 return response.body()?.map {
                     MessageWithSender(
                         message = it,
