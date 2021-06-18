@@ -49,6 +49,9 @@ class MessagesFragment : Fragment() {
             MessageAdapter(it, messageItems) {
                 val toast = Toast.makeText(activity, it.username, Toast.LENGTH_LONG)
                 toast.show()
+
+                //set navigate to message box
+                setMessageItemClickListener(it)
             }
         }
 
@@ -60,6 +63,10 @@ class MessagesFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun setMessageItemClickListener(it: MessageItem) {
+        navController.navigate(R.id.messageBoxFragment)
     }
 
     companion object {

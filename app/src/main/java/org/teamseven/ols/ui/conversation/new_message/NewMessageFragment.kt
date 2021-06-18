@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.message_box.new_message
+package org.teamseven.ols.ui.conversation.new_message
 
 import android.os.Bundle
 import android.text.Editable
@@ -55,10 +55,21 @@ class NewMessageFragment : Fragment() {
         setRecylerViewContacts()
 
 
-        //set event listenver for clear button and eddittex search
+        //set event listener for clear button and eddittex search
         setEventListenerForSearch()
 
+        //set event listener when send button clicked
+        setEventListenerForSent()
+
         return binding.root
+    }
+
+    private fun setEventListenerForSent() {
+        binding.imgbtnNewMessageSend.setOnClickListener {
+
+            // + navigate with sending new conversation data
+            navController.navigate(NewMessageFragmentDirections.actionNewMessageFragmentToMessageBoxFragment())
+        }
     }
 
     private fun setRecylerViewSelectedContacts() {
