@@ -109,6 +109,6 @@
     <fragment
         android:id="@+id/messageBoxFragment"
         android:name="org.teamseven.ols.ui.conversation.message_box.MessageBoxFragment"
-        android:label="MessageBoxFragment" />
+        android:label="Message" />
 
 </navigation>
