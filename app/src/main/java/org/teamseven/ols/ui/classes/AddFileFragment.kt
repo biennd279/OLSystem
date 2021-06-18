@@ -1,9 +1,9 @@
 package org.teamseven.ols.ui.classes
 
 import android.app.Activity.RESULT_OK
+import android.content.ClipData
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -15,22 +15,19 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.initialize
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.storage.ktx.storageMetadata
 import org.teamseven.ols.databinding.FragmentAddFileBinding
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import kotlin.math.log
 
 class AddFileFragment : Fragment() {
     private lateinit var binding : FragmentAddFileBinding
-    private lateinit var navController : NavController
 
     private val TAG = "StorageActivity"
     private val CHOOSING_IMAGE_REQUEST = 1234
@@ -48,14 +45,16 @@ class AddFileFragment : Fragment() {
         binding = FragmentAddFileBinding.inflate(inflater)
 
         binding.tvFileName.text = ""
-        imageReference = FirebaseStorage.getInstance().reference.child("images")
+        binding.imgSuccess.visibility = View.INVISIBLE
+
+        imageReference = FirebaseStorage.getInstance().reference
 
         binding.btnChooseFile.setOnClickListener {
             val intent = Intent()
             intent.type = "*/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(
-                Intent.createChooser(intent, "Select Image"),
+                Intent.createChooser(intent, "Select File"),
                 CHOOSING_IMAGE_REQUEST
             )
         }
@@ -67,12 +66,17 @@ class AddFileFragment : Fragment() {
                     Toast.makeText(requireContext(), "Enter file name!", Toast.LENGTH_SHORT).show()
                 }
 
-                val fileRef = imageReference!!.child(fileName + "." + getFileExtension(fileUri!!))
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.BASIC_ISO_DATE
+                val formatted = current.format(formatter)
+
+                val fileRef = imageReference!!.child(fileName + "_" + formatted + "." + getFileExtension(fileUri!!))
                 fileRef.putFile(fileUri!!)
                     .addOnSuccessListener { taskSnapshot ->
-//                        Log.e(TAG, "Uri: " + taskSnapshot.downloadUrl)
-//                        Log.e(TAG, "Name: " + taskSnapshot.metadata!!.name)
+//                        val name = taskSnapshot.metadata!!.name
+//                        val url = taskSnapshot.uploadSessionUri.toString()
                         binding.tvFileName.text = taskSnapshot.metadata!!.path + " - " + taskSnapshot.metadata!!.sizeBytes / 1024 + " KBs"
+                        binding.imgSuccess.visibility = View.VISIBLE
                         Toast.makeText(requireContext(), "File Uploaded ", Toast.LENGTH_LONG).show()
                     }
                     .addOnFailureListener { exception ->
@@ -100,18 +104,8 @@ class AddFileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-//        if (bitmap != null) {
-//            bitmap!!.recycle()
-//        }
-
         if (requestCode == CHOOSING_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
             fileUri = data.data
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, fileUri)
-//                imgFile.setImageBitmap(bitmap)
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//            }
         }
     }
 
@@ -124,7 +118,6 @@ class AddFileFragment : Fragment() {
 
     private fun validateInputFileName(fileName: String): Boolean {
         if (TextUtils.isEmpty(fileName)) {
-            //Toast.makeText(requireContext(), "Enter file name!", Toast.LENGTH_SHORT).show()
             return false
         }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,8 +20,9 @@
             android:layout_width="15dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:backgroundTint="#E7E9EB"
-            android:text="Choose File"
+            android:text="Choose"
             android:textColor="@color/black" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -48,12 +50,14 @@
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_upload_file"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Upload" />
+            android:src="@drawable/ic_cloud_upload"
+            app:tint="@color/white"
+            app:backgroundTint="@color/app_primary_dark_blue" />
 
     </LinearLayout>
 
@@ -65,18 +69,13 @@
         android:layout_margin="5dp"
         android:text="File Name" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="5">
 
     <ImageView
-        android:id="@+id/imgFile"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4.7" />
-
-    </LinearLayout>
+        android:id="@+id/img_success"
+        android:layout_width="47dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:src="@drawable/ic_check_circle_outline" />
 
 </LinearLayout>
