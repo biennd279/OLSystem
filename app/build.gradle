@@ -70,7 +70,10 @@ dependencies {
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
 
     //Room + + Lifecycle dependencies
     implementation "androidx.room:room-runtime:$room_version"

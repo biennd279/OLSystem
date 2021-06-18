@@ -86,5 +86,9 @@
         android:id="@+id/addMemberFragment"
         android:name="org.teamseven.ols.ui.classes.AddMemberFragment"
         android:label="Share code" />
+    <fragment
+        android:id="@+id/addFileFragment"
+        android:name="org.teamseven.ols.ui.classes.AddFileFragment"
+        android:label="Upload file" />
 
 </navigation>
