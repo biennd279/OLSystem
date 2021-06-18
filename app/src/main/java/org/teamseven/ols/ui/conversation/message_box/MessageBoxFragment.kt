@@ -65,7 +65,54 @@ class MessageBoxFragment : Fragment() {
             //sendData to server and database
             //add to ConversationItems - list
 
+            conversationItems.add(
+                ConversationItem(
+                    15,
+                    "The quick brown fox jumps over the lazy dog \\n The quick brown fox jumps over the lazy dog",
+                    0,
+                    "ahihi",
+                    R.drawable.ic_launcher_background,
+                    "August 15, 2021",
+                    "18:00"
+                )
+            )
+            conversationItems.add(
+                ConversationItem(
+                    15,
+                    "Nah",
+                    0,
+                    "ahihi",
+                    R.drawable.ic_action_cancel_fill,
+                    "August 15, 2021",
+                    "18:00"
+                )
+            )
+
+            conversationItems.add(
+                ConversationItem(
+                    15,
+                    "The quick brown fox jumps over the lazy dog.",
+                    1,
+                    "ahihi",
+                    R.drawable.ic_person_outline,
+                    "August 15, 2021",
+                    "18:00"
+                )
+            )
+
+            conversationItems.add(
+                ConversationItem(
+                    15,
+                    "Okay",
+                    1,
+                    "ahihi",
+                    R.drawable.ic_action_cancel,
+                    "August 15, 2021",
+                    "18:00"
+                )
+            )
             mAdapterConversations?.notifyDataSetChanged()
+            eText_new_message.text.clear()
         }
 
         eText_new_message.addTextChangedListener(object : TextWatcher {
@@ -90,7 +137,7 @@ class MessageBoxFragment : Fragment() {
 
     private fun setRecyclerViewConversations() {
         recyclerViewConversations = binding.recyclerMessageBox
-        recyclerViewConversations.layoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, true)
+        recyclerViewConversations.layoutManager = LinearLayoutManager(activity , LinearLayoutManager.VERTICAL, false)
 
         getConversationMessages()
         mAdapterConversations = activity?.let {
@@ -115,8 +162,10 @@ class MessageBoxFragment : Fragment() {
         val time = resources.getStringArray(R.array.time)
         val date = resources.getStringArray(R.array.upload_date)
 
+        //add to the bottom of the list - index = len(list)
         conversationItems.clear()
-        for (i in message.indices) {
+        //for (i in message.indices) {
+            val i = 0
             conversationItems.add(
                 ConversationItem(
                     i,
@@ -128,7 +177,7 @@ class MessageBoxFragment : Fragment() {
                     time[0]
                 )
             )
-        }
+        //}
 
 
     }
