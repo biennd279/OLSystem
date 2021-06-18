@@ -124,6 +124,10 @@ class NewMessageFragment : Fragment() {
         mAdapterContacts?.setContactItemsFiltered()
         mAdapterContacts?.notifyDataSetChanged()
 
+        //if no selected contact hide the new message box
+        if (selectedContactItems.isEmpty()) {
+            binding.rlayoutNewMessageChatbox.visibility = View.GONE
+        }
     }
 
     private fun setEventListenerForSearch() {
@@ -186,6 +190,11 @@ class NewMessageFragment : Fragment() {
 
         mAdapterContacts?.setContactItemsFiltered()
         mAdapterContacts?.notifyDataSetChanged()
+
+        //if there are selected contacts, show the new message box
+        if (!selectedContactItems.isEmpty()) {
+            binding.rlayoutNewMessageChatbox.visibility = View.VISIBLE
+        }
     }
 
     private fun getContactList(){
