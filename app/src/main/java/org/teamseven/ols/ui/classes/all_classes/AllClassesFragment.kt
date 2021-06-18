@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
@@ -22,9 +23,6 @@ class AllClassesFragment : Fragment() {
     private var mClassName: String = ""
     private var mClassId: Int = -1
 
-    private lateinit var messageViewModel: MessageViewModel
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mClassId = requireArguments().getInt("classId")
@@ -41,8 +39,7 @@ class AllClassesFragment : Fragment() {
         val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(
             requireContext(),
             childFragmentManager,
-            mClassId,
-            messageViewModel
+            mClassId
         )
         val viewPager: ViewPager = binding.allClassesViewPager
         viewPager.adapter = sectionsPagerAdapter
@@ -57,31 +54,17 @@ class AllClassesFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        /*
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.loadingFragment, true)
-
-        }
-
-         */
-
-    }
-
     companion object {
 
         fun newInstance(
             classId: Int,
-            className: String,
-            messageViewModel: MessageViewModel
+            className: String
         ): AllClassesFragment {
             val allClassesFragment = AllClassesFragment()
             val args = Bundle()
             args.putString("className", className)
             args.putInt("classId", classId)
             allClassesFragment.arguments = args
-            allClassesFragment.messageViewModel = messageViewModel
             return allClassesFragment
         }
     }

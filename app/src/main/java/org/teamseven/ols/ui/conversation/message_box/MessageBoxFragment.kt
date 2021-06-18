@@ -46,8 +46,6 @@ class MessageBoxFragment : Fragment() {
 
     private var _members: MutableLiveData<List<User>> = MutableLiveData()
 
-
-
     init {
         lifecycleScope.launchWhenResumed {
             refreshMembers()

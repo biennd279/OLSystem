@@ -216,6 +216,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+
+        //Only call for active lazy load
+        messageViewModel
+
     }
 
     @ExperimentalCoroutinesApi
@@ -324,24 +328,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             -1 -> {
                 AllClassesFragment.newInstance(
                     classId,
-                    className,
-                    messageViewModel
+                    className
                 )
             }
             else -> {
                 if (className in _classOwned.value?.map { it.name } ?: listOf()) {
                     ClassOwnedFragment.newInstance(
                         classId,
-                        className,
-                        classroomViewModel,
-                        messageViewModel
+                        className
                     )
                 } else {
                     ClassJoinedFragment.newInstance(
                         classId,
-                        className,
-                        classroomViewModel,
-                        messageViewModel
+                        className
                     )
                 }
 

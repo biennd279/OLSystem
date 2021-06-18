@@ -25,7 +25,6 @@ class AllClassesSectionsPagerAdapter(
     private val context: Context,
     fm: FragmentManager,
     classId : Int,
-    private var messageViewModel: MessageViewModel
 ) : FragmentPagerAdapter(fm) {
 
     private var mClassId : Int = classId
@@ -37,14 +36,12 @@ class AllClassesSectionsPagerAdapter(
         return when(position) {
             0 -> ConversationFragment.newInstance(
                 position + 1,
-                mClassId,
-                messageViewModel
+                mClassId
             )
             1 -> FilesFragment.newInstance(position + 1, mClassId)
             else -> ConversationFragment.newInstance(
                 position + 1,
-                mClassId,
-                messageViewModel
+                mClassId
             )
         }
     }

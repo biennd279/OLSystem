@@ -6,15 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.LiveData
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentPeopleBinding
-import org.teamseven.ols.entities.User
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.ClassroomViewModel
 import timber.log.Timber
@@ -25,8 +22,10 @@ class PeopleFragment: Fragment() {
 
     private lateinit var binding: FragmentPeopleBinding
     private lateinit var navController: NavController
-    private lateinit var classroomViewModel: ClassroomViewModel
     private var mClassId by Delegates.notNull<Int>()
+
+    private val classroomViewModel: ClassroomViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,13 +51,12 @@ class PeopleFragment: Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(tab: Int, classId: Int, classroomViewModel: ClassroomViewModel): PeopleFragment {
+        fun newInstance(tab: Int, classId: Int): PeopleFragment {
             val peopleFragment = PeopleFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             peopleFragment.arguments = args
-            peopleFragment.classroomViewModel = classroomViewModel
             peopleFragment.mClassId = classId
             return peopleFragment
         }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import org.teamseven.ols.MainActivity
 import org.teamseven.ols.databinding.FragmentClassJoinedSettingBinding
 import org.teamseven.ols.utils.Resource
@@ -23,8 +24,10 @@ class ClassJoinedSettingFragment : Fragment() {
     private lateinit var mClassSchool: TextView
     private var mtab by Delegates.notNull<Int>()
     private var mClassId by Delegates.notNull<Int>()
-    private lateinit var classroomViewModel: ClassroomViewModel
     private lateinit var onLeaveClass: () -> Unit
+
+    private val classroomViewModel: ClassroomViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,15 +117,13 @@ class ClassJoinedSettingFragment : Fragment() {
         @JvmStatic
         fun newInstance(
             tab: Int,
-            classId: Int,
-            classroomViewModel: ClassroomViewModel,
+            classId: Int
         ): ClassJoinedSettingFragment {
             val classSettingFragment = ClassJoinedSettingFragment()
             val args = Bundle()
             args.putInt("tab", tab)
             args.putInt("classId", classId)
             classSettingFragment.arguments = args
-            classSettingFragment.classroomViewModel = classroomViewModel
             return classSettingFragment
         }
 
