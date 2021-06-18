@@ -1,56 +1,43 @@
 package org.teamseven.ols.viewmodel
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import org.teamseven.ols.R
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import org.teamseven.ols.db.AppDatabase
-import org.teamseven.ols.db.UserDao
-import org.teamseven.ols.network.AuthService
-import org.teamseven.ols.network.UserService
-import org.teamseven.ols.repositories.UserRepository
-import java.util.*
+import org.teamseven.ols.network.MessageApiService
+import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.utils.SessionManager
+import timber.log.Timber
 
-class MessageViewModel(context: Context) : ViewModel(){
+class MessageViewModel(
+    messageApiService: MessageApiService,
+    appDatabase: AppDatabase,
+    application: Application
+) : ViewModel(){
 
-    private lateinit var authService: AuthService
-    private lateinit var userService: UserService
-    private lateinit var userDao: UserDao
-    private lateinit var appDatabase: AppDatabase
-    private lateinit var userRepository: UserRepository
+    private val sessionManager = SessionManager(application)
 
-    init {
-        authService = AuthService.create(context)
-        userService = UserService.create(context)!!
-        appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        userDao = appDatabase.userDao()
-
-        userRepository = UserRepository(
-            userService,
-            authService,
-            userDao
-        )
-    }
+    private var messageRepository = MessageRepository(
+        appDatabase,
+        messageApiService,
+        sessionManager
+    )
 
 
-    fun getListOfMessage() {
-        val avatar = Arrays.asList(R.array.avatar)
-        val username = Arrays.asList(R.array.username)
-        val status = Arrays.asList(R.array.status)
-        val time = Arrays.asList(R.array.time)
-
-        /*
-        val messageItems : List<MessageItem> = ListOf()
-
-        for (i in username.indices) {
-            messageItems.add(
-                MessageItem(
-                    username[i],
-                    status[i],
-                    avatar.getResourceId(i, 0),
-                    time[i]
-                )
-            )
-        }*/
-    }
+    fun conversations(classroomId: Int) =
+        if (classroomId != -1) {
+            messageRepository.getAllConversationsInClassroom(classroomId)
+                .flowOn(Dispatchers.IO)
+                .catch { Timber.i(it.localizedMessage) }
+                .asLiveData(viewModelScope.coroutineContext)
+        } else {
+            messageRepository.getAllConversation()
+                .flowOn(Dispatchers.IO)
+                .catch { Timber.i(it) }
+                .asLiveData(viewModelScope.coroutineContext)
+        }
 }

@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.teamseven.ols.R
+import org.teamseven.ols.repositories.MessageRepository
 import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
 import org.teamseven.ols.ui.classes.tabs.messages.ConversationFragment
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 private val TAB_TITLES = arrayOf(
@@ -19,8 +21,12 @@ private val TAB_TITLES = arrayOf(
  * one of the sections/tabs/pages.
  */
 @Suppress("DEPRECATION")
-class AllClassesSectionsPagerAdapter(private val context: Context, fm: FragmentManager, classId : Int)
-    : FragmentPagerAdapter(fm) {
+class AllClassesSectionsPagerAdapter(
+    private val context: Context,
+    fm: FragmentManager,
+    classId : Int,
+    private var messageViewModel: MessageViewModel
+) : FragmentPagerAdapter(fm) {
 
     private var mClassId : Int = classId
 
@@ -29,9 +35,17 @@ class AllClassesSectionsPagerAdapter(private val context: Context, fm: FragmentM
         // Return a PlaceholderFragment (defined as a static inner class below).
 
         return when(position) {
-            0 -> ConversationFragment.newInstance(position + 1, mClassId)
+            0 -> ConversationFragment.newInstance(
+                position + 1,
+                mClassId,
+                messageViewModel
+            )
             1 -> FilesFragment.newInstance(position + 1, mClassId)
-            else -> ConversationFragment.newInstance(position + 1, mClassId)
+            else -> ConversationFragment.newInstance(
+                position + 1,
+                mClassId,
+                messageViewModel
+            )
         }
     }
 

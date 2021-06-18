@@ -11,6 +11,8 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentAllClassesBinding
+import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 class AllClassesFragment : Fragment() {
@@ -20,12 +22,13 @@ class AllClassesFragment : Fragment() {
     private var mClassName: String = ""
     private var mClassId: Int = -1
 
+    private lateinit var messageViewModel: MessageViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mClassId = requireArguments().getInt("classId")
         mClassName = requireArguments().getString("className", "")
-
     }
 
 
@@ -35,7 +38,12 @@ class AllClassesFragment : Fragment() {
         binding = FragmentAllClassesBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
+        val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(
+            requireContext(),
+            childFragmentManager,
+            mClassId,
+            messageViewModel
+        )
         val viewPager: ViewPager = binding.allClassesViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.allClassesTabs
@@ -62,14 +70,18 @@ class AllClassesFragment : Fragment() {
     }
 
     companion object {
-        val TAG = AllClassesFragment::class.java.simpleName
 
-        fun newInstance(classId: Int, className: String): AllClassesFragment {
+        fun newInstance(
+            classId: Int,
+            className: String,
+            messageViewModel: MessageViewModel
+        ): AllClassesFragment {
             val allClassesFragment = AllClassesFragment()
             val args = Bundle()
             args.putString("className", className)
             args.putInt("classId", classId)
             allClassesFragment.arguments = args
+            allClassesFragment.messageViewModel = messageViewModel
             return allClassesFragment
         }
     }

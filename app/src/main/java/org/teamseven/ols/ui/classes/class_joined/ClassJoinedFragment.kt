@@ -9,7 +9,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.databinding.FragmentClassBinding
+import org.teamseven.ols.repositories.MessageRepository
 import org.teamseven.ols.viewmodel.ClassroomViewModel
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 class ClassJoinedFragment : Fragment() {
@@ -20,6 +22,7 @@ class ClassJoinedFragment : Fragment() {
     private var mClassId: Int = -1
 
     private lateinit var classroomViewModel : ClassroomViewModel
+    private lateinit var messageViewModel: MessageViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +41,8 @@ class ClassJoinedFragment : Fragment() {
             requireContext(),
             childFragmentManager,
             mClassId,
-            classroomViewModel
+            classroomViewModel,
+            messageViewModel
         )
         val viewPager: ViewPager = binding.classViewPager
         viewPager.adapter = sectionsPagerAdapter
@@ -66,13 +70,19 @@ class ClassJoinedFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(classId: Int, className: String, classroomViewModel: ClassroomViewModel): ClassJoinedFragment {
+        fun newInstance(
+            classId: Int,
+            className: String,
+            classroomViewModel: ClassroomViewModel,
+            messageViewModel: MessageViewModel
+        ): ClassJoinedFragment {
             val classFragment = ClassJoinedFragment()
             val args = Bundle()
             args.putString("className", className)
             args.putInt("classId", classId)
             classFragment.arguments = args
             classFragment.classroomViewModel = classroomViewModel
+            classFragment.messageViewModel = messageViewModel
             return classFragment
         }
     }

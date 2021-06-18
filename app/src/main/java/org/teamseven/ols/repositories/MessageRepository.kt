@@ -34,12 +34,11 @@ class MessageRepository @Inject constructor(
     val sessionManager: SessionManager
 ) {
     private val userDao: UserDao by lazy { database.userDao() }
-    private val classroomDao: ClassroomDao by lazy { database.classroomDao() }
     private val conversationDao: ConversationDao by lazy { database.conversationDao() }
     private val messageDao: MessageDao by lazy { database.messageDao() }
 
     //TODO update SocketIOService when token changes
-    private val messageSocketIOService = MessageSocketIOService(
+    private var messageSocketIOService = MessageSocketIOService(
         uri = "${Constants.BASE_WS_URL}/${Constants.MESSAGE_NAMESPACE}",
         token = sessionManager.token!!
     )
@@ -62,7 +61,45 @@ class MessageRepository @Inject constructor(
         }
     }
 
-    fun getAllConversations(classroomId: Int): Flow<Resource<List<Conversation>>> {
+    fun getAllConversation(): Flow<Resource<List<Conversation>>> {
+        return object : NetworkBoundResource<List<Conversation>, List<Conversation>>() {
+            override fun query(): Flow<List<Conversation>> {
+                return conversationDao.getAllConversations()
+            }
+
+            override fun shouldFetch(data: List<Conversation>?): Boolean {
+                return data.isNullOrEmpty()
+            }
+
+            override suspend fun fetch(): Response<List<Conversation>> {
+                return messageApiService.getAllConversation()
+            }
+
+            override fun processResponse(response: Response<List<Conversation>>): List<Conversation> {
+                return response.body()!!
+            }
+
+            override suspend fun saveCallResult(item: List<Conversation>) {
+                conversationDao.insert(
+                    *item.toTypedArray()
+                )
+
+                val classroomAndConversation = item.map {
+                    ClassroomAndConversationCrossRef(
+                        classroomId = it.classroomId,
+                        conversationId = it.id
+                    )
+                }
+
+                conversationDao.insertClassroomConversation(
+                    *classroomAndConversation.toTypedArray()
+                )
+            }
+
+        }.asFlow()
+    }
+
+    fun getAllConversationsInClassroom(classroomId: Int): Flow<Resource<List<Conversation>>> {
         return object : NetworkBoundResource<List<Conversation>, List<Conversation>>() {
             override fun query(): Flow<List<Conversation>> {
                 return conversationDao.getAllConversationsInClassroom(classroomId)

@@ -33,6 +33,7 @@ import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.ClassroomService
+import org.teamseven.ols.network.MessageApiService
 import org.teamseven.ols.network.UserService
 import org.teamseven.ols.ui.classes.HomeFragmentDirections
 import org.teamseven.ols.ui.classes.all_classes.AllClassesFragment
@@ -40,10 +41,7 @@ import org.teamseven.ols.ui.classes.class_joined.ClassJoinedFragment
 import org.teamseven.ols.ui.classes.class_owned.ClassOwnedFragment
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.utils.SessionManager
-import org.teamseven.ols.viewmodel.ClassroomViewModel
-import org.teamseven.ols.viewmodel.ClassroomViewModelFactory
-import org.teamseven.ols.viewmodel.UserViewModel
-import org.teamseven.ols.viewmodel.UserViewModelFactory
+import org.teamseven.ols.viewmodel.*
 import timber.log.Timber
 
 
@@ -70,6 +68,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val sessionManager by lazy { SessionManager(application) }
 
+    private val messageApiService by lazy { MessageApiService.create(application) }
+
+
+
     private val classroomViewModel: ClassroomViewModel by viewModels {
         ClassroomViewModelFactory(
             classroomService,
@@ -82,6 +84,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         UserViewModelFactory(
             authService,
             userService,
+            appDatabase,
+            application
+        )
+    }
+
+    private val messageViewModel: MessageViewModel by viewModels {
+        MessageViewModelFactory(
+            messageApiService,
             appDatabase,
             application
         )
@@ -312,13 +322,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         return when (classId) {
             -1 -> {
-                AllClassesFragment.newInstance(classId, className)
+                AllClassesFragment.newInstance(
+                    classId,
+                    className,
+                    messageViewModel
+                )
             }
             else -> {
                 if (className in _classOwned.value?.map { it.name } ?: listOf()) {
-                    ClassOwnedFragment.newInstance(classId, className, classroomViewModel)
+                    ClassOwnedFragment.newInstance(
+                        classId,
+                        className,
+                        classroomViewModel,
+                        messageViewModel
+                    )
                 } else {
-                    ClassJoinedFragment.newInstance(classId, className, classroomViewModel)
+                    ClassJoinedFragment.newInstance(
+                        classId,
+                        className,
+                        classroomViewModel,
+                        messageViewModel
+                    )
                 }
 
             }
