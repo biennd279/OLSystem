@@ -1,4 +1,4 @@
-package org.teamseven.ols.ui.message_box
+package org.teamseven.ols.ui.conversation.new_message
 
 /*
     // contact is a people / member or group - class group - conversation

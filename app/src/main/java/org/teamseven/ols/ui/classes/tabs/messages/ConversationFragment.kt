@@ -17,6 +17,7 @@ import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentMessagesBinding
 import org.teamseven.ols.entities.Conversation
 import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.ui.classes.HomeFragmentDirections
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.MessageViewModel
 import timber.log.Timber
@@ -52,7 +53,12 @@ class ConversationFragment : Fragment() {
         binding = FragmentMessagesBinding.inflate(inflater)
         navController = findNavController()
 
-        setUpUi()
+        setUpUi() {
+            navController.navigate(
+                HomeFragmentDirections
+                    .actionHomeFragmentToMessageBoxFragment(it.id)
+            )
+        }
 
         binding.btnNewMessage.setOnClickListener {
             //navigate the new message fragment

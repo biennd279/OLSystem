@@ -25,20 +25,7 @@ class AccountSettingFragment() : Fragment() {
 
     private lateinit var binding: FragmentAccountSettingBinding
 
-    private val userService by lazy { UserService.create(requireContext()) }
-
-    private val authService by lazy { AuthService.create(requireContext()) }
-
-    private val appDatabase by lazy { AppDatabase.create(requireContext()) }
-
-    private val userViewModel: UserViewModel by activityViewModels() {
-        UserViewModelFactory(
-            userService = userService,
-            authService = authService,
-            appDatabase = appDatabase,
-            application = requireActivity().application
-        )
-    }
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.LiveData
 import org.teamseven.ols.R
 import org.teamseven.ols.repositories.MessageRepository
 import org.teamseven.ols.ui.classes.tabs.class_setting.ClassJoinedSettingFragment

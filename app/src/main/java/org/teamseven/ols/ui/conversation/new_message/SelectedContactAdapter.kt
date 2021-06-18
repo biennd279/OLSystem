@@ -1,18 +1,12 @@
-package org.teamseven.ols.ui.message_box
+package org.teamseven.ols.ui.conversation.new_message
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import org.teamseven.ols.R
-import java.util.*
-import kotlin.collections.ArrayList
 
 class SelectedContactAdapter(
     private val context: Context,

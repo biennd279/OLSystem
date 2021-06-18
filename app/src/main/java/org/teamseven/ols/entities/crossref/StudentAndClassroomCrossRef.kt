@@ -15,6 +15,4 @@ data class StudentAndClassroomCrossRef(
 
     @ColumnInfo(name = "classroom_id")
     val classroomId: Int
-) {
-    constructor(student: User, classroom: Classroom): this(student.id, classroom.id)
-}
+)

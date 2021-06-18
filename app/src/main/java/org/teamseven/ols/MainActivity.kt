@@ -360,7 +360,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentManagerTransaction.commit()
     }
 
-    private fun setAppBarTitle(title: String) {
+    fun setAppBarTitle(title: String) {
         supportActionBar?.title = title
     }
 

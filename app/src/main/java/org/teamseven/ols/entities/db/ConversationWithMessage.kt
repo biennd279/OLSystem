@@ -1,5 +1,6 @@
 package org.teamseven.ols.entities.db
 
+import androidx.room.DatabaseView
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
@@ -14,7 +15,7 @@ data class ConversationWithMessage(
     @Relation(
         parentColumn = "conversation_id",
         entityColumn = "message_id",
-        associateBy = Junction(ConversationAndMessageCrossRef::class)
+        entity = Message::class
     )
-    val messages: List<Message>
+    val messages: List<MessageWithSender>
 )

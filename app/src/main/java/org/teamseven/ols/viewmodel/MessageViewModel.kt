@@ -40,4 +40,14 @@ class MessageViewModel(
                 .catch { Timber.i(it) }
                 .asLiveData(viewModelScope.coroutineContext)
         }
+
+    fun messages(conversationId: Int) = messageRepository.getConversationMessage(conversationId)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
+
+    fun members(conversationId: Int) = messageRepository.getConversationMembers(conversationId)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
 }

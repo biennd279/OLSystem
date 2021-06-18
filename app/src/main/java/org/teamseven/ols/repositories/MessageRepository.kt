@@ -6,6 +6,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import io.socket.client.Socket
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 import org.teamseven.ols.db.*
 import org.teamseven.ols.entities.Conversation
 import org.teamseven.ols.entities.Message
@@ -14,6 +15,7 @@ import org.teamseven.ols.entities.crossref.ClassroomAndConversationCrossRef
 import org.teamseven.ols.entities.crossref.ConversationAndMemberCrossRef
 import org.teamseven.ols.entities.crossref.ConversationAndMessageCrossRef
 import org.teamseven.ols.entities.crossref.SenderAndMessageCrossRef
+import org.teamseven.ols.entities.db.MessageWithSender
 import org.teamseven.ols.entities.requests.FirstMessageRequest
 import org.teamseven.ols.entities.requests.NewConversationRequest
 import org.teamseven.ols.entities.requests.NewMessageRequest
@@ -176,33 +178,42 @@ class MessageRepository @Inject constructor(
         }.asFlow()
     }
 
-    fun getConversationMessage(conversationId: Int): Flow<Resource<List<Message>>> {
-        return object : NetworkBoundResource<List<Message>, List<Message>>() {
-            override fun query(): Flow<List<Message>> {
+    fun getConversationMessage(conversationId: Int): Flow<Resource<List<MessageWithSender>>> {
+        return object : NetworkBoundResource<List<MessageWithSender>, List<Message>>() {
+            override fun query(): Flow<List<MessageWithSender>> {
                 return conversationDao.getConversationMessages(conversationId).map { it.messages }
-            }
-
-            override fun shouldFetch(data: List<Message>?): Boolean {
-                return data.isNullOrEmpty()
             }
 
             override suspend fun fetch(): Response<List<Message>> {
                 return messageApiService.getConversationMessages(conversationId)
             }
 
-            override fun processResponse(response: Response<List<Message>>): List<Message> {
-                return response.body()!!
+            override fun processResponse(response: Response<List<Message>>): List<MessageWithSender> {
+                Timber.i(response.body().toString())
+                return response.body()?.map {
+                    MessageWithSender(
+                        message = it,
+                        sender = runBlocking {
+                            userDao.findById(it.senderId).first()
+                        }
+                    )
+                }!!
             }
 
-            override suspend fun saveCallResult(item: List<Message>) {
+
+            override fun shouldFetch(data: List<MessageWithSender>?): Boolean {
+                return data.isNullOrEmpty()
+            }
+
+            override suspend fun saveCallResult(item: List<MessageWithSender>) {
                 messageDao.insert(
-                    *item.toTypedArray()
+                    *item.map { it.message }. toTypedArray()
                 )
 
                 val conversationCrossRefs = item.map {
                     ConversationAndMessageCrossRef(
                         conversationId = conversationId.toLong(),
-                        messageId = it.id
+                        messageId = it.message.id
                     )
                 }
 
@@ -212,8 +223,8 @@ class MessageRepository @Inject constructor(
 
                 val userCrossRefs = item.map {
                     SenderAndMessageCrossRef(
-                        messageId = it.id,
-                        senderId = it.senderId
+                        messageId = it.message.id,
+                        senderId = it.sender.id
                     )
                 }
 
