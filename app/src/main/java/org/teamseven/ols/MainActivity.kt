@@ -45,6 +45,7 @@ import org.teamseven.ols.viewmodel.*
 import timber.log.Timber
 
 
+@ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -97,11 +98,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
     }
 
+
     init {
         lifecycleScope.launchWhenResumed {
             refreshProfile()
             refreshClassroomJoined()
             refreshClassroomOwner()
+        }
+
+        lifecycleScope.launchWhenStarted {
+            sessionManager.flow.collect {
+                if (it.isNullOrEmpty()) {
+                    navController.navigate(R.id.signInFragment)
+                } else {
+                    val newToken = userViewModel.validateToken.first()
+                    if (newToken.status != Resource.Status.SUCCESS) {
+                        sessionManager.token = null
+                        navController.navigate(R.id.signInFragment)
+                    } else {
+                        sessionManager.token = newToken.data?.token!!
+                        messageViewModel.onUpdateToken()
+                        refreshProfile()
+                        refreshClassroomJoined()
+                        refreshClassroomOwner()
+                    }
+                }
+            }
         }
     }
 
@@ -134,8 +156,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navHeader =  binding.navView.getHeaderView(0)
         headerBinding  = NavHeaderMainBinding.bind(navHeader)
 
-        //Dynamic Drawer Setup
-        setUpDrawerMenu()
         setUpUi()
         drawerLayout.closeDrawers()
 
@@ -216,35 +236,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-
         //Only call for active lazy load
         messageViewModel
 
     }
 
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
-    private fun setUpDrawerMenu() {
-        lifecycleScope.launchWhenStarted {
-            sessionManager.flow.collect {
-                if (it.isNullOrEmpty()) {
-                    navController.navigate(R.id.signInFragment)
-                } else {
-                    val newToken = userViewModel.validateToken.first()
-                    if (newToken.status != Resource.Status.SUCCESS) {
-                        sessionManager.token = null
-                        navController.navigate(R.id.signInFragment)
-                    } else {
-                        sessionManager.token = newToken.data?.token!!
-                        refreshProfile()
-                        refreshClassroomJoined()
-                        refreshClassroomOwner()
-                    }
-                }
-            }
-        }
-
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

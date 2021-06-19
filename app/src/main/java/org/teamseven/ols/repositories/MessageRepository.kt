@@ -39,11 +39,14 @@ class MessageRepository @Inject constructor(
     private val conversationDao: ConversationDao by lazy { database.conversationDao() }
     private val messageDao: MessageDao by lazy { database.messageDao() }
 
-    //TODO update SocketIOService when token changes
     private var messageSocketIOService = MessageSocketIOService(
         uri = "${Constants.BASE_WS_URL}/${Constants.MESSAGE_NAMESPACE}",
-        token = sessionManager.token!!
+        token = sessionManager.token ?: ""
     )
+
+    fun onUpdateToken() {
+        messageSocketIOService.updateToken(sessionManager.token!!)
+    }
 
     init {
         messageSocketIOService.socket.apply {

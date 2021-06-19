@@ -22,7 +22,7 @@ import org.teamseven.ols.utils.Resource
 
 class MessageSocketIOService(uri: String, token: String) {
 
-    private val opts: IO.Options = IO.Options.builder()
+    private var opts: IO.Options = IO.Options.builder()
         .setUpgrade(false)
         .setTransports(
             arrayOf(WebSocket.NAME)
@@ -37,6 +37,12 @@ class MessageSocketIOService(uri: String, token: String) {
     val socket: Socket
         get() = _socket
 
+
+    fun updateToken(token: String) {
+        _socket.close()
+        opts.auth["token"] = token
+        _socket.open()
+    }
 
     fun open() {
         _socket.connect()

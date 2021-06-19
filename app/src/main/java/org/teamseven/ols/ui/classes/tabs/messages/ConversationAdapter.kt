@@ -29,9 +29,9 @@ class ConversationAdapter(
 
         @SuppressLint("ResourceType")
         fun bind(items: Conversation, listener: (Conversation) -> Unit) {
-            username.text = items.name
+            username.text = if (items.name.isNullOrEmpty()) "A Convesation" else items.name
             status.text = items.type
-            time.text = items.classroomId.toString()
+            time.text = items.id.toString()
 
             Glide.with(itemView.context).load(R.drawable.ic_class_icon).into(avatar)
 
