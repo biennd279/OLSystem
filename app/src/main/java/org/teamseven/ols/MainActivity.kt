@@ -26,6 +26,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.teamseven.ols.databinding.ActivityMainBinding
 import org.teamseven.ols.databinding.NavHeaderMainBinding
 import org.teamseven.ols.db.AppDatabase
@@ -427,12 +428,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun onLeaveClassroom() {
         refreshClassroomJoined()
-        onNavigationItemSelected(navView.menu.findItem(R.id.item_all_classes))
     }
 
     fun onJoinedClassroom(classId: Int) {
         refreshClassroomJoined()
-        currentClassId = classId
-        setUpCurrentClass()
+        currentClassId = -1
+    }
+
+    fun onCreateClassroom(classId: Int, classroomName: String) {
+        refreshClassroomOwner()
+        currentClassId = -1
     }
 }

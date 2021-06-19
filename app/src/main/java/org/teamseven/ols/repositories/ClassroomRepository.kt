@@ -8,6 +8,7 @@ import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
 import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
 import org.teamseven.ols.entities.crossref.StudentAndClassroomCrossRef
+import org.teamseven.ols.entities.requests.ClassroomInfoRequest
 import org.teamseven.ols.entities.responses.AllClassroomsResponse
 import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.utils.Resource
@@ -210,6 +211,22 @@ class ClassroomRepository @Inject constructor(
         val response = classroomService.joinWithCode(code)
 
         if (response.code() == 202) {
+            emit(Resource.loading(response.body()?.id))
+            classroomDao.insertAll(response.body()!!)
+            emit(Resource.success(response.body()?.id))
+        } else {
+            emit(Resource.error(null, response.body().toString()))
+        }
+    }
+
+    fun createClassroom(classroomInfoRequest: ClassroomInfoRequest) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.createClassroom(
+            classroomInfoRequest
+        )
+
+        if (response.code() == 201) {
             emit(Resource.loading(response.body()?.id))
             classroomDao.insertAll(response.body()!!)
             emit(Resource.success(response.body()?.id))

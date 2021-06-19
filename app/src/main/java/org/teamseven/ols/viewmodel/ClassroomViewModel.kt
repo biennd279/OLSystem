@@ -14,6 +14,7 @@ import org.teamseven.ols.db.ClassroomDao
 import org.teamseven.ols.db.UserDao
 import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
+import org.teamseven.ols.entities.requests.ClassroomInfoRequest
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.network.UserService
@@ -66,6 +67,12 @@ class ClassroomViewModel(
         .asLiveData(viewModelScope.coroutineContext)
 
     fun joinClassroom(code: String) = classroomRepository.joinClassroom(code)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
+
+    fun createClassroom(classroomInfoRequest: ClassroomInfoRequest) = classroomRepository
+        .createClassroom(classroomInfoRequest)
         .flowOn(Dispatchers.IO)
         .catch { Timber.i(it) }
         .asLiveData(viewModelScope.coroutineContext)
