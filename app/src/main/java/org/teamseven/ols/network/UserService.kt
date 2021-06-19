@@ -48,7 +48,7 @@ interface UserService {
                 .create(UserService::class.java)
         }
 
-        fun create(context: Context): UserService? {
+        fun create(context: Context): UserService {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(context))
                 .build()

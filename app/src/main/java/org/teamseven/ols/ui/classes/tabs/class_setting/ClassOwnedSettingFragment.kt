@@ -6,7 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import org.teamseven.ols.databinding.FragmentClassOwnedSettingBinding
+import org.teamseven.ols.entities.requests.ClassroomInfoRequest
+import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.viewmodel.ClassroomViewModel
+import timber.log.Timber
+import kotlin.properties.Delegates
 
 
 class ClassOwnedSettingFragment : Fragment() {
@@ -15,8 +22,10 @@ class ClassOwnedSettingFragment : Fragment() {
     private lateinit var mClassName: TextView
     private lateinit var mClassCode: TextView
     private lateinit var mClassSchool: TextView
-    private var mtab: Int? = null
-    private var mClassId: Int? = null
+    private var mtab by Delegates.notNull<Int>()
+    private var mClassId by Delegates.notNull<Int>()
+
+    private val classroomViewModel: ClassroomViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +53,33 @@ class ClassOwnedSettingFragment : Fragment() {
             // update in server and database
             // update in classesOwned <List> from MainActivity (write a  function and call it)
             // reload the classFragment by call setUpCurrentClass func
+            classroomViewModel.updateClassroom(
+                mClassId,
+                ClassroomInfoRequest(
+                    name = binding.edittextSettingClassOwnedName.text.toString(),
+                    school = binding.edittextSettingClassOwnedSchool.text.toString()
+                )
+            ).observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Resource.Status.LOADING -> {
+
+                    }
+                    Resource.Status.SUCCESS -> {
+                        Toast.makeText(
+                            context,
+                            "Update success",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    Resource.Status.ERROR -> {
+                        Toast.makeText(
+                            context,
+                            "Some thing when wrong",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
         }
 
         // delete the class
@@ -65,15 +101,27 @@ class ClassOwnedSettingFragment : Fragment() {
         mClassName = binding.edittextSettingClassOwnedName
         mClassSchool = binding.edittextSettingClassOwnedSchool
 
-        //call func in ViewModel to get the infomation
-        mClassCode.text = "123"
-        mClassName.text = "justAClass"
-        mClassSchool.text = "a some shool i dont know"
+        classroomViewModel.classroomInfo(mClassId)
+            .observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Resource.Status.SUCCESS, Resource.Status.LOADING -> {
+                        if (it.data == null) {
+                            Timber.i(it.message)
+                            return@observe
+                        }
+
+                        mClassCode.text = it.data.code
+                        mClassName.text = it.data.name
+                        mClassSchool.text = it.data.school
+                    }
+
+                    Resource.Status.ERROR -> Timber.i(it.message)
+                }
+            }
 
     }
 
     companion object {
-        val TAG = ClassOwnedSettingFragment::class.java.simpleName
 
         /**
          * Returns a new instance of this fragment for the given section

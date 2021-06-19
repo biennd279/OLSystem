@@ -3,11 +3,16 @@ package org.teamseven.ols.ui.classes.class_joined
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.databinding.FragmentClassBinding
+import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.viewmodel.ClassroomViewModel
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 class ClassJoinedFragment : Fragment() {
@@ -16,6 +21,7 @@ class ClassJoinedFragment : Fragment() {
     private lateinit var navController: NavController
     private var mClassName: String = ""
     private var mClassId: Int = -1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +35,15 @@ class ClassJoinedFragment : Fragment() {
         binding = FragmentClassBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = ClassJoinedSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
+        val sectionsPagerAdapter = ClassJoinedSectionsPagerAdapter(
+            requireContext(),
+            childFragmentManager,
+            mClassId
+        )
         val viewPager: ViewPager = binding.classViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.classTabs
         tabs.setupWithViewPager(viewPager)
-
-
 
         //menu
         //setHasOptionsMenu(true)
@@ -43,22 +51,11 @@ class ClassJoinedFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.loadingFragment, true)
-
-        }
-        */
-
-    }
-
     companion object {
-        val TAG = ClassJoinedFragment::class.java.simpleName
-
-        fun newInstance(classId: Int, className: String): ClassJoinedFragment {
+        fun newInstance(
+            classId: Int,
+            className: String
+        ): ClassJoinedFragment {
             val classFragment = ClassJoinedFragment()
             val args = Bundle()
             args.putString("className", className)

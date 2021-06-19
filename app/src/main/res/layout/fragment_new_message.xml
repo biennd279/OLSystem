@@ -1,75 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.message_box.NewMessageFragment">
+    tools:context=".ui.conversation.new_message.NewMessageFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/text_contact_to"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:orientation="horizontal">
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/transparent"
+        android:enabled="false"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:inputType="none"
+        android:text="@string/to"
+        android:textColor="#8E8E8E"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rLayout_search_bar"
+        app:layout_constraintEnd_toStartOf="@+id/rLayout_search_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/conversation_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_selected_contact_list"
+        app:layout_constraintEnd_toEndOf="@+id/rLayout_search_bar"
+        app:layout_constraintStart_toStartOf="@+id/rLayout_search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/rLayout_search_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rLayout_search_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_search_bottom_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <EditText
-            android:id="@+id/text_contact_to"
-            android:layout_width="wrap_content"
+            android:id="@+id/edittext_contact_search"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="21dp"
-            android:background="@android:color/transparent"
-            android:enabled="false"
-            android:focusable="false"
-            android:gravity="center_vertical"
-            android:inputType="none"
-            android:text="@string/to"
-            android:textColor="#8E8E8E"
+            android:hint="@string/select_participants"
+            android:inputType="text"
             android:textSize="20sp" />
 
-        <RelativeLayout
+        <ImageButton
+            android:id="@+id/imgbtn_new_message_clear"
+            style="@android:style/Widget.Holo.ImageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:contentDescription="@string/new_message"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_action_clear_dark" />
+    </RelativeLayout>
 
-            <EditText
-                android:id="@+id/edittext_contact_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="16dp"
-                android:inputType="text"
-                android:textSize="20sp"/>
+    <View
+        android:id="@+id/view_search_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0"
+        app:layout_constraintTop_toBottomOf="@+id/rLayout_search_bar"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_selected_contact_list"/>
 
-            <ImageButton
-                android:id="@+id/imgbtn_new_message_next"
-                app:srcCompat = "@drawable/ic_action_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                style="@android:style/Widget.Holo.ImageButton"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/new_message"/>
-        </RelativeLayout>
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_to_contact"
+        android:id="@+id/recycler_selected_contact_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_selected_contact_bottom_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_search_bottom_line" />
 
+
+    <View
+        android:id="@+id/view_selected_contact_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_selected_contact_list"
+        app:layout_constraintBottom_toTopOf="@+id/textView_new_message_contact"/>
+
+    <TextView
+        android:id="@+id/textView_new_message_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/contact"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_selected_contact_bottom_line" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_contact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/textview_new_message_indicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_new_message_contact" />
 
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/textview_new_message_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/view_contact_bottom_line"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <View
+        android:id="@+id/view_contact_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0"
+        app:layout_constraintBottom_toTopOf="@+id/rlayout_new_message_chatbox" />
+
+    <RelativeLayout
+        android:id="@+id/rlayout_new_message_chatbox"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <EditText
+            android:id="@+id/edittext_new_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/imgbtn_new_message_send"
+            android:background="@android:color/transparent"
+            android:hint="@string/enter_message"
+            android:inputType="text"
+            android:maxLines="6"
+            tools:ignore="Autofill" />
+
+        <ImageButton
+            android:id="@+id/imgbtn_new_message_send"
+            style="@android:style/Widget.Holo.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:contentDescription="@string/new_message"
+            app:srcCompat="@drawable/ic_action_send" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

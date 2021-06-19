@@ -33,4 +33,20 @@ interface UserWithClassroomDao {
 
     @Delete
     suspend fun deleteStudent(studentAndClassroomCrossRef: StudentAndClassroomCrossRef)
+
+    @Query("delete from classroom_and_conversation_cross_ref where classroom_id = :classroomId")
+    suspend fun removeClassroomAndConversationCrossRef(classroomId: Int)
+
+    @Query("delete from owner_and_classroom_cross_ref where classroom_id = :classroomId")
+    suspend fun removeClassroomAndOwnerCrossRef(classroomId: Int)
+
+    @Query("delete from student_and_classroom_cross_ref where classroom_id = :classroomId")
+    suspend fun removeClassroomAndStudentCrossRef(classroomId: Int)
+
+    @Transaction
+    suspend fun removeClassroomCrossRef(classroomId: Int) {
+        removeClassroomAndConversationCrossRef(classroomId)
+        removeClassroomAndOwnerCrossRef(classroomId)
+        removeClassroomAndStudentCrossRef(classroomId)
+    }
 }

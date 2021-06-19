@@ -8,6 +8,7 @@ import org.teamseven.ols.entities.Classroom
 import org.teamseven.ols.entities.User
 import org.teamseven.ols.entities.crossref.OwnerAndClassroomCrossRef
 import org.teamseven.ols.entities.crossref.StudentAndClassroomCrossRef
+import org.teamseven.ols.entities.requests.ClassroomInfoRequest
 import org.teamseven.ols.entities.responses.AllClassroomsResponse
 import org.teamseven.ols.network.ClassroomService
 import org.teamseven.ols.utils.Resource
@@ -23,7 +24,7 @@ class ClassroomRepository @Inject constructor(
     fun getClassOwner(userId: Int): Flow<Resource<List<Classroom>>> {
         return object: NetworkBoundResource<List<Classroom>, AllClassroomsResponse>() {
             override fun shouldFetch(data: List<Classroom>?): Boolean {
-                return data == null || data.isEmpty()
+                return data.isNullOrEmpty()
             }
 
             override fun query(): Flow<List<Classroom>> {
@@ -58,7 +59,7 @@ class ClassroomRepository @Inject constructor(
     fun getClassJoined(userId: Int): Flow<Resource<List<Classroom>>> {
         return object: NetworkBoundResource<List<Classroom>, AllClassroomsResponse>() {
             override fun shouldFetch(data: List<Classroom>?): Boolean {
-                return data == null || data.isEmpty()
+                return data.isNullOrEmpty()
             }
 
             override fun query(): Flow<List<Classroom>> {
@@ -182,5 +183,65 @@ class ClassroomRepository @Inject constructor(
 
 
         }.asFlow()
+    }
+
+    fun leaveClassroom(classroomId: Int) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.leaveClass(classId = classroomId)
+
+        if (response.code() == 202) {
+            emit(Resource.loading(classroomId))
+            val classroom = classroomDao.findById(classroomId).first()
+            classroomDao.delete(classroom)
+            classroomUserDao.removeClassroomCrossRef(classroomId)
+            emit(Resource.success(classroomId))
+        } else {
+            emit(Resource.error(null, response.body().toString()))
+        }
+    }
+
+    fun joinClassroom(code: String) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.joinWithCode(code)
+
+        if (response.code() == 202) {
+            emit(Resource.loading(response.body()?.id))
+            classroomDao.insertAll(response.body()!!)
+            emit(Resource.success(response.body()?.id))
+        } else {
+            emit(Resource.error(null, response.body().toString()))
+        }
+    }
+
+    fun createClassroom(classroomInfoRequest: ClassroomInfoRequest) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.createClassroom(
+            classroomInfoRequest
+        )
+
+        if (response.code() == 201) {
+            emit(Resource.loading(response.body()?.id))
+            classroomDao.insertAll(response.body()!!)
+            emit(Resource.success(response.body()?.id))
+        } else {
+            emit(Resource.error(null, response.body().toString()))
+        }
+    }
+
+    fun updateSetting(classroomId: Int, classroomInfoRequest: ClassroomInfoRequest) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.update(classroomId, classroomInfoRequest)
+        if (response.code() == 202) {
+            val newClassroom = response.body()!!
+            emit(Resource.loading(newClassroom))
+            classroomDao.updateAll(newClassroom)
+            emit(Resource.success(newClassroom))
+        } else {
+            emit(Resource.error(null, response.errorBody().toString()))
+        }
     }
 }

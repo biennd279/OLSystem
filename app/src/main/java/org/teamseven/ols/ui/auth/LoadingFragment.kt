@@ -6,12 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.runBlocking
 import org.teamseven.ols.MainActivity
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentLoadingBinding
+import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.utils.SessionManager
+import org.teamseven.ols.viewmodel.LoadingViewModel
 import timber.log.Timber
 
 
@@ -20,13 +28,17 @@ class LoadingFragment : Fragment() {
     private lateinit var binding: FragmentLoadingBinding
     private lateinit var navController: NavController
     private lateinit var sessionManager: SessionManager
+    private lateinit var loadingViewModel: LoadingViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentLoadingBinding.inflate(inflater)
         sessionManager = SessionManager(requireContext())
         navController = findNavController()
+        loadingViewModel = LoadingViewModel(requireContext())
 
         return binding.root
     }
@@ -47,8 +59,6 @@ class LoadingFragment : Fragment() {
 //            //LoadingFragmentDirections.actionLoadingFragmentToSignOptionFragment()
 //            LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
 //        )
-//
-
 
         // check user signing state through SessionManager
         if (sessionManager.token.isNullOrEmpty()) {
@@ -64,13 +74,10 @@ class LoadingFragment : Fragment() {
             // or signed before - the data is already in Room
             // check it and fetch it => call function from LoadingViewModel
             // then navigate it into HomeFragment
-
             navController.navigate(
                 LoadingFragmentDirections.actionLoadingFragmentToHomeFragment()
             )
         }
-
-
     }
 
 }

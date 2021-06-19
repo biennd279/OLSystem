@@ -7,6 +7,7 @@ import org.teamseven.ols.entities.User
 
 @Entity(
     primaryKeys = ["user_id", "classroom_id"],
+    tableName = "student_and_classroom_cross_ref"
 )
 data class StudentAndClassroomCrossRef(
     @ColumnInfo(name = "user_id")
@@ -14,6 +15,4 @@ data class StudentAndClassroomCrossRef(
 
     @ColumnInfo(name = "classroom_id")
     val classroomId: Int
-) {
-    constructor(student: User, classroom: Classroom): this(student.id, classroom.id)
-}
+)

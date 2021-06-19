@@ -1,56 +1,123 @@
 package org.teamseven.ols.viewmodel
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import org.teamseven.ols.R
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import org.teamseven.ols.db.AppDatabase
 import org.teamseven.ols.db.UserDao
-import org.teamseven.ols.network.AuthService
-import org.teamseven.ols.network.UserService
-import org.teamseven.ols.repositories.UserRepository
-import java.util.*
+import org.teamseven.ols.entities.db.MessageWithSender
+import org.teamseven.ols.entities.requests.NewMessageRequest
+import org.teamseven.ols.network.MessageApiService
+import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.utils.SessionManager
+import timber.log.Timber
 
-class MessageViewModel(context: Context) : ViewModel(){
+class MessageViewModel(
+    messageApiService: MessageApiService,
+    private val appDatabase: AppDatabase,
+    application: Application
+) : ViewModel(){
 
-    private lateinit var authService: AuthService
-    private lateinit var userService: UserService
-    private lateinit var userDao: UserDao
-    private lateinit var appDatabase: AppDatabase
-    private lateinit var userRepository: UserRepository
+    private val sessionManager = SessionManager(application)
 
-    init {
-        authService = AuthService.create(context)
-        userService = UserService.create(context)!!
-        appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        userDao = appDatabase.userDao()
+    private var messageRepository = MessageRepository(
+        appDatabase,
+        messageApiService,
+        sessionManager
+    )
 
-        userRepository = UserRepository(
-            userService,
-            authService,
-            userDao
-        )
+    fun onUpdateToken() {
+        messageRepository.onUpdateToken()
     }
 
 
-    fun getListOfMessage() {
-        val avatar = Arrays.asList(R.array.avatar)
-        val username = Arrays.asList(R.array.username)
-        val status = Arrays.asList(R.array.status)
-        val time = Arrays.asList(R.array.time)
+    fun conversations(classroomId: Int) =
+        if (classroomId != -1) {
+            messageRepository.getAllConversationsInClassroom(classroomId)
+                .flowOn(Dispatchers.IO)
+                .catch { Timber.i(it.localizedMessage) }
+                .asLiveData(viewModelScope.coroutineContext)
+        } else {
+            messageRepository.getAllConversation()
+                .flowOn(Dispatchers.IO)
+                .catch { Timber.i(it) }
+                .asLiveData(viewModelScope.coroutineContext)
+        }
 
-        /*
-        val messageItems : List<MessageItem> = ListOf()
+    fun messages(conversationId: Int) = messageRepository.getConversationMessage(conversationId)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
 
-        for (i in username.indices) {
-            messageItems.add(
-                MessageItem(
-                    username[i],
-                    status[i],
-                    avatar.getResourceId(i, 0),
-                    time[i]
+    fun members(conversationId: Int) = messageRepository.getConversationMembers(conversationId)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
+
+    @ExperimentalCoroutinesApi
+    val newMessage = messageRepository.getNewMessage()
+        .filter {
+            it.status == Resource.Status.SUCCESS
+        }
+        .map {
+            it.data
+        }
+        .filterNotNull()
+        .map {
+            val sender = appDatabase.userDao().findById(it.senderId).first()
+            return@map Resource.success(
+                MessageWithSender(
+                    message = it,
+                    sender = sender
                 )
             )
-        }*/
-    }
+        }
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
+
+    @ExperimentalCoroutinesApi
+    fun newMessageToConversation(conversationId: Int) = messageRepository.getNewMessage()
+        .filter {
+            it.status == Resource.Status.SUCCESS
+        }
+        .map {
+            it.data
+        }
+        .filterNotNull()
+        .filter {
+            it.conversationId == conversationId.toLong()
+        }
+        .map {
+            val sender = appDatabase.userDao().findById(it.senderId).first()
+            return@map Resource.success(
+                MessageWithSender(
+                    message = it,
+                    sender = sender
+                )
+            )
+        }
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
+
+    fun sendMessage(
+        userId: Int,
+        message: String,
+        conversationId: Int
+    ) = messageRepository.sendMessage(NewMessageRequest(
+        senderId =  userId,
+        message = message,
+        messageText = message,
+        conversationId = conversationId.toLong()
+    ))
+
+    fun conversation(conversationId: Int) = appDatabase.conversationDao().getConversation(conversationId)
+
+    val stateListener = messageRepository.getSocketIoLifecycleObserver()
 }

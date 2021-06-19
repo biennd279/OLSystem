@@ -3,11 +3,16 @@ package org.teamseven.ols.ui.classes.class_owned
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.databinding.FragmentClassBinding
+import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.viewmodel.ClassroomViewModel
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 class ClassOwnedFragment : Fragment() {
@@ -29,13 +34,15 @@ class ClassOwnedFragment : Fragment() {
         binding = FragmentClassBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = ClassOwnedSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
+        val sectionsPagerAdapter = ClassOwnedSectionsPagerAdapter(
+            requireContext(),
+            childFragmentManager,
+            mClassId
+        )
         val viewPager: ViewPager = binding.classViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.classTabs
         tabs.setupWithViewPager(viewPager)
-
-
 
         //menu
         //setHasOptionsMenu(true)
@@ -43,22 +50,11 @@ class ClassOwnedFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.loadingFragment, true)
-
-        }
-        */
-
-    }
-
     companion object {
-        val TAG = ClassOwnedFragment::class.java.simpleName
-
-        fun newInstance(classId: Int, className: String): ClassOwnedFragment {
+        fun newInstance(
+            classId: Int,
+            className: String
+        ): ClassOwnedFragment {
             val classFragment = ClassOwnedFragment()
             val args = Bundle()
             args.putString("className", className)

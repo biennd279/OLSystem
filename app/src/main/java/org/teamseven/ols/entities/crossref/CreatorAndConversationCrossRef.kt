@@ -6,7 +6,8 @@ import org.teamseven.ols.entities.Conversation
 import org.teamseven.ols.entities.User
 
 @Entity(
-    primaryKeys = ["user_id", "conversation_id"]
+    primaryKeys = ["user_id", "conversation_id"],
+    tableName = "creator_and_conversation_cross_ref"
 )
 data class CreatorAndConversationCrossRef(
     @ColumnInfo(name = "user_id")

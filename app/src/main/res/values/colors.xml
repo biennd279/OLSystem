@@ -14,4 +14,6 @@
     <color name="app_primary_dark_blue">#046DCC</color>
     <color name="white_transform_background">#1AFDFDFD</color>
     <color name="app_name_color">#0E406E</color>
+    <color name="grey_text">#989898</color>
+
 </resources>

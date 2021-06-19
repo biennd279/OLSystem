@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentSignInBinding
 import org.teamseven.ols.entities.requests.LoginRequest
@@ -19,7 +20,6 @@ import org.teamseven.ols.utils.SessionManager
 import org.teamseven.ols.viewmodel.SignInViewModel
 import timber.log.Timber
 
-@InternalCoroutinesApi
 class SignInFragment : Fragment() {
 
     private lateinit var viewModel: SignInViewModel
@@ -34,9 +34,9 @@ class SignInFragment : Fragment() {
 
         navController = findNavController()
 
-        viewModel = SignInViewModel(requireContext())
-
         sessionManager = SessionManager(requireContext())
+
+        viewModel = SignInViewModel(requireContext())
 
         binding.buttonSignin.setOnClickListener {
             launchSignInFlow()

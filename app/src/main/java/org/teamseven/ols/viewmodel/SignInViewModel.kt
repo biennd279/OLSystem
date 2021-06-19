@@ -12,27 +12,19 @@ import org.teamseven.ols.entities.requests.LoginRequest
 import org.teamseven.ols.network.AuthService
 import org.teamseven.ols.network.UserService
 import org.teamseven.ols.repositories.UserRepository
+import org.teamseven.ols.utils.SessionManager
 
 class SignInViewModel(context: Context) : ViewModel(){
 
-    private lateinit var authService: AuthService
-    private lateinit var userService: UserService
-    private lateinit var userDao: UserDao
-    private lateinit var appDatabase: AppDatabase
-    private lateinit var userRepository: UserRepository
-
-    init {
-        authService = AuthService.create(context)
-        userService = UserService.create(context)!!
-        appDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-        userDao = appDatabase.userDao()
-
-        userRepository = UserRepository(
-            userService,
-            authService,
-            userDao
-        )
-    }
+    private var authService: AuthService = AuthService.create(context)
+    private var userService: UserService = UserService.create(context)
+    private var appDatabase: AppDatabase = AppDatabase.create(context)
+    private var userDao: UserDao = appDatabase.userDao()
+    private var userRepository: UserRepository = UserRepository(
+        userService,
+        authService,
+        userDao
+    )
 
 
     fun signIn(loginRequest: LoginRequest) = userRepository.login(loginRequest)

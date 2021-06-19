@@ -53,7 +53,7 @@ interface ClassroomService {
     @POST("${Constants.CLASSROOM_URL}/join/{classroom_code}")
     suspend fun joinWithCode(
         @Path("classroom_code") classroomCode: String
-    ): Response<Void>
+    ): Response<Classroom>
 
     @DELETE("${Constants.CLASSROOM_URL}/{class_id}")
     suspend fun deleteClass(

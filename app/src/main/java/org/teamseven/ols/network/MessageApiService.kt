@@ -62,7 +62,7 @@ interface MessageApiService {
                 .create(MessageApiService::class.java)
         }
 
-        fun create(context: Context): MessageApiService? {
+        fun create(context: Context): MessageApiService {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(context))
                 .build()

@@ -24,7 +24,47 @@
         android:id="@+id/homeFragment"
         android:name="org.teamseven.ols.ui.classes.HomeFragment"
         android:label="@string/all_classes"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_accountSettingFragment"
+            app:destination="@id/accountSettingFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_addFileFragment"
+            app:destination="@id/addFileFragment">
+            <argument
+                android:name="classId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
+
+            app:destination="@id/accountSettingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addMemberFragment"
+            app:destination="@id/addMemberFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_messageBoxFragment"
+            app:destination="@id/messageBoxFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_joinAClassFragment"
+            app:destination="@id/joinAClassFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createAClassFragment"
+            app:destination="@id/createAClassFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createAClassFragment2"
+            app:destination="@id/createAClassFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createAClassFragment3"
+            app:destination="@id/createAClassFragment" />
+        <argument
+            android:name="currentClassroom"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_homeFragment_to_newMessageFragment"
+            app:destination="@id/newMessageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="org.teamseven.ols.ui.auth.SignUpFragment"
@@ -72,20 +112,57 @@
         android:id="@+id/createAClassFragment"
         android:name="org.teamseven.ols.ui.classes.CreateAClassFragment"
         android:label="Create a class"
-        tools:layout="@layout/fragment_create_a_class" />
+        tools:layout="@layout/fragment_create_a_class" >
+        <action
+            android:id="@+id/action_createAClassFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/joinAClassFragment"
         android:name="org.teamseven.ols.ui.classes.JoinAClassFragment"
         android:label="Join a class"
-        tools:layout="@layout/fragment_join_a_class" />
+        tools:layout="@layout/fragment_join_a_class" >
+        <action
+            android:id="@+id/action_joinAClassFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addMemberFragment"
         android:name="org.teamseven.ols.ui.classes.AddMemberFragment"
         android:label="Share code" />
     <fragment
+        android:id="@+id/addFileFragment"
+        android:name="org.teamseven.ols.ui.classes.AddFileFragment"
+        android:label="Upload file">
+        <argument
+            android:name="classId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
         android:id="@+id/newMessageFragment"
-        android:name="org.teamseven.ols.ui.message_box.NewMessageFragment"
+        android:name="org.teamseven.ols.ui.conversation.new_message.NewMessageFragment"
         android:label="New message"
-        tools:layout="@layout/fragment_new_message" />
+        tools:layout="@layout/fragment_new_message" >
+        <action
+            android:id="@+id/action_newMessageFragment_to_messageBoxFragment"
+            app:destination="@id/messageBoxFragment"
+            app:popUpTo="@id/newMessageFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="classroomId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageBoxFragment"
+        android:name="org.teamseven.ols.ui.conversation.message_box.MessageBoxFragment"
+        android:label="MessageBoxFragment" >
+        <action
+            android:id="@+id/action_messageBoxFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="conversationId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

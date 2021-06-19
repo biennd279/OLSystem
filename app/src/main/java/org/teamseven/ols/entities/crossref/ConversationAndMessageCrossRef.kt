@@ -4,7 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(
-    primaryKeys = ["conversation_id", "message_id"]
+    primaryKeys = ["conversation_id", "message_id"],
+    tableName = "conversation_and_message_cross_ref"
 )
 data class ConversationAndMessageCrossRef(
     @ColumnInfo(name = "conversation_id")

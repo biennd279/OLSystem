@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentAllClassesBinding
+import org.teamseven.ols.repositories.MessageRepository
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 class AllClassesFragment : Fragment() {
@@ -20,12 +23,10 @@ class AllClassesFragment : Fragment() {
     private var mClassName: String = ""
     private var mClassId: Int = -1
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mClassId = requireArguments().getInt("classId")
         mClassName = requireArguments().getString("className", "")
-
     }
 
 
@@ -35,7 +36,11 @@ class AllClassesFragment : Fragment() {
         binding = FragmentAllClassesBinding.inflate(inflater)
         navController = findNavController()
 
-        val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(requireContext(), childFragmentManager, mClassId)
+        val sectionsPagerAdapter = AllClassesSectionsPagerAdapter(
+            requireContext(),
+            childFragmentManager,
+            mClassId
+        )
         val viewPager: ViewPager = binding.allClassesViewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.allClassesTabs
@@ -49,22 +54,12 @@ class AllClassesFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        /*
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            navController.popBackStack(R.id.loadingFragment, true)
-
-        }
-
-         */
-
-    }
-
     companion object {
-        val TAG = AllClassesFragment::class.java.simpleName
 
-        fun newInstance(classId: Int, className: String): AllClassesFragment {
+        fun newInstance(
+            classId: Int,
+            className: String
+        ): AllClassesFragment {
             val allClassesFragment = AllClassesFragment()
             val args = Bundle()
             args.putString("className", className)
