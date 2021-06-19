@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.teamseven.ols.MainActivity
 import org.teamseven.ols.R
@@ -18,6 +20,7 @@ import timber.log.Timber
 class JoinAClassFragment : Fragment() {
 
     private lateinit var binding: FragmentJoinAClassBinding
+    private lateinit var navController: NavController
 
     private val classroomViewModel by activityViewModels<ClassroomViewModel>()
 
@@ -28,6 +31,7 @@ class JoinAClassFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentJoinAClassBinding.inflate(inflater)
+        navController = findNavController()
 
         binding.btnJoinClass.setOnClickListener {
             // get classCode
@@ -48,7 +52,12 @@ class JoinAClassFragment : Fragment() {
 
                         Resource.Status.SUCCESS -> {
                             (activity as MainActivity).onJoinedClassroom(it.data ?: -1)
+
+                            navController.navigate(
+                                JoinAClassFragmentDirections.actionJoinAClassFragmentToHomeFragment()
+                            )
                         }
+
 
                         Resource.Status.ERROR -> {
                             Timber.i(it.message)
