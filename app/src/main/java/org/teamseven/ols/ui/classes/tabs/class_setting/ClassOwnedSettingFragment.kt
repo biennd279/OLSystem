@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import org.teamseven.ols.databinding.FragmentClassOwnedSettingBinding
+import org.teamseven.ols.entities.requests.ClassroomInfoRequest
 import org.teamseven.ols.utils.Resource
 import org.teamseven.ols.viewmodel.ClassroomViewModel
 import timber.log.Timber
@@ -51,6 +53,33 @@ class ClassOwnedSettingFragment : Fragment() {
             // update in server and database
             // update in classesOwned <List> from MainActivity (write a  function and call it)
             // reload the classFragment by call setUpCurrentClass func
+            classroomViewModel.updateClassroom(
+                mClassId,
+                ClassroomInfoRequest(
+                    name = binding.edittextSettingClassOwnedName.text.toString(),
+                    school = binding.edittextSettingClassOwnedSchool.text.toString()
+                )
+            ).observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Resource.Status.LOADING -> {
+
+                    }
+                    Resource.Status.SUCCESS -> {
+                        Toast.makeText(
+                            context,
+                            "Update success",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    Resource.Status.ERROR -> {
+                        Toast.makeText(
+                            context,
+                            "Some thing when wrong",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
         }
 
         // delete the class

@@ -185,10 +185,6 @@ class ClassroomRepository @Inject constructor(
         }.asFlow()
     }
 
-    fun updateSetting() {
-
-    }
-
     fun leaveClassroom(classroomId: Int) = flow {
         emit(Resource.loading(null))
 
@@ -232,6 +228,20 @@ class ClassroomRepository @Inject constructor(
             emit(Resource.success(response.body()?.id))
         } else {
             emit(Resource.error(null, response.body().toString()))
+        }
+    }
+
+    fun updateSetting(classroomId: Int, classroomInfoRequest: ClassroomInfoRequest) = flow {
+        emit(Resource.loading(null))
+
+        val response = classroomService.update(classroomId, classroomInfoRequest)
+        if (response.code() == 202) {
+            val newClassroom = response.body()!!
+            emit(Resource.loading(newClassroom))
+            classroomDao.updateAll(newClassroom)
+            emit(Resource.success(newClassroom))
+        } else {
+            emit(Resource.error(null, response.errorBody().toString()))
         }
     }
 }

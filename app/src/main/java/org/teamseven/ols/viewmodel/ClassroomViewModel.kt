@@ -76,4 +76,12 @@ class ClassroomViewModel(
         .flowOn(Dispatchers.IO)
         .catch { Timber.i(it) }
         .asLiveData(viewModelScope.coroutineContext)
+
+    fun updateClassroom(
+        classroomId: Int,
+        classroomInfoRequest: ClassroomInfoRequest
+    ) = classroomRepository.updateSetting(classroomId, classroomInfoRequest)
+        .flowOn(Dispatchers.IO)
+        .catch { Timber.i(it) }
+        .asLiveData(viewModelScope.coroutineContext)
 }
