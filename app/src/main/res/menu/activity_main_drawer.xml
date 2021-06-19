@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/item_all_classes"
+        android:icon="@drawable/ic_menu_home"
+        android:title="@string/all_classes" />
+
+    <group android:id="@+id/classes_owned"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_classes_owned"
+            android:title="@string/classes_owned">
+            <menu>
+
+            </menu>
+        </item>
+        <item
+            android:orderInCategory="1"
+            android:id="@+id/item_create_a_class"
+            android:icon="@drawable/ic_menu_add"
+            android:title="@string/menu_create_class" />
+    </group>
+
+    <group android:id="@+id/classes_joined"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_classes_joined"
+            android:title="@string/classes_joined">
+            <menu>
+
+            </menu>
+        </item>
+        <item
+            android:orderInCategory="1"
+            android:id="@+id/item_join_a_class"
+            android:icon="@drawable/ic_menu_add"
+            android:title="@string/menu_join_class" />
+    </group>
+</menu>
