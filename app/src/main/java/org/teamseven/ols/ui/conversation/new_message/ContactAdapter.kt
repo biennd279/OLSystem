@@ -8,58 +8,76 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.teamseven.ols.R
+import org.teamseven.ols.databinding.ItemContactViewBinding
+import org.teamseven.ols.databinding.ItemMemberViewBinding
+import org.teamseven.ols.entities.User
+import org.teamseven.ols.ui.classes.tabs.people.PeopleAdapter
+import org.teamseven.ols.ui.classes.tabs.people.PeopleCallBack
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ContactAdapter(
     private val context: Context,
-    private var ContactItems: List<ContactItem>,
-    private var selectedContactItems: List<ContactItem>,
-    private val listener: (ContactItem) -> Unit
-) : RecyclerView.Adapter<ContactAdapter.ViewHolder>(), Filterable {
+    private var contactItems: List<User>,
+    private var selectedContactItems: List<User>,
+    private val listener: (User) -> Unit
+) : ListAdapter<User, RecyclerView.ViewHolder>(UserCallback()), Filterable {
 
-    var ContactItemsFiltered: List<ContactItem>
+    var contactItemsFiltered: List<User>
     init {
-        ContactItemsFiltered = ContactItems - selectedContactItems
+        contactItemsFiltered = contactItems - selectedContactItems
     }
 
     fun setContactItemsFiltered() {
-        ContactItemsFiltered = ContactItems - selectedContactItems
+        contactItemsFiltered = contactItems - selectedContactItems
     }
 
-    //ViewHolder
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val contact_name = view.findViewById<TextView>(R.id.text_contact_name)
-        val contact_avatar = view.findViewById<ImageView>(R.id.img_contact_avatar)
+    class ViewHolder private constructor(
+        private val binding: ItemContactViewBinding
+    ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bindItem(items: ContactItem, listener: (ContactItem) -> Unit) {
-            contact_name.text = items.contact_name
+        private val username = binding.textContactName
+        private val avatar = binding.imgContactAvatar
 
-            Glide.with(itemView.context).load(items.contact_avatar).into(contact_avatar)
+        fun bind(item: User, listener: (User) -> Unit) {
+            username.text = item.name
+
+            if (item.avatarUrl != null) {
+                Glide.with(itemView.context).load(item.avatarUrl).into(avatar)
+            } else {
+                Glide.with(itemView.context).load(R.drawable.ic_person_outline).into(avatar)
+            }
+
             itemView.setOnClickListener{
-                listener(items)
+                listener(item)
+            }
+
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ContactAdapter.ViewHolder {
+                val binding = ItemContactViewBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                return ViewHolder(binding)
             }
         }
     }
 
-
     // Create new views (invoked by the layout manager
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_contact_view, parent, false)
-        return ViewHolder(view)
-    }
-
-
-    // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bindItem(ContactItemsFiltered[position], listener)
+        return ViewHolder.from(parent)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = ContactItemsFiltered.size
+    override fun getItemCount() = contactItemsFiltered.size
 
 
     override fun getFilter(): Filter {
@@ -67,30 +85,48 @@ class ContactAdapter(
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
                 if (charString.isEmpty()) {
-                    ContactItemsFiltered = ContactItems - selectedContactItems
+                    contactItemsFiltered = contactItems - selectedContactItems
                 } else {
-                    val filteredList: MutableList<ContactItem> = ArrayList()
-                    val tempList = ContactItems - selectedContactItems
+                    val filteredList: MutableList<User> = ArrayList()
+                    val tempList = contactItems - selectedContactItems
                     for (row in tempList) {
-                        if (row.contact_name.toLowerCase(Locale.ROOT)
-                                .contains(charString.toLowerCase(Locale.ROOT))
-                        ) {
+                        if (row.name.toLowerCase(Locale.ROOT)
+                                .contains(charString.toLowerCase(Locale.ROOT))) {
                                 filteredList.add(row)
                         }
                     }
-                    ContactItemsFiltered = filteredList
+                    contactItemsFiltered = filteredList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = ContactItemsFiltered
+                filterResults.values = contactItemsFiltered
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                ContactItemsFiltered = filterResults.values as ArrayList<ContactItem>
+                contactItemsFiltered = filterResults.values as ArrayList<User>
                 notifyDataSetChanged()
             }
         }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                holder.bind(contactItems[position], listener)
+            }
+        }
+    }
+
+}
+
+class UserCallback(): DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
     }
 
 }
