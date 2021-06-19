@@ -27,25 +27,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/conversation_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_selected_contact_list"
+        app:layout_constraintEnd_toEndOf="@+id/rLayout_search_bar"
+        app:layout_constraintStart_toStartOf="@+id/rLayout_search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/rLayout_search_bar" />
+
     <RelativeLayout
         android:id="@+id/rLayout_search_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_contact_to"
+        app:layout_constraintBottom_toTopOf="@+id/view_search_bottom_line"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/view_search_bottom_line">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/edittext_contact_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:hint="@string/select_participants"
+            android:inputType="text"
             android:textSize="20sp" />
 
         <ImageButton
@@ -55,9 +67,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:visibility="invisible"
             android:background="@color/white"
             android:contentDescription="@string/new_message"
+            android:visibility="invisible"
             app:srcCompat="@drawable/ic_action_clear_dark" />
     </RelativeLayout>
 
@@ -74,14 +86,14 @@
         android:id="@+id/recycler_selected_contact_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_selected_contact_bottom_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_search_bottom_line"
-        app:layout_constraintBottom_toTopOf="@+id/view_selected_contact_bottom_line"/>
+        app:layout_constraintTop_toBottomOf="@+id/view_search_bottom_line" />
 
 
     <View

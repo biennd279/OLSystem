@@ -16,7 +16,7 @@ data class Conversation(
     val id: Int,
 
     @ColumnInfo(name = "name")
-    @SerializedName("name")
+    @SerializedName("conversation_name")
     val name: String?,
 
     @ColumnInfo(name = "user_id")
@@ -29,7 +29,7 @@ data class Conversation(
 
     @ColumnInfo(name = "type")
     @SerializedName("type")
-    val type: String?,
+    val type: String? = "group",
 ) {
     /**
      * @property Type is type of conversation

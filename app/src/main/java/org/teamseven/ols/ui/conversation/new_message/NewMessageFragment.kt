@@ -11,16 +11,27 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.teamseven.ols.R
 import org.teamseven.ols.databinding.FragmentNewMessageBinding
 import org.teamseven.ols.entities.User
+import org.teamseven.ols.utils.Resource
+import org.teamseven.ols.viewmodel.ClassroomViewModel
+import org.teamseven.ols.viewmodel.MessageViewModel
 
 
 class NewMessageFragment : Fragment() {
+
+    private val args by navArgs<NewMessageFragmentArgs>()
+    private val classroomViewModel by activityViewModels<ClassroomViewModel>()
+    private val messageViewModel by activityViewModels<MessageViewModel>()
 
     private lateinit var binding: FragmentNewMessageBinding
     private lateinit var navController: NavController
@@ -32,12 +43,38 @@ class NewMessageFragment : Fragment() {
     private lateinit var recyclerViewSelectedContacts: RecyclerView
     private var mAdapterSelectedContacts: SelectedContactAdapter? = null
 
-    private var contactItems: MutableList<User> = mutableListOf()
     private var selectedContactItems: MutableList<User> = mutableListOf()
 
     private lateinit var btnClear: ImageButton
     private lateinit var textContactSearch: EditText
 
+    private val _classroomId by lazy { args.classroomId }
+
+    private val _members: MutableLiveData<List<User>> = MutableLiveData()
+
+
+    init {
+        lifecycleScope.launchWhenResumed {
+            classroomViewModel.students(_classroomId).observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Resource.Status.LOADING -> {
+
+                    }
+
+                    Resource.Status.SUCCESS -> {
+                        if (it.data != null) {
+                            _members.value = it.data
+                            mAdapterContacts?.notifyDataSetChanged()
+                        }
+                    }
+
+                    Resource.Status.ERROR -> {
+
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,48 +114,17 @@ class NewMessageFragment : Fragment() {
 
     private fun setRecyclerViewSelectedContacts() {
         recyclerViewSelectedContacts = binding.recyclerSelectedContactList
-
-        //call func from PeopleViewModel to get all the file information
-        //this is a test, remove it latter
-        //but i dont know, what happen when click the people item - member
-
-
-        recyclerViewSelectedContacts.layoutManager = LinearLayoutManager(activity , LinearLayoutManager.HORIZONTAL, false)
-        mAdapterSelectedContacts = activity?.let {
-            SelectedContactAdapter(it, selectedContactItems) {
-                val toast = Toast.makeText(
-                    activity,
-                    it.name,
-                    Toast.LENGTH_LONG
-                )
-                toast.show()
-
-
-                setSelectedContactItemsListener(it)
-            }
+        recyclerViewSelectedContacts.layoutManager = LinearLayoutManager(
+            activity ,
+            LinearLayoutManager.HORIZONTAL,
+            false)
+        mAdapterSelectedContacts = SelectedContactAdapter(selectedContactItems) {
+            setSelectedContactItemsListener(it)
         }
         recyclerViewSelectedContacts.adapter = mAdapterSelectedContacts
-        getSelectedContactList()
         mAdapterSelectedContacts?.notifyDataSetChanged()
     }
 
-    private fun getSelectedContactList() {
-        val avatar = resources.obtainTypedArray(R.array.avatar)
-        val classname = resources.getStringArray(R.array.classes_joined)
-
-        selectedContactItems.clear()
-        /*
-        for (i in classname.indices) {
-            selectedContactItems.add(
-                ContactItem(
-                    0,
-                    classname[i],
-                    0,
-                    avatar.getResourceId(i, 0),
-                )
-            )
-        }*/
-    }
 
     private fun setSelectedContactItemsListener(contactItem : User) {
         //remove from selectedContactItems
@@ -167,24 +173,14 @@ class NewMessageFragment : Fragment() {
     private fun setRecyclerViewContacts() {
         recyclerViewContacts = binding.recyclerContactList
 
-        //call func from PeopleViewModel to get all the file information
-        //this is a test, remove it latter
-        //but i dont know, what happen when click the people item - member
-        getContactList()
-
         recyclerViewContacts.layoutManager = LinearLayoutManager(activity)
-        mAdapterContacts = activity?.let {
-            ContactAdapter(it, contactItems, selectedContactItems) {
-                val toast = Toast.makeText(activity, it.name, Toast.LENGTH_LONG)
-                toast.show()
 
-                Log.e("check_recycler_item_listener", "clicked")
-
+        _members.observe(viewLifecycleOwner) {
+            mAdapterContacts = ContactAdapter(it, selectedContactItems) {
                 setContactItemsListener(it)
             }
+            recyclerViewContacts.adapter = mAdapterContacts
         }
-        recyclerViewContacts.adapter = mAdapterContacts
-
     }
 
     private fun setContactItemsListener(contactItem: User) {
@@ -203,11 +199,4 @@ class NewMessageFragment : Fragment() {
         }
     }
 
-    private fun getContactList(){
-        val username = resources.getStringArray(R.array.username)
-        val avatar = resources.obtainTypedArray(R.array.avatar)
-        val classname = resources.getStringArray(R.array.classes_joined)
-
-        //People + group chat (class group chat + other (> 2, = 1 -> people))
-    }
 }
