@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.contentValuesOf
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -41,6 +42,7 @@ class FilesFragment : Fragment() {
     private lateinit var binding: FragmentFilesBinding
     private lateinit var navController: NavController
     private var filesItems: MutableList<FileItem> = mutableListOf()
+    private var imageReference: StorageReference? = null
     lateinit var storage: FirebaseStorage
     private val filepath = "MyFileStorage"
     internal var myExternalFile: File?=null
@@ -60,6 +62,7 @@ class FilesFragment : Fragment() {
         //recyclerView
         val recyclerView = binding.recyclerFileList
         storage = Firebase.storage
+        imageReference = FirebaseStorage.getInstance().reference.child(requireArguments().getInt("classId").toString())
 
         //call func from FileViewModel to get all the file information
         //this is a test, remove it latter
@@ -69,15 +72,18 @@ class FilesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = activity?.let {
             FileAdapter(it, filesItems) {
-                val fileRef = storage.reference.child(it.file_name.toString())
-                Log.d(TAG, fileRef.toString())
+//                val fileRef = "gs://olsystem.appspot.com/" + requireArguments().getInt("classId").toString() + "/" + it.file_name
+                val fileRef = imageReference!!.child(it.file_name.toString())
+                Log.d(TAG, "fileRef:    "  + fileRef.toString())
                 downloadToLocalFile(fileRef, it)
             }
         }
 
         binding.btnNewFile.setOnClickListener {
-            //i dont know about this stuff
-            navController.navigate(R.id.addFileFragment)
+            val classId = requireArguments().getInt("classId")
+            Log.d(TAG, "Test classIddddddd " + classId.toString())
+            val bundle = bundleOf("classId" to classId)
+            navController.navigate(R.id.addFileFragment, bundle)
         }
 
         return binding.root
@@ -102,12 +108,12 @@ class FilesFragment : Fragment() {
     }
 
     private fun getFileList(){
-        val listRef = storage.reference
+        val listRef = storage.reference.child(requireArguments().getInt("classId").toString())
         val listAllTask: Task<ListResult> = listRef.listAll()
         listAllTask
             .addOnSuccessListener { result ->
                 val items: List<StorageReference> = result.items
-                filesItems.clear()
+//                filesItems.clear()
                 items.forEachIndexed { index, item ->
                     // All the items under listRef.
                     item.downloadUrl.addOnSuccessListener {
@@ -148,7 +154,7 @@ class FilesFragment : Fragment() {
 
     private fun downloadToLocalFile(fileRef: StorageReference?, fileItem: FileItem) {
         if (fileRef != null) {
-            val localFile: File = File(Environment.getExternalStorageDirectory(), fileItem.file_name)
+            val localFile: File = File(Environment.getExternalStorageDirectory().toString(), fileItem.file_name)
             try {
 
                // val localFile: File = File.createTempFile("images", "jpg")

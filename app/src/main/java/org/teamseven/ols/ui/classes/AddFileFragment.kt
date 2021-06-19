@@ -15,12 +15,14 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
 import org.teamseven.ols.databinding.FragmentAddFileBinding
+import org.teamseven.ols.ui.classes.tabs.file.FilesFragment
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -36,6 +38,12 @@ class AddFileFragment : Fragment() {
     private var bitmap: Bitmap? = null
     private var imageReference: StorageReference? = null
     lateinit var storage: FirebaseStorage
+    lateinit var fileFragment: FilesFragment
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +55,8 @@ class AddFileFragment : Fragment() {
         binding.tvFileName.text = ""
         binding.imgSuccess.visibility = View.INVISIBLE
 
-        imageReference = FirebaseStorage.getInstance().reference
+        val classId = arguments?.getInt("classId").toString()
+        imageReference = FirebaseStorage.getInstance().reference.child(classId)
 
         binding.btnChooseFile.setOnClickListener {
             val intent = Intent()
@@ -71,6 +80,7 @@ class AddFileFragment : Fragment() {
                 val formatted = current.format(formatter)
 
                 val fileRef = imageReference!!.child(fileName + "_" + formatted + "." + getFileExtension(fileUri!!))
+                Log.d(TAG, "fileRef "+ fileRef.toString())
                 fileRef.putFile(fileUri!!)
                     .addOnSuccessListener { taskSnapshot ->
 //                        val name = taskSnapshot.metadata!!.name

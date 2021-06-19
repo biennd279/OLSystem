@@ -27,7 +27,17 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_accountSettingFragment"
-            app:destination="@id/accountSettingFragment" />
+            app:destination="@id/accountSettingFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_addFileFragment"
+            app:destination="@id/addFileFragment">
+            <argument
+                android:name="classId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -89,6 +99,11 @@
     <fragment
         android:id="@+id/addFileFragment"
         android:name="org.teamseven.ols.ui.classes.AddFileFragment"
-        android:label="Upload file" />
+        android:label="Upload file">
+        <argument
+            android:name="classId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 
 </navigation>
