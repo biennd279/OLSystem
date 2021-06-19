@@ -61,7 +61,9 @@ class MessageBoxFragment : Fragment() {
                     _currentConversation
                 ).first().name ?: "A conversation"
             )
+            lifecycle.addObserver(messageViewMode.stateListener)
         }
+
     }
 
 

@@ -118,4 +118,6 @@ class MessageViewModel(
     ))
 
     fun conversation(conversationId: Int) = appDatabase.conversationDao().getConversation(conversationId)
+
+    val stateListener = messageRepository.getSocketIoLifecycleObserver()
 }
