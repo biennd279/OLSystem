@@ -1,6 +1,9 @@
 package org.teamseven.ols
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SubMenu
@@ -22,6 +25,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -55,6 +61,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private var currentClassId: Int = -1
+    private var mAuth: FirebaseAuth? = null
+
 
     private lateinit var navHeader: View
     private lateinit var headerBinding: NavHeaderMainBinding
@@ -185,6 +193,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+        mAuth = FirebaseAuth.getInstance()
     }
 
     private fun setUpUi() {
@@ -424,6 +433,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Resource.Status.ERROR -> Timber.i("Load profile error ${it.message}")
             }
         }
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val user = mAuth!!.currentUser
+        if (user != null) {
+            updateUI(user)
+        } else {
+            signInAnonymously()
+        }
+    }
+
+    private fun signInAnonymously() {
+        mAuth!!.signInAnonymously()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("TAG", "signInAnonymously:success")
+                    val user = mAuth!!.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("TAG", "signInAnonymously:failure", task.exception)
+                    updateUI(null)
+                }
+            }
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+
     }
 
     fun onLeaveClassroom() {
