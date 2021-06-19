@@ -204,7 +204,17 @@ class ClassroomRepository @Inject constructor(
         }
     }
 
-    fun joinClassroom(code: String) {
+    fun joinClassroom(code: String) = flow {
+        emit(Resource.loading(null))
 
+        val response = classroomService.joinWithCode(code)
+
+        if (response.code() == 202) {
+            emit(Resource.loading(response.body()?.id))
+            classroomDao.insertAll(response.body()!!)
+            emit(Resource.success(response.body()?.id))
+        } else {
+            emit(Resource.error(null, response.body().toString()))
+        }
     }
 }

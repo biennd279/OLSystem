@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.teamseven.ols.MainActivity
 import org.teamseven.ols.databinding.FragmentClassJoinedSettingBinding
 import org.teamseven.ols.utils.Resource
@@ -37,6 +38,7 @@ class ClassJoinedSettingFragment : Fragment() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -429,4 +429,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         refreshClassroomJoined()
         onNavigationItemSelected(navView.menu.findItem(R.id.item_all_classes))
     }
+
+    fun onJoinedClassroom(classId: Int) {
+        refreshClassroomJoined()
+        currentClassId = classId
+        setUpCurrentClass()
+    }
 }
