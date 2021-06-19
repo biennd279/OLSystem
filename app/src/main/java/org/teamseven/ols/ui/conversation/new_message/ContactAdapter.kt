@@ -22,7 +22,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ContactAdapter(
-    private val context: Context,
     private var contactItems: List<User>,
     private var selectedContactItems: List<User>,
     private val listener: (User) -> Unit

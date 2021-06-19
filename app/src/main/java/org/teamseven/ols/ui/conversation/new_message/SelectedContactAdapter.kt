@@ -15,7 +15,6 @@ import org.teamseven.ols.databinding.ItemSelectedContactBinding
 import org.teamseven.ols.entities.User
 
 class SelectedContactAdapter(
-    private val context: Context,
     private var selectedContactItems: List<User>,
     private val listener: (User) -> Unit
 ) : ListAdapter<User, RecyclerView.ViewHolder>(UserCallback()) {

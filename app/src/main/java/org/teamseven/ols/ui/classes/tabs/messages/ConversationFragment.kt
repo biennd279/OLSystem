@@ -65,7 +65,11 @@ class ConversationFragment : Fragment() {
         binding.btnNewMessage.setOnClickListener {
             //navigate the new message fragment
             //have not created
-            navController.navigate(R.id.newMessageFragment)
+            navController.navigate(
+                HomeFragmentDirections.actionHomeFragmentToNewMessageFragment(
+                    mClassId
+                )
+            )
         }
 
         return binding.root

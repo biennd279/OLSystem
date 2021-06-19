@@ -32,9 +32,6 @@
             android:id="@+id/action_homeFragment_to_addMemberFragment"
             app:destination="@id/addMemberFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_newMessageFragment"
-            app:destination="@id/newMessageFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_messageBoxFragment"
             app:destination="@id/messageBoxFragment" />
         <action
@@ -53,6 +50,9 @@
             android:name="currentClassroom"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_homeFragment_to_newMessageFragment"
+            app:destination="@id/newMessageFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -129,6 +129,9 @@
             app:destination="@id/messageBoxFragment"
             app:popUpTo="@id/newMessageFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="classroomId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/messageBoxFragment"
